@@ -17,7 +17,7 @@ export function Input({ label, error, hint, id, className = '', ...rest }: Props
       </label>
       <input
         id={inputId}
-        className={`w-full rounded-xl border bg-white px-4 py-3 text-slate-900 shadow-sm transition-colors placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 ${
+        className={`w-full rounded-xl border bg-white px-4 py-3 text-slate-900 shadow-sm transition-colors placeholder:text-slate-400 focus:border-[#0F3D3E] focus:outline-none focus:ring-2 focus:ring-[#0F3D3E]/25 ${
           error ? 'border-red-400' : 'border-slate-200'
         } ${className}`}
         aria-invalid={!!error}

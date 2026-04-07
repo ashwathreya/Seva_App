@@ -33,27 +33,27 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how" className="scroll-mt-20 bg-slate-50 py-16 sm:py-20 lg:py-24">
+    <section id="how" className="scroll-mt-20 bg-seva-teal py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">How it works</h2>
-          <p className="mt-3 text-lg text-slate-600">Three simple steps from tap to done.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">How it works</h2>
+          <p className="mt-3 text-lg text-seva-ink/85">Three simple steps from tap to done.</p>
         </div>
         <div className="mt-14 grid gap-8 md:grid-cols-3">
           {steps.map((s, i) => (
             <div key={s.step} className="relative text-center">
               {i < steps.length - 1 ? (
                 <div
-                  className="absolute left-[60%] top-10 hidden h-0.5 w-[80%] bg-gradient-to-r from-brand-200 to-transparent md:block"
+                  className="absolute left-[60%] top-10 hidden h-0.5 w-[80%] bg-gradient-to-r from-seva-gold/40 to-transparent md:block"
                   aria-hidden
                 />
               ) : null}
-              <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-lg">
+              <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-seva-gold text-seva-night shadow-goldGlow">
                 {s.icon}
               </div>
-              <p className="mt-4 text-sm font-bold uppercase tracking-wide text-brand-600">Step {s.step}</p>
-              <h3 className="mt-1 text-xl font-bold text-slate-900">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{s.body}</p>
+              <p className="mt-4 text-sm font-bold uppercase tracking-wide text-seva-gold">Step {s.step}</p>
+              <h3 className="mt-1 text-xl font-bold text-white">{s.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-seva-muted">{s.body}</p>
             </div>
           ))}
         </div>

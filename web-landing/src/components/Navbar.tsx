@@ -16,33 +16,40 @@ const links = [
 
 export function Navbar({ scrolled, onLogin, onSignup, onBook }: Props) {
   const [open, setOpen] = useState(false);
+  const onDark = !scrolled && !open;
+
+  const linkClass = onDark
+    ? 'text-seva-ink/90 hover:text-white'
+    : 'text-seva-deep hover:text-seva-teal';
 
   return (
     <header
-      className={`fixed left-0 right-0 top-0 z-50 transition-shadow duration-300 ${
-        scrolled ? 'bg-white/95 shadow-nav backdrop-blur-md' : 'bg-white/90 backdrop-blur-sm'
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
+        scrolled || open
+          ? 'border-b border-white/10 bg-seva-deep/95 shadow-nav backdrop-blur-md'
+          : 'bg-transparent'
       }`}>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-[4.25rem] sm:px-6 lg:px-8">
-        <a href="#" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-sm font-extrabold text-white shadow-md">
-            S
-          </span>
-          <span className="font-bold tracking-tight text-slate-900">SEVA</span>
+        <a href="#" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
+          <img
+            src="/seva_logo_new.png"
+            alt="SEVA"
+            className="h-9 w-auto object-contain sm:h-10"
+            width={160}
+            height={40}
+          />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
           {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-brand-700">
+            <a key={l.href} href={l.href} className={`text-sm font-medium transition-colors ${linkClass}`}>
               {l.label}
             </a>
           ))}
         </nav>
 
         <div className="hidden items-center gap-3 sm:flex">
-          <Button variant="ghost" className="!py-2 !px-4" onClick={onLogin}>
+          <Button variant="ghost" className={`!py-2 !px-4 ${scrolled ? '' : '!text-seva-ink'}`} onClick={onLogin}>
             Log in
           </Button>
           <Button className="!py-2 !px-4" onClick={onSignup}>
@@ -52,7 +59,7 @@ export function Navbar({ scrolled, onLogin, onSignup, onBook }: Props) {
 
         <button
           type="button"
-          className="rounded-lg p-2 text-slate-700 md:hidden"
+          className={`rounded-lg p-2 md:hidden ${onDark ? 'text-seva-ink' : 'text-seva-ink'}`}
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
           aria-label="Menu">
@@ -67,18 +74,18 @@ export function Navbar({ scrolled, onLogin, onSignup, onBook }: Props) {
       </div>
 
       {open ? (
-        <div className="border-t border-slate-100 bg-white px-4 py-4 shadow-lg md:hidden">
+        <div className="border-t border-white/10 bg-seva-deep px-4 py-4 shadow-lg md:hidden">
           <nav className="flex flex-col gap-1" aria-label="Mobile">
             {links.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                className="rounded-lg px-3 py-2.5 text-sm font-medium text-seva-ink hover:bg-white/10"
                 onClick={() => setOpen(false)}>
                 {l.label}
               </a>
             ))}
-            <hr className="my-2 border-slate-100" />
+            <hr className="my-2 border-white/10" />
             <Button variant="ghost" className="w-full justify-center" onClick={() => { setOpen(false); onLogin(); }}>
               Log in
             </Button>

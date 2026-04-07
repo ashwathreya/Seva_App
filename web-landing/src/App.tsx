@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { SplashOverlay } from './components/SplashOverlay';
 import { AuthModal, type AuthMode } from './components/AuthModal';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -12,6 +13,7 @@ import { Footer } from './components/Footer';
 import { MobileStickyCta } from './components/MobileStickyCta';
 
 export function App() {
+  const [splashDone, setSplashDone] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>('closed');
   const [toast, setToast] = useState<string | null>(null);
@@ -45,9 +47,11 @@ export function App() {
 
   return (
     <>
+      {!splashDone ? <SplashOverlay onDone={() => setSplashDone(true)} /> : null}
+
       {toast ? (
         <div
-          className="fixed left-1/2 top-20 z-[110] max-w-md -translate-x-1/2 rounded-xl bg-slate-900 px-5 py-3 text-center text-sm font-medium text-white shadow-lg animate-[fadeSlide_0.3s_ease-out]"
+          className="fixed left-1/2 top-20 z-[110] max-w-md -translate-x-1/2 rounded-xl border border-[#F0A500]/40 bg-[#071F20] px-5 py-3 text-center text-sm font-medium text-[#EAF3F3] shadow-lg animate-[fadeSlide_0.3s_ease-out]"
           role="status">
           {toast}
         </div>

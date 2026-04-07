@@ -179,7 +179,7 @@ export function AuthModal({ mode, onClose, onSuccess }: Props) {
                   setForgotSent(false);
                   setInternal('forgot');
                 }}
-                className="text-sm font-semibold text-brand-600 hover:text-brand-700">
+                className="text-sm font-semibold text-[#0F3D3E] hover:text-[#0a2f30]">
                 Forgot password?
               </button>
             </div>
@@ -192,7 +192,7 @@ export function AuthModal({ mode, onClose, onSuccess }: Props) {
               New to SEVA?{' '}
               <button
                 type="button"
-                className="font-semibold text-brand-600 hover:text-brand-700"
+                className="font-semibold text-[#0F3D3E] hover:text-[#0a2f30]"
                 onClick={() => setInternal('signup')}>
                 Create an account
               </button>
@@ -257,7 +257,7 @@ export function AuthModal({ mode, onClose, onSuccess }: Props) {
               Already have an account?{' '}
               <button
                 type="button"
-                className="font-semibold text-brand-600 hover:text-brand-700"
+                className="font-semibold text-[#0F3D3E] hover:text-[#0a2f30]"
                 onClick={() => setInternal('login')}>
                 Sign in
               </button>
@@ -302,7 +302,7 @@ export function AuthModal({ mode, onClose, onSuccess }: Props) {
             <button
               type="button"
               onClick={() => setInternal('login')}
-              className="mt-6 text-sm font-semibold text-brand-600 hover:text-brand-700">
+              className="mt-6 text-sm font-semibold text-[#0F3D3E] hover:text-[#0a2f30]">
               ← Back to sign in
             </button>
           </>
@@ -341,7 +341,7 @@ export function AuthModal({ mode, onClose, onSuccess }: Props) {
             <button
               type="button"
               onClick={() => setInternal('login')}
-              className="mt-4 text-sm font-semibold text-brand-600 hover:text-brand-700">
+              className="mt-4 text-sm font-semibold text-[#0F3D3E] hover:text-[#0a2f30]">
               ← Back to sign in
             </button>
           </>

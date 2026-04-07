@@ -17,15 +17,15 @@ export function Button({
   ...rest
 }: Props) {
   const base =
-    'inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
+    'inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-seva-gold focus-visible:ring-offset-2 focus-visible:ring-offset-seva-deep disabled:opacity-50 disabled:pointer-events-none';
   const styles: Record<Variant, string> = {
     primary:
-      'bg-brand-600 text-white shadow-md hover:bg-brand-700 hover:shadow-lg active:scale-[0.98]',
+      'bg-seva-gold text-seva-night shadow-md hover:brightness-105 hover:shadow-goldGlow active:scale-[0.98]',
     secondary:
-      'bg-slate-100 text-slate-900 hover:bg-slate-200 active:scale-[0.98]',
-    ghost: 'text-slate-700 hover:bg-slate-100',
+      'border border-white/20 bg-white/10 text-seva-ink backdrop-blur-sm hover:bg-white/15 active:scale-[0.98]',
+    ghost: 'text-seva-ink hover:bg-white/10',
     outline:
-      'border-2 border-slate-200 bg-white text-slate-800 hover:border-brand-600 hover:text-brand-700',
+      'border-2 border-seva-gold/50 bg-transparent text-seva-gold hover:bg-seva-gold/10',
   };
 
   return (
