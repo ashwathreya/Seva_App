@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "framework": null,
-  "installCommand": "echo 'Static preview — no npm install'",
-  "buildCommand": "node scripts/copy-design-preview.js",
-  "outputDirectory": "public"
+  "installCommand": "cd web-landing && npm install --ignore-scripts --no-audit --no-fund",
+  "buildCommand": "cd web-landing && npm run build",
+  "outputDirectory": "web-landing/dist"
 }

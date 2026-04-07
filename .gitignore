@@ -2,6 +2,9 @@
 node_modules/
 admin/node_modules/
 
+# Marketing site (Vite build output — built on Vercel)
+web-landing/dist/
+
 # Admin web build output
 admin/dist/
 

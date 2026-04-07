@@ -92,13 +92,19 @@ Open `http://localhost:4173`
 
 ---
 
-## Vercel shows 404 (e.g. `seva-app-delta.vercel.app`)
+## Vercel (recruiter-facing marketing site)
 
-1. **Deployments → latest → Build Logs** — confirm `npm run build` ran and you see `Wrote public/index.html` (or no error from `copy-design-preview.js`).
-2. **Project → Settings → General → Framework Preset** — set **Other** (not Next.js / Vite).
-3. **Settings → Build & Deployment** — clear **custom** Install / Build / Output overrides so `vercel.json` is used. **Output Directory** must be `public`.
-4. **Git** — `seva_app_design_preview.html` must be in the repo at the **project root** (same folder as `vercel.json`). Push `public/index.html` too after `npm run build` so a failed copy step still leaves a file.
-5. **Root Directory** — leave empty unless the app lives in a subfolder of the repo.
+Production deploy builds **`web-landing/`** (React + Vite + Tailwind) and serves **`web-landing/dist`**. Root `vercel.json` runs `cd web-landing && npm install && npm run build`.
+
+**Framework preset:** Other. **Output directory:** leave blank in the dashboard (use repo `vercel.json`) or set to `web-landing/dist`.
+
+The older **`public/index.html`** design lab (`seva_app_design_preview.html`) is still in the repo for reference; it is **not** what Vercel serves unless you change `vercel.json` back.
+
+### Vercel shows 404
+
+1. **Deployments → Build Logs** — confirm `cd web-landing && npm run build` completed.
+2. **Framework Preset** — **Other**; remove custom overrides that replace `vercel.json`.
+3. **Root Directory** — empty (repo root contains `vercel.json`).
 
 ---
 
