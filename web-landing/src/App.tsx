@@ -33,8 +33,9 @@ export function App() {
 
   const openBook = useCallback(() => {
     document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
-    setAuthMode('signup');
   }, []);
+
+  const openSignup = useCallback(() => setAuthMode('signup'), []);
 
   const openBrowse = useCallback(() => {
     document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
@@ -76,17 +77,17 @@ export function App() {
           onBrowse={openBrowse}
         />
         <TrustBar />
-        <ServicesGrid onBook={openBook} />
+        <ServicesGrid onBook={openSignup} />
         <HowItWorks />
         <FeaturedPros
-          onViewProfile={() => setAuthMode('signup')}
+          onViewProfile={openSignup}
           onBecomePro={() => {
             document.getElementById('providers')?.scrollIntoView({ behavior: 'smooth' });
             showToast('Provider onboarding — download the SEVA Pro app or apply on web (coming soon).');
           }}
         />
         <ReviewsSection />
-        <FinalCta onBook={openBook} />
+        <FinalCta onBook={openSignup} />
         <Footer />
       </main>
 
