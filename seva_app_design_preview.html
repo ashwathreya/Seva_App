@@ -1,0 +1,2164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SEVA — Product &amp; UI preview</title>
+<meta name="description" content="SEVA trust-first home services — interactive app UI preview in phone frames for portfolio and recruiter review.">
+<meta property="og:title" content="SEVA — Product &amp; UI preview">
+<meta property="og:description" content="Customer, Pro, AI booking, splash, and signup flows — click-through prototype.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#09090E">
+<style>
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/sora@5/latin-400-normal.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/sora@5/latin-600-normal.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/sora@5/latin-700-normal.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/sora@5/latin-800-normal.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5/latin-400-normal.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5/latin-500-normal.css');
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#09090E;color:#fff;-webkit-font-smoothing:antialiased}
+.sora{font-family:'Sora',system-ui,sans-serif}
+::-webkit-scrollbar{display:none}
+
+.tab-btn{background:none;border:none;cursor:pointer;font-family:inherit;transition:all .15s}
+.tab-btn:hover{opacity:.8}
+.press{transition:all .15s;cursor:pointer}
+.press:hover{transform:translateY(-1px);filter:brightness(1.07)}
+.card-lift{transition:all .2s;cursor:pointer}
+.card-lift:hover{transform:translateY(-3px)}
+
+@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeSlide .4s ease forwards}
+@keyframes beat{0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,.5)}50%{box-shadow:0 0 0 9px rgba(240,165,0,0)}}
+.beat{animation:beat 2s ease infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+.pulse-dot{animation:pulse-dot 1.2s ease infinite}
+
+.phone-wrap{width:250px;border-radius:38px;background:#252C3E;padding:3px;
+  box-shadow:0 48px 120px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.12);flex-shrink:0}
+.phone-inner-light{border-radius:35px;background:#F1F3F8;overflow:hidden;min-height:490px;position:relative}
+.phone-inner-dark{border-radius:35px;background:#0E101A;overflow:hidden;min-height:490px;position:relative}
+.phone-status{display:flex;justify-content:space-between;align-items:center;padding:11px 18px 0;font-size:9px;font-weight:700}
+.phone-notch{width:64px;height:15px;border-radius:8px}
+
+.bottom-nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:9px 0 13px}
+.nav-item{text-align:center;cursor:pointer}
+.nav-label{font-size:7.5px;margin-top:2px}
+.screen-scroll{overflow-y:auto;max-height:calc(490px - 26px);padding-bottom:72px;-webkit-overflow-scrolling:touch}
+.trust-line{font-size:8px;color:#5C6578;line-height:1.35;letter-spacing:.01em}
+.trust-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:999px;font-size:7.5px;font-weight:600;border:1px solid rgba(11,13,18,.08);background:#FAFBFD;color:#3D4556}
+.chat-bubble-me{background:#0B0D12;color:#fff;border-radius:12px 12px 4px 12px;padding:8px 10px;font-size:9px;max-width:85%;margin-left:auto}
+.chat-bubble-them{background:#fff;border:1px solid #EBEBF0;border-radius:12px 12px 12px 4px;padding:8px 10px;font-size:9px;color:#333;max-width:88%}
+
+@keyframes otp-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.otp-cursor{display:inline-block;width:1px;height:12px;background:#0B0D12;margin-left:1px;animation:otp-blink 1s step-end infinite;vertical-align:-2px}
+@keyframes scan-sweep{0%{top:8%}50%{top:72%}100%{top:8%}}
+.ai-scan-line{position:absolute;left:8%;right:8%;height:2px;background:linear-gradient(90deg,transparent,#F0A500,transparent);box-shadow:0 0 12px rgba(240,165,0,.8);animation:scan-sweep 2.2s ease-in-out infinite;border-radius:2px}
+@keyframes loc-pulse{0%{transform:scale(.4);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+.loc-ring{position:absolute;border:2px solid rgba(240,165,0,.55);border-radius:50%;inset:0;margin:auto;width:56px;height:56px;animation:loc-pulse 2s ease-out infinite}
+.loc-ring.d2{animation-delay:.6s;width:56px;height:56px}
+.loc-ring.d3{animation-delay:1.2s}
+@keyframes ai-step-pulse{0%,100%{opacity:.35}50%{opacity:1}}
+.ai-step-dot{animation:ai-step-pulse 1.2s ease infinite}
+@keyframes mem-shine{from{background-position:0% 50%}to{background-position:200% 50%}}
+
+/* Seva monogram — metallic gold tile + letter S (primary mark) */
+.seva-mark{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  overflow:hidden;
+  background:
+    linear-gradient(155deg, #FFFBF0 0%, #F5E6C8 12%, #E8C056 35%, #C5890E 58%, #8B5A0A 78%, #D4A21F 100%);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.42) inset,
+    0 -2px 8px rgba(0,0,0,.22) inset,
+    0 2px 3px rgba(255,255,255,.35) inset,
+    0 10px 28px rgba(180,100,8,.38),
+    0 28px 56px rgba(240,165,0,.14);
+}
+.seva-mark::before{
+  content:'';
+  position:absolute;
+  top:-40%;
+  left:-25%;
+  width:70%;
+  height:120%;
+  background:linear-gradient(118deg, transparent 0%, rgba(255,255,255,.55) 42%, rgba(255,255,255,.08) 52%, transparent 65%);
+  transform:rotate(-18deg);
+  pointer-events:none;
+}
+.seva-mark::after{
+  content:'';
+  position:absolute;
+  inset:2px;
+  border-radius:inherit;
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 0 0 1px rgba(0,0,0,.06) inset;
+  pointer-events:none;
+}
+.seva-mark-letter{
+  font-family:'Sora',system-ui,sans-serif;
+  font-weight:800;
+  color:#100A14;
+  line-height:1;
+  letter-spacing:-0.06em;
+  text-shadow:0 1px 0 rgba(255,255,255,.45), 0 -1px 1px rgba(0,0,0,.12);
+  position:relative;
+  z-index:1;
+}
+.seva-mark--nav{width:28px;height:28px;border-radius:8px;}
+.seva-mark--nav .seva-mark-letter{font-size:15px;}
+.seva-mark--header{width:34px;height:34px;border-radius:10px;}
+.seva-mark--header .seva-mark-letter{font-size:18px;}
+.seva-mark--splash{width:80px;height:80px;border-radius:22px;}
+.seva-mark--splash .seva-mark-letter{font-size:42px;}
+.seva-mark--splash{
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.38) inset,
+    0 -3px 12px rgba(0,0,0,.28) inset,
+    0 3px 4px rgba(255,255,255,.4) inset,
+    0 0 0 1px rgba(240,165,0,.15),
+    0 16px 48px rgba(200,120,20,.45),
+    0 40px 100px rgba(240,165,0,.2);
+}
+/* Services-inside-S SVG mark (masked mosaic) */
+.seva-mark-svg-wrap{position:relative;display:flex;align-items:center;justify-content:center;line-height:0;}
+.seva-mark-svg-wrap svg{display:block;width:100%;height:100%;}
+.seva-mark-svg-wrap img{display:block;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none;}
+.seva-mark-svg--nav svg,.seva-mark-svg--nav img{filter:drop-shadow(0 3px 10px rgba(160,95,12,.28));}
+.seva-mark-svg--header svg,.seva-mark-svg--header img{filter:drop-shadow(0 5px 14px rgba(160,95,12,.32));}
+.seva-mark-svg--splash svg,.seva-mark-svg--splash img{filter:drop-shadow(0 14px 40px rgba(200,120,20,.48)) drop-shadow(0 4px 14px rgba(0,0,0,.22));}
+.seva-wordmark{
+  font-family:'Sora',system-ui,sans-serif;
+  font-weight:700;
+  letter-spacing:.2em;
+  font-size:15px;
+  color:#0A0A0F;
+}
+.seva-wordmark-on-dark{
+  font-family:'Sora',system-ui,sans-serif;
+  font-weight:700;
+  letter-spacing:.22em;
+  font-size:17px;
+  color:#F6F6FA;
+}
+.seva-wordmark-splash{
+  font-family:'Sora',system-ui,sans-serif;
+  font-weight:700;
+  letter-spacing:.3em;
+  font-size:21px;
+  color:#EEEFF4;
+  margin-top:20px;
+}
+
+/* Logo lab — bare S gradients (no box) */
+.logo-lab-s-bare-light{
+  font-family:'Sora',system-ui,sans-serif;font-weight:800;font-size:76px;line-height:1;letter-spacing:-0.06em;
+  background:linear-gradient(168deg,#5C3A08 0%,#C5890E 35%,#F5E6C8 72%,#8B5A0A 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 14px rgba(139,90,10,.28));
+}
+.logo-lab-s-bare-dark{
+  font-family:'Sora',system-ui,sans-serif;font-weight:800;font-size:76px;line-height:1;letter-spacing:-0.06em;
+  background:linear-gradient(168deg,#FFF8E7 0%,#F0C14B 38%,#C9921A 72%,#E8D5A8 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 28px rgba(240,165,0,.35));
+}
+.logo-lab-ring-light{
+  width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  background:linear-gradient(145deg,#F8F9FC,#F8F9FC) padding-box,linear-gradient(145deg,#FFFBF0,#E8C056,#7A4E0A) border-box;
+  border:3px solid transparent;
+  box-shadow:0 10px 32px rgba(160,95,12,.18);
+}
+.logo-lab-ring-dark{
+  width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  background:linear-gradient(145deg,#0B0D12,#0B0D12) padding-box,linear-gradient(145deg,#F5D78A,#C5890E,#5C3A08) border-box;
+  border:3px solid transparent;
+  box-shadow:0 12px 40px rgba(240,165,0,.12);
+}
+.logo-lab-s-inring{font-family:'Sora',system-ui,sans-serif;font-weight:800;font-size:44px;line-height:1;letter-spacing:-0.07em;
+  background:linear-gradient(168deg,#4A3006 0%,#B8890E 50%,#2A1A04 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.logo-lab-s-inring-dark{
+  background:linear-gradient(168deg,#FFF4DD 0%,#EEC44A 45%,#C9921A 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+const G='#F0A500',T='#0CB8B3',BG='#09090E',CARD='#181B27',MID='#1E2235',T2='#7E8EA4',RE='#EF4444';
+
+const state={tab:'landing',cScreen:'onboarding',cOnboard:0,cPricingReturn:null,pScreen:'jobs',slot:1,
+  signupStep:0,aiStep:0,memAnnual:false,proJoinStep:0,proSkills:{},region:'US',rewardPanel:'cust'};
+
+/** Region pack: India vs United States (copy, currency, ID, tax labels) */
+const REG={
+  IN:{
+    flag:'🇮🇳',dial:'+91',phoneSample:'98765 43210',otpSent:'Code sent to +91 98765 43210',
+    city:'Coimbatore',moneySym:'₹',
+    pilotTag:'Live in 18+ cities · India',
+    bookingTitle:'AC Service',
+    bookingSub:'Split AC · 1 unit · ~90 mins',
+    bookingHeroEmoji:'❄️',bookingHeroTitle:'AC Service & Clean',bookingPriceFoot:'all materials incl.',
+    bookingIncludes:['Deep coil cleaning','Gas top-up check','Filter wash & dry','Drain pipe flush','90-day workmanship warranty'],
+    againEmoji:'❄️',againLineTitle:'AC Service',againLineSub:'Ravi Kumar · New to Seva — fully verified and approved',
+    proCustomerTagline:'Childcare · meal prep · light housekeeping',
+    proCustomerServices:['Babysitting (0–12 yrs)','Meal prep & kid-friendly cooking','School pickup (short drive)','Light tidying during visits'],
+    bookAC:'₹599',bookAI:'₹399',promoWas:'₹4,999',promoNow:'₹2,999',againAC:'₹599',
+    promoBadge:'⚡ DIWALI SPECIAL',promoTitle:'Home Care Pack',promoSub:'AC + Pest Control + Deep Clean',
+    priceIntro:'Every rupee is itemized before you authorize payment. The total matches Home, chat, and checkout — nothing is added at capture time.',
+    labor:['Professional labor','~90 min visit · coil service & checks','₹418'],
+    mat:['Materials & consumables','Cleaning agents, covers, standard supplies','₹112'],
+    fee:['Seva platform fee','Escrow, verification, support, insurance pool','₹48'],
+    tax:['Taxes (GST)','As applicable on bundled service','₹21'],total:'₹599',
+    taxWord:'GST',withdrawNote:'Instant to UPI / Bank',
+    idHead:'Upload Aadhaar (masked OK)',idSub:'Front · JPG or PDF',idFoot:'DigiLocker or licensed KYC partner in production',
+    earnBand:'₹25K – ₹60K/mo',earnSub:'Typical range for active plumbing, AC & cleaning partners in metro areas. Your schedule, our demand.',
+    payoutL:'Weekly payout',payoutR:'Instant UPI',
+    proJobs:[
+      {icon:'❄️',type:'AC Service',addr:'Sector 12, Saibaba Colony',time:'10:00 AM',price:'₹599',status:'done',col:'#22C55E',sbg:'rgba(34,197,94,.1)'},
+      {icon:'🔧',type:'Plumbing Fix',addr:'MG Road, R.S. Puram',time:'1:30 PM',price:'₹399',status:'active',col:G,sbg:'rgba(240,165,0,.1)'},
+      {icon:'🧹',type:'Deep Clean',addr:'Anna Nagar, Coimbatore',time:'4:00 PM',price:'₹849',status:'upcoming',col:T2,sbg:'rgba(126,142,164,.1)'},
+    ],
+    earnToday:'₹1,240',earnWeek:'₹8,640',
+    aiDists:['0.8 km','1.2 km','1.6 km'],
+    aiPreview:'plumbing',
+    aiCamHint:'Point at the issue · Good lighting helps',
+    aiAnalyzeSteps:['Segmenting plumbing','Matching fault patterns','Estimating fix scope','Pricing from local rates'],
+    aiDiagTitle:'Leak at PVC joint under sink',
+    aiDiagPct:'94%',
+    aiProNames:['Ravi K.','Suresh M.','Anita P.'],
+    aiBookCta:'Book plumbing fix',
+    aiTabHint:'Plumbing / leak demo · Cam → scan (~3s) → estimate · India pros & km',
+    memPrices:[99,299,599],
+    miniCtaSub:'Verified pro · Price locked',
+    miniHeroLine:'AC Service from ₹599',
+    confirmBreak:'Review price breakdown · ₹599',
+    chatFeeQ:'What’s included in the price — any platform fees?',
+    signupFlowHint:'5 steps: splash → phone (+91) → OTP → location → profile',
+    proJoinFlowHint:'Earnings → skills (tap) → Aadhaar + selfie → live tracker',
+    rwBal:'₹240',rwMemBonus:'₹60',rwReferEach:'₹150',rwQuest:'₹800',rwProRef:'₹2,500',rwBookAgain:'₹80',rwConfirm:'₹15',rwFeeNote:'18% incl. on this week’s jobs',
+    trackEtaLine:'Maya is 8 min away',trackVisitBlurb:'Background clear · 312 visits',
+    proLeadName:'Ravi Kumar',proLeadInitial:'R',
+    signupSplashTagline:'AC to deep clean — vetted once, paid when you say so.',
+  },
+  US:{
+    flag:'🇺🇸',dial:'+1',phoneSample:'201 555 0142',otpSent:'Code sent to +1 (201) 555-0142',
+    city:'Jersey City, NJ',moneySym:'$',
+    pilotTag:'New Jersey pilot · Daily help & moving',
+    promoBadge:'⚡ NJ LAUNCH',promoTitle:'Move + daily help',promoSub:'2 hr movers + 1 meal-prep session · North NJ',
+    bookAC:'$189',bookAI:'$45',promoWas:'$349',promoNow:'$218',againAC:'$89',
+    bookingTitle:'Local moving',
+    bookingSub:'2 movers · 2 hr · truck / materials quoted add-on',
+    bookingHeroEmoji:'🚚',bookingHeroTitle:'Local moving crew',bookingPriceFoot:'blankets & dollies when in scope',
+    bookingIncludes:['2 movers · 2 hours','Load & unload at both addresses','Basic furniture protection','Damage terms in your booking summary','Truck / tolls as quoted add-on'],
+    againEmoji:'🚚',againLineTitle:'Local moving',againLineSub:'Hoboken → Jersey City · same vetting every time',
+    proCustomerTagline:'Moving & logistics · meal prep · childcare · North NJ',
+    proCustomerServices:['Local moves & loading (2+ crew)','In-home delivery / staging / light assembly','Babysitting (0–12 yrs)','Meal prep & kid-friendly cooking','School pickup (short drive)','Light tidying during visits'],
+    priceIntro:'Every dollar is itemized before you authorize payment. The total matches Home, chat, and checkout — nothing is added at capture time.',
+    labor:['Crew labor','2 movers · 2 hours · load / unload','$140'],
+    mat:['Supplies & protection','Shrink wrap, blankets, dollies (if selected)','$22'],
+    fee:['Seva platform fee','Escrow, verification, support, insurance pool','$17'],
+    tax:['Estimated sales tax','NJ · ZIP-specific before charge','$10'],total:'$189',
+    taxWord:'sales tax',withdrawNote:'Instant to debit / bank (ACH)',
+    idHead:'Upload driver’s license or state ID',idSub:'Front & back · clear photo',idFoot:'Stripe Identity + Checkr-style background check in production',
+    earnBand:'$1.5K – $4K / mo',earnSub:'Typical for active moving & daily-help partners in North Jersey. 1099 contractor.',
+    payoutL:'Weekly payout',payoutR:'Instant to debit',
+    proJobs:[
+      {icon:'🚚',type:'Local move',addr:'Hoboken → Jersey City',time:'9:00 AM',price:'$189',status:'done',col:'#22C55E',sbg:'rgba(34,197,94,.1)'},
+      {icon:'👨‍🍳',type:'Meal prep (daily help)',addr:'Montclair, NJ',time:'12:30 PM',price:'$95',status:'active',col:G,sbg:'rgba(240,165,0,.1)'},
+      {icon:'📦',type:'Furniture delivery',addr:'Newark → Princeton',time:'3:00 PM',price:'$165',status:'upcoming',col:T2,sbg:'rgba(126,142,164,.1)'},
+    ],
+    earnToday:'$284',earnWeek:'$1,240',
+    aiDists:['0.5 mi','0.8 mi','1.1 mi'],
+    aiPreview:'handyman',
+    aiCamHint:'Frame trim + furniture edge · steady shot',
+    aiAnalyzeSteps:['Detecting surfaces & wear','Matching trim / upholstery damage','Scoping touch-up & small repair','Pricing from North NJ rates'],
+    aiDiagTitle:'Door-frame scrape + worn sofa corner — patch & touch-up',
+    aiDiagPct:'91%',
+    aiProNames:['James O.','Elena V.','Tyrell B.'],
+    aiBookCta:'Book handyman visit',
+    aiTabHint:'Door trim + sofa wear demo · Cam → scan (~3s) → estimate · NJ pros & mi',
+    memPrices:[9,29,59],
+    miniCtaSub:'Verified pro · Price locked',
+    miniHeroLine:'NJ moving from $189',
+    confirmBreak:'Review price breakdown · $189',
+    chatFeeQ:'What’s included in the price — any platform fees?',
+    signupFlowHint:'5 steps: splash → phone (+1) → OTP → location → profile',
+    proJoinFlowHint:'Earnings → skills (tap) → driver’s license + selfie + Checkr → live tracker',
+    rwBal:'$28',rwMemBonus:'$8',rwReferEach:'$18',rwQuest:'$95',rwProRef:'$300',rwBookAgain:'$10',rwConfirm:'$2',rwFeeNote:'18% platform fee · Standard tier unlocks 15%',
+    trackEtaLine:'Maya is ~12 min out · en route to pickup',trackVisitBlurb:'Background clear · 84 jobs in North NJ',
+    proLeadName:'Marcus Torres',proLeadInitial:'M',
+    signupSplashTagline:'Moves & daily help — vetted once, paid when you say so.',
+  },
+};
+function R(){return state.region==='US'?REG.US:REG.IN;}
+
+let __sevaSvgUid=0;
+/**
+ * “Services in the S”: mask + gold + line icons inside letter S.
+ */
+function sevaServicesInsideLogoSvg(uid){
+  return '<svg viewBox="0 0 200 232" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" role="img" aria-label="Seva">'+
+'<defs>'+
+'<linearGradient id="'+uid+'-g" x1="6%" y1="2%" x2="94%" y2="98%">'+
+'<stop offset="0%" stop-color="#FFFCF3"/><stop offset="20%" stop-color="#F3E4C2"/><stop offset="45%" stop-color="#E0B038"/>'+
+'<stop offset="68%" stop-color="#9A5F0C"/><stop offset="100%" stop-color="#5C3A08"/></linearGradient>'+
+'<linearGradient id="'+uid+'-sh" x1="0%" y1="0%" x2="70%" y2="90%">'+
+'<stop offset="0%" stop-color="#fff" stop-opacity="0.5"/><stop offset="40%" stop-color="#fff" stop-opacity="0.08"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient>'+
+'<mask id="'+uid+'-mk"><rect width="200" height="232" fill="#000"/>'+
+'<text x="100" y="168" text-anchor="middle" font-size="178" font-weight="800" font-family="Sora,Arial Black,Helvetica,sans-serif" fill="#fff">S</text></mask>'+
+'</defs>'+
+'<g mask="url(#'+uid+'-mk)">'+
+'<rect width="200" height="232" fill="url(#'+uid+'-g)"/>'+
+'<rect width="200" height="232" fill="url(#'+uid+'-sh)" opacity="0.38"/>'+
+'<g fill="none" stroke="#120805" stroke-opacity="0.3" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">'+
+'<path d="M114,34 l15,-17 h24 l15,17 v30 h-54 z M126,56 v24"/>'+
+'<path d="M24,46 h40 v14 h12 v10 h-52 z M30,72 a4,4 0 1 1 8,0 M50,72 a4,4 0 1 1 8,0"/>'+
+'<path d="M40,84 L62,66 M50,76 l12,12 M44,94 l18,-16"/>'+
+'<path d="M88,48 q14,20 0,34 q-14,-14 0,-34"/>'+
+'<path d="M154,70 v18 M145,79 h18 M148,72 l12,14 M158,72 l-12,14"/>'+
+'<path d="M156,38 v16 M150,44 h12 M150,52 h12"/>'+
+'<path d="M174,108 v34 M170,108 v14 M174,108 v14 M178,108 v14"/>'+
+'<path d="M42,146 l18,-9 l18,9 v28 l-18,9 l-18,-9 z M42,146 l18,9 l18,-9"/>'+
+'<path d="M100,104 a8,8 0 1 1 .01,0 M84,142 q16,-30 32,0"/>'+
+'<path d="M66,120 h48 v14 h-48 z M70,120 v-11 h40 v11"/>'+
+'<path d="M56,184 l28,-38 M50,190 l10,-5"/>'+
+'<path d="M128,128 h22 M128,128 v-8 h22 v8 M132,120 v-6"/>'+
+'<path d="M82,178 a10,10 0 1 1 20,0 q0,8 -10,18 q-10,-10 -10,-18z"/>'+
+'<path d="M100,200 L118,208 v-14 q0,-10 -8,-18 q-8,8 -8,18 z"/>'+
+'<path d="M18,188 h36 a5,5 0 0 1 5,5 v12 a5,5 0 0 1 -5,5 H18 a5,5 0 0 1 -5,-5 v-12 a5,5 0 0 1 5,-5z M22,198 h28"/>'+
+'</g>'+
+'<g fill="none" stroke="#fff" stroke-opacity="0.2" stroke-width="1.5" stroke-linecap="round">'+
+'<path d="M118,40 l10,-12 h18 l10,12"/><path d="M32,52 h28"/><path d="M92,56 q8,12 0,22"/>'+
+'<path d="M72,126 h36"/><path d="M102,110 a6,6 0 1 1 .01,0"/>'+
+'</g>'+
+'</g>'+
+'</svg>';
+}
+/** Primary mark: services mosaic clipped to letter S. */
+function SevaMark(variant){
+  const dim={
+    nav:[52,52],
+    header:[64,64],
+    splash:[130,130],
+  };
+  const [bw,bh]=dim[variant]||dim.header;
+  const wrap=h('div',{cls:'seva-mark-svg-wrap seva-mark-svg--'+variant,style:{width:bw+'px',height:bh+'px',flexShrink:'0'}});
+  wrap.appendChild(h('img',{src:'seva_logo_new.png',alt:'SEVA logo',style:{width:'100%',height:'100%',objectFit:'contain',display:'block',userSelect:'none',WebkitUserDrag:'none'}}));
+  return wrap;
+}
+/** Solid gold tile + S — optional fallback for favicon-scale comparisons. */
+function SevaMarkTile(variant){
+  return h('div',{cls:'seva-mark seva-mark--'+variant},
+    h('span',{cls:'seva-mark-letter'},'S'));
+}
+
+function h(tag,props,...children){
+  const el=document.createElement(tag);
+  if(props) Object.entries(props).forEach(([k,v])=>{
+    if(k==='style'&&typeof v==='object') Object.assign(el.style,v);
+    else if(k==='html') el.innerHTML=v;
+    else if(k.startsWith('on')) el.addEventListener(k.slice(2).toLowerCase(),v);
+    else if(k==='cls') el.className=v;
+    else el.setAttribute(k,v);
+  });
+  children.flat().forEach(c=>{
+    if(c==null) return;
+    el.appendChild(typeof c==='string'?document.createTextNode(c):c);
+  });
+  return el;
+}
+
+function icon(paths,size=14,color='currentColor'){
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width',size);svg.setAttribute('height',size);
+  svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('fill','none');
+  svg.setAttribute('stroke',color);svg.setAttribute('stroke-width','2');
+  svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');
+  svg.style.flexShrink='0';svg.style.display='block';
+  paths.forEach(d=>{
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',d);svg.appendChild(p);
+  });
+  return svg;
+}
+
+const ICONS={
+  home:['M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z','M9 22V12h6v10'],
+  search:['M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0'],
+  pin:['M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z','M12 10m-3 0a3 3 0 106 0 3 3 0 00-6 0'],
+  star:['M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'],
+  shield:['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10'],
+  check:['M20 6L9 17l-5-5'],
+  bell:['M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9','M13.73 21a2 2 0 01-3.46 0'],
+  phone:['M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z'],
+  award:['M12 15a6 6 0 100-12 6 6 0 000 12z','M8.21 13.89L7 23l5-3 5 3-1.21-9.12'],
+  trend:['M23 6l-9.5 9.5-5-5L1 18'],
+  camera:['M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z','M12 17a4 4 0 100-8 4 4 0 000 8'],
+  nav:['M3 11l19-9-9 19-2-8-8-2z'],
+  user:['M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2','M12 11a4 4 0 100-8 4 4 0 000 8'],
+  zap:['M13 2L3 14h9l-1 8 10-12h-9l1-8'],
+  back:['M19 12H5','M12 19l-7-7 7-7'],
+  bar:['M18 20V10','M12 20V4','M6 20v-6'],
+  msg:['M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z'],
+  video:['M23 7l-7 5 7 5V7z','M16 5H3a2 2 0 00-2 2v10a2 2 0 002 2h13a2 2 0 002-2V7a2 2 0 00-2-2'],
+  lock:['M19 11H5a2 2 0 00-2 2v6a2 2 0 002 2h14a2 2 0 002-2v-6a2 2 0 00-2-2','M7 11V7a5 5 0 0110 0v4'],
+  life:['M22 12h-4l-3 9L9 3l-3 9H2'],
+};
+
+function ico(name,size,color){
+  return icon(ICONS[name]||[],size,color||'currentColor');
+}
+
+function Badge(text,bg,tc){
+  return h('span',{style:{background:bg,color:tc,fontSize:'9px',padding:'2px 8px',borderRadius:'12px',fontWeight:600,whiteSpace:'nowrap'}},text);
+}
+
+function pill(text,active){
+  return h('span',{cls:'tab-btn',style:{
+    padding:'7px 14px',borderRadius:'20px',fontSize:'12px',fontWeight:500,
+    background:active?G:'rgba(255,255,255,.07)',color:active?BG:T2,
+    border:'none',cursor:'pointer',display:'inline-block'
+  }},text);
+}
+
+const DEMO_PRO={
+  name:'Maya Chen',
+  initials:'M',
+  tagline:'Childcare · meal prep · light housekeeping',
+  bio:'I’m a former preschool teacher. I keep routines calm, communicate often, and treat your home with the same care I’d want for mine.',
+  why:'Growing up, I watched my mother look after neighbors’ children with patience and respect. That’s where I learned that trust isn’t promised — it’s earned, every visit.',
+  services:['Babysitting (0–12 yrs)','Meal prep & kid-friendly cooking','School pickup (short drive)','Light tidying during visits'],
+  trustLines:['Top 10% of applicants we interview','Recently onboarded — fully verified','Serves families in your area','Search is fit-based — pros don’t pay to rank above others'],
+  verifs:[
+    ['Background check','Completed · renewed annually'],
+    ['Government ID','Verified match to profile'],
+    ['In-person interview','Approved by Seva standards team'],
+  ],
+};
+
+function TrustLayerStrip(compact){
+  const wrap=h('div',{style:{
+    display:'flex',flexDirection:compact?'column':'row',flexWrap:'wrap',gap:compact?'6px':'8px',
+    padding:compact?'8px 10px':'10px 12px',borderRadius:'10px',
+    background:'linear-gradient(180deg,#FAFBFD 0%,#F4F6FA 100%)',
+    border:'1px solid #E4E7EF',marginBottom:compact?'10px':'12px'
+  }});
+  const rows=[
+    [ico('shield',11,'#2D6A4F'),'Background verification on every professional — no “light” onboarding tier'],
+    [ico('lock',11,'#1B4F72'),'Escrow: funds release when you approve — not on an automatic timer'],
+    [ico('life',11,'#B45309'),'24/7 emergency line during active visits — not a ticket queue'],
+  ];
+  rows.forEach(([ic,txt])=>{
+    const r=h('div',{style:{display:'flex',alignItems:'flex-start',gap:'7px'}});
+    const icWrap=h('div',{style:{flexShrink:0,marginTop:'1px',color:'#3D5A73'}});
+    icWrap.appendChild(ic);
+    r.appendChild(icWrap);
+    r.appendChild(h('span',{cls:'trust-line',style:{flex:1}},txt));
+    wrap.appendChild(r);
+  });
+  return wrap;
+}
+
+function FirstBookingGuaranteeBlock(){
+  const box=h('div',{style:{
+    borderRadius:'12px',padding:'12px 12px 11px',
+    background:'linear-gradient(145deg,#0B0D12 0%,#1A1F2E 100%)',
+    border:'1px solid rgba(255,255,255,.08)',color:'#E8EAEF',marginBottom:'10px'
+  }});
+  box.appendChild(h('div',{style:{fontSize:'7.5px',letterSpacing:'.12em',textTransform:'uppercase',color:'rgba(232,234,239,.55)',marginBottom:'6px',fontWeight:600}},'Seva assurance'));
+  box.appendChild(h('div',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:'#fff',lineHeight:1.35,marginBottom:'8px'}},'Your first service, guaranteed.'));
+  const list=h('div',{style:{display:'flex',flexDirection:'column',gap:'6px'}});
+  [
+    'Not satisfied after your first booking? Full refund — no lengthy disputes.',
+    'Property damage during a covered visit? Protection is included; we coordinate the claim.',
+    'Questions while someone’s in your home? Priority in-app and phone support.',
+  ].forEach(t=>{
+    const row=h('div',{style:{display:'flex',gap:'6px',alignItems:'flex-start'}});
+    row.appendChild(h('div',{style:{color:T,flexShrink:0,marginTop:'1px'}},'·'));
+    row.appendChild(h('span',{style:{fontSize:'8.5px',color:'rgba(232,234,239,.88)',lineHeight:1.45}},t));
+    list.appendChild(row);
+  });
+  box.appendChild(list);
+  box.appendChild(h('div',{style:{fontSize:'7.5px',color:'rgba(232,234,239,.45)',marginTop:'9px',lineHeight:1.4}},'Terms apply · Coverage details in your booking summary'));
+  return box;
+}
+
+function VerifiedByPlatformBadge(){
+  return h('div',{style:{
+    display:'inline-flex',alignItems:'center',gap:'5px',padding:'4px 10px',borderRadius:'999px',
+    background:'rgba(12,184,179,.1)',border:'1px solid rgba(12,184,179,.28)',flexShrink:0
+  }},
+    ico('shield',10,T),
+    h('span',{style:{fontSize:'8px',fontWeight:700,color:'#0B6B68',letterSpacing:'.02em'}},'Verified by Seva')
+  );
+}
+
+// ────────────────────────────── PHONE WRAPPER ──────────────────────────────
+function Phone(children,dark=false){
+  const wrap=h('div',{cls:'phone-wrap'});
+  const inner=h('div',{cls:dark?'phone-inner-dark':'phone-inner-light'});
+  const statusBg=dark?'rgba(255,255,255,.6)':'#1A1A2E';
+  const status=h('div',{cls:'phone-status',style:{color:statusBg}},
+    h('span',null,'9:41'),
+    h('div',{cls:'phone-notch',style:{background:dark?'#333':'#1A1A2E'}}),
+    h('span',{style:{fontSize:'8px'}},'●●●')
+  );
+  inner.append(status,...(Array.isArray(children)?children:[children]));
+  wrap.appendChild(inner);
+  return wrap;
+}
+
+// ────────────────────────────── LANDING PAGE ──────────────────────────────
+function renderLanding(){
+  const wrap=h('div',{cls:'fade-in'});
+
+  // Browser chrome
+  const chrome=h('div',{style:{borderRadius:'14px',overflow:'hidden',border:'1px solid rgba(255,255,255,.07)',boxShadow:'0 32px 80px rgba(0,0,0,.6)'}});
+
+  // Chrome bar
+  const bar=h('div',{style:{background:'#181B27',padding:'9px 16px',display:'flex',alignItems:'center',gap:'10px'}});
+  const dots=h('div',{style:{display:'flex',gap:'5px'}});
+  ['#EF4444','#F59E0B','#22C55E'].forEach(c=>{
+    dots.appendChild(h('div',{style:{width:'10px',height:'10px',borderRadius:'5px',background:c}}));
+  });
+  const url=h('div',{style:{flex:1,maxWidth:'280px',margin:'0 auto',background:'#09090E',borderRadius:'7px',padding:'5px 11px',fontSize:'11px',color:T2,display:'flex',alignItems:'center',gap:'6px'}});
+  url.appendChild(ico('shield',10,G));
+  url.appendChild(document.createTextNode(' seva.app'));
+  bar.append(dots,url);
+  chrome.appendChild(bar);
+
+  // Website
+  const site=h('div',{style:{background:'#F8F9FC'}});
+
+  // Nav
+  const nav=h('div',{style:{background:'#fff',padding:'11px 28px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'1px solid #EBEBF0'}});
+  const logo=h('div',{style:{display:'flex',alignItems:'center',gap:'10px'}});
+  logo.append(SevaMark('nav'));
+  const navLinks=h('div',{style:{display:'flex',gap:'22px'}});
+  ['Services','For Pros','Enterprise','Download'].forEach(n=>{
+    navLinks.appendChild(h('span',{style:{fontSize:'12px',color:'#444',cursor:'pointer'}},n));
+  });
+  const navCta=h('div',{cls:'press',style:{padding:'7px 16px',borderRadius:'8px',background:G,fontSize:'12px',fontWeight:700,color:BG,cursor:'pointer'}},'Get the App');
+  nav.append(logo,navLinks,navCta);
+  site.appendChild(nav);
+
+  // Hero
+  const hero=h('div',{style:{background:'linear-gradient(135deg,#09090E 0%,#171A2A 100%)',padding:'44px 28px 40px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'20px'}});
+  const heroLeft=h('div',{style:{maxWidth:'370px'}});
+
+  const tagPill=h('div',{style:{display:'inline-flex',alignItems:'center',gap:'6px',padding:'5px 12px',borderRadius:'20px',background:'rgba(240,165,0,.1)',border:'1px solid rgba(240,165,0,.2)',marginBottom:'16px'}});
+  tagPill.appendChild(ico('zap',10,G));
+  tagPill.appendChild(h('span',{style:{fontSize:'10.5px',color:G,fontWeight:600}},R().pilotTag));
+  heroLeft.appendChild(tagPill);
+
+  const heroH=h('h1',{cls:'sora',style:{fontSize:'30px',fontWeight:800,lineHeight:1.15,letterSpacing:'-0.03em',color:'#fff',marginBottom:'14px'}});
+  heroH.innerHTML='Help at home.<br><span style="color:'+G+'">Without the gamble.</span>';
+  heroLeft.appendChild(heroH);
+
+  heroLeft.appendChild(h('p',{style:{fontSize:'13px',color:'#8896AA',lineHeight:1.6,marginBottom:'22px',maxWidth:'340px'}},state.region==='US'
+    ?'Starting in New Jersey: vetted help for daily life (cooking, childcare, errands) and moving & logistics. Same trust standard — ID + background + interview — upfront pricing, escrow until you approve, first-booking guarantee.'
+    :'Open gig boards optimize for speed of listing; bundle-first apps optimize for cart size. Seva optimizes for who crosses your threshold: one vetting standard, upfront scope, escrow until you approve, and a written first-booking guarantee.'));
+
+  const ctaRow=h('div',{style:{display:'flex',gap:'10px'}});
+  [{l:'App Store',sub:'iOS',gold:true},{l:'Google Play',sub:'Android',gold:false}].forEach(a=>{
+    const btn=h('div',{cls:'press',style:{padding:'9px 18px',borderRadius:'10px',background:a.gold?G:'rgba(255,255,255,.07)',border:a.gold?'none':'1px solid rgba(255,255,255,.12)',cursor:'pointer'}});
+    btn.appendChild(h('div',{style:{fontSize:'8.5px',color:a.gold?'#5A3800':'#888',marginBottom:'1px'}},a.sub));
+    btn.appendChild(h('div',{cls:'sora',style:{fontSize:'11px',fontWeight:700,color:a.gold?BG:'#fff'}},a.l));
+    ctaRow.appendChild(btn);
+  });
+  heroLeft.appendChild(ctaRow);
+  hero.appendChild(heroLeft);
+
+  // Mini phone in hero
+  const miniPhone=h('div',{style:{width:'110px',height:'190px',borderRadius:'24px',background:'#252C3E',padding:'2.5px',boxShadow:'0 20px 60px rgba(0,0,0,.6)',flexShrink:0}});
+  const miniInner=h('div',{style:{width:'100%',height:'100%',borderRadius:'21px',background:'#F1F3F8',overflow:'hidden'}});
+  const miniTop=h('div',{style:{padding:'9px 7px 5px',background:'#fff'}});
+  miniTop.appendChild(h('div',{style:{fontSize:'7px',fontWeight:700,color:BG,marginBottom:'4px'}},'Good morning ☀️'));
+  const miniSearch=h('div',{style:{background:'#F5F5F8',borderRadius:'5px',padding:'4px 6px',fontSize:'6.5px',color:'#aaa',display:'flex',alignItems:'center',gap:'3px'}});
+  miniSearch.appendChild(ico('search',7,'#aaa'));
+  miniSearch.appendChild(document.createTextNode(' What do you need?'));
+  miniTop.appendChild(miniSearch);
+  miniInner.appendChild(miniTop);
+  const miniGrid=h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'3.5px',padding:'5px 7px'}});
+  (state.region==='US'
+    ?[['🚚','Move'],['👶','Sitter'],['👨‍🍳','Cook'],['📦','Delivery']]
+    :[['❄️','AC'],['🧹','Clean'],['🔧','Plumb'],['💆','Beauty']]).forEach(([e,l])=>{
+    const cell=h('div',{style:{background:'#fff',borderRadius:'5px',padding:'5px 3px',textAlign:'center',border:'1px solid #F0F0F0'}});
+    cell.appendChild(h('div',{style:{fontSize:'11px'}},e));
+    cell.appendChild(h('div',{style:{fontSize:'5.5px',color:'#555',marginTop:'2px'}},l));
+    miniGrid.appendChild(cell);
+  });
+  miniInner.appendChild(miniGrid);
+  const miniCta=h('div',{style:{margin:'0 7px 5px',background:G,borderRadius:'6px',padding:'5px 7px'}});
+  miniCta.appendChild(h('div',{cls:'sora',style:{fontSize:'7px',fontWeight:700,color:BG}},'💬 Chat first'));
+  miniCta.appendChild(h('div',{style:{fontSize:'5.5px',color:'#5A3800'}},R().miniHeroLine));
+  miniInner.appendChild(miniCta);
+  miniPhone.appendChild(miniInner);
+  hero.appendChild(miniPhone);
+  site.appendChild(hero);
+
+  // Stats
+  const stats=h('div',{style:{background:'#fff',padding:'16px 28px',display:'flex',justifyContent:'space-around',borderBottom:'1px solid #EBEBF0'}});
+  [['50K+','Verified Pros'],['2M+','Bookings Done'],['18','Cities Live'],['100%','Vetted'],['90-day','Warranty']].forEach(([n,l])=>{
+    const s=h('div',{style:{textAlign:'center'}});
+    s.appendChild(h('div',{cls:'sora',style:{fontSize:'16px',fontWeight:800,color:BG}},n));
+    s.appendChild(h('div',{style:{fontSize:'10px',color:'#888',marginTop:'1px'}},l));
+    stats.appendChild(s);
+  });
+  site.appendChild(stats);
+
+  // Competitive positioning (category flaws → Seva response) — no competitor names
+  const diff=h('div',{style:{background:'#FAFBFD',padding:'26px 28px',borderBottom:'1px solid #EBEBF0',borderTop:'1px solid #EBEBF0'}});
+  diff.appendChild(h('h2',{cls:'sora',style:{fontSize:'19px',fontWeight:800,color:BG,marginBottom:'6px',letterSpacing:'-0.02em'}},'Where the category breaks — and how we fixed it'));
+  diff.appendChild(h('p',{style:{fontSize:'11.5px',color:'#5C6578',lineHeight:1.55,marginBottom:'18px',maxWidth:'640px'}},'Task-style marketplaces often push you to pick strangers from star averages. Catalog-style home apps often optimize for attach-rate, not fit. Seva is deliberately smaller, slower to onboard, and heavier on accountability.'));
+  const diffRows=[
+    ['Open gig networks','Trust is outsourced to strangers’ star averages and one-off reviews.','Seva standard','Same interview, background, and ID path for every pro — no “light” tier.'],
+    ['Bundle & upsell pressure','Scope balloons after you’re already committed.','Scope lock','What’s included is written before hold — changes need your tap.'],
+    ['Checkout sticker shock','Platform and add-on fees appear late in the flow.','Quote clarity','The number you approve is what escrow uses — no surprise line items.'],
+    ['Support runaround','Long tickets when something goes wrong mid-job.','In-job escalation','Live priority line + dispute path while the visit is active.'],
+  ];
+  diffRows.forEach(([catProblem,problemTxt,sevaLab,sevaTxt])=>{
+    const row=h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0',marginBottom:'12px',borderRadius:'10px',overflow:'hidden',border:'1px solid #E4E7EF',background:'#fff'}});
+    const left=h('div',{style:{padding:'12px 14px',background:'#F9FAFB',borderRight:'1px solid #EEF0F5'}});
+    left.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#9CA3AF',letterSpacing:'.06em',textTransform:'uppercase',marginBottom:'4px'}},catProblem));
+    left.appendChild(h('div',{style:{fontSize:'10.5px',color:'#4B5563',lineHeight:1.45}},problemTxt));
+    const right=h('div',{style:{padding:'12px 14px',background:'linear-gradient(180deg,#FAFFFE 0%,#F4FBFA 100%)',borderLeft:'3px solid '+T}});
+    right.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:T,marginBottom:'4px'}},sevaLab));
+    right.appendChild(h('div',{style:{fontSize:'10.5px',color:'#1F2937',lineHeight:1.45}},sevaTxt));
+    row.append(left,right);
+    diff.appendChild(row);
+  });
+  diff.appendChild(h('p',{style:{fontSize:'10px',color:'#9CA3AF',marginTop:'14px',lineHeight:1.45}},'Ship claims that match reality: benchmark fees, vetting depth, and support SLAs against incumbents before going live.'));
+  site.appendChild(diff);
+
+  // Services grid
+  const svcWrap=h('div',{style:{padding:'28px 28px 20px'}});
+  const svcHead=h('div',{style:{textAlign:'center',marginBottom:'18px'}});
+  svcHead.appendChild(h('h2',{cls:'sora',style:{fontSize:'20px',fontWeight:800,color:BG,marginBottom:'3px'}},'Everything your home needs'));
+  svcHead.appendChild(h('p',{style:{fontSize:'12px',color:'#666'}},'Six pillars. One app.'));
+  svcWrap.appendChild(svcHead);
+  const svcGrid=h('div',{style:{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px'}});
+  [
+    ['🔧','Home Repair','Plumbing, AC, electrical, carpentry','#FFF7ED','#FED7AA'],
+    ['💆','Beauty & Wellness','Salon, spa, massage at home','#FDF4FF','#E9D5FF'],
+    ['👨‍🍳','Daily Help','Cook, housekeeper, babysitter','#F0FFF4','#BBF7D0'],
+    ['📱','Tech & Smart Home','Wi-Fi, CCTV, EV charger setup','#EFF6FF','#BFDBFE'],
+    ['🚚','Moving & Logistics','Movers, assembly, junk removal','#FEFCE8','#FDE68A'],
+    ['🏠','Renovation','Painting, flooring, false ceiling','#FFF1F2','#FECDD3'],
+  ].forEach(([e,t,d,bg,border])=>{
+    const c=h('div',{cls:'card-lift',style:{background:bg,borderRadius:'10px',border:`1px solid ${border}`,padding:'14px 12px'}});
+    c.appendChild(h('div',{style:{fontSize:'22px',marginBottom:'6px'}},e));
+    c.appendChild(h('div',{style:{fontSize:'12px',fontWeight:700,color:BG,marginBottom:'3px'}},t));
+    c.appendChild(h('div',{style:{fontSize:'10px',color:'#666',lineHeight:1.45}},d));
+    svcGrid.appendChild(c);
+  });
+  svcWrap.appendChild(svcGrid);
+  site.appendChild(svcWrap);
+
+  // Trust strip
+  const trust=h('div',{style:{background:'#09090E',padding:'20px 28px',display:'flex',justifyContent:'space-around',flexWrap:'wrap',gap:'12px'}});
+  [
+    ['shield',G,'90-Day Warranty','If it breaks, we return free'],
+    ['camera',T,'Escrow Payment','Pay only after you approve'],
+    ['nav',G,'Live GPS Tracking','Watch your pro arrive'],
+    ['check',T,'One vetting bar','Not a popularity contest — same checks for all'],
+  ].forEach(([ic,col,t,d])=>{
+    const item=h('div',{style:{textAlign:'center',maxWidth:'120px'}});
+    const iw=h('div',{style:{display:'flex',justifyContent:'center',marginBottom:'6px'}});
+    iw.appendChild(ico(ic,18,col));
+    item.appendChild(iw);
+    item.appendChild(h('div',{style:{fontSize:'11px',fontWeight:600,color:'#fff',marginBottom:'2px'}},t));
+    item.appendChild(h('div',{style:{fontSize:'9.5px',color:T2,lineHeight:1.4}},d));
+    trust.appendChild(item);
+  });
+  site.appendChild(trust);
+  chrome.appendChild(site);
+  wrap.appendChild(chrome);
+  return wrap;
+}
+
+// ────────────────────────────── CUSTOMER ONBOARDING (trust-first) ──────────────────────────────
+function screenCustOnboarding(next,skip){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'10px 14px 14px',background:'#F1F3F8'}});
+  const steps=[
+    {k:'safety',title:'How we protect your home',body:'Speed-to-listing is how open marketplaces scale. We slow down on purpose: fewer pros, same bar for everyone, so you’re not decoding star averages from strangers.',icon:'shield'},
+    {k:'verify',title:'Verified, not just “signed up”',body:'Background check, ID match, and an in-person interview. No alternate “basic” profile that still shows up in search — if they don’t pass, they don’t appear.',icon:'check'},
+    {k:'chat',title:'Talk before you commit',body:'Chat or call about allergies, access, kids, or timing before money moves. We don’t use countdown timers or fake scarcity to force instant booking.',icon:'msg'},
+    {k:'guarantee',title:'Your first service is on us, in writing',body:'First visit not up to standard? Eligible refund path — plus damage coverage and a human escalation line while someone’s in your home.',icon:'lock'},
+  ];
+  const i=Math.min(state.cOnboard,steps.length-1);
+  const st=steps[i];
+
+  const progress=h('div',{style:{display:'flex',gap:'4px',marginBottom:'14px'}});
+  steps.forEach((_,j)=>{
+    progress.appendChild(h('div',{style:{flex:1,height:'3px',borderRadius:'2px',background:j<=i?G:'#D8DCE6'}}));
+  });
+  s.appendChild(progress);
+
+  const card=h('div',{style:{background:'#fff',borderRadius:'14px',padding:'16px 14px',border:'1px solid #E8E8F0',marginBottom:'12px'}});
+  const icRow=h('div',{style:{width:'44px',height:'44px',borderRadius:'12px',background:'rgba(12,184,179,.1)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'12px',color:T}});
+  icRow.appendChild(ico(st.icon,20,T));
+  card.appendChild(icRow);
+  card.appendChild(h('div',{cls:'sora',style:{fontSize:'15px',fontWeight:700,color:'#0B0D12',lineHeight:1.25,marginBottom:'8px'}},st.title));
+  card.appendChild(h('p',{style:{fontSize:'10px',color:'#5C6578',lineHeight:1.55}},st.body));
+  s.appendChild(card);
+
+  s.appendChild(TrustLayerStrip(true));
+
+  const btnRow=h('div',{style:{display:'flex',flexDirection:'column',gap:'8px',marginTop:'4px'}});
+  const primary=h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'12px',textAlign:'center',cursor:'pointer'},onclick:()=>{
+    if(i<steps.length-1){state.cOnboard=i+1;renderApp();}
+    else next();
+  }},
+    h('div',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:BG}},i<steps.length-1?'Continue':'Meet professionals')
+  );
+  btnRow.appendChild(primary);
+  btnRow.appendChild(h('div',{cls:'tab-btn',style:{textAlign:'center',fontSize:'9px',color:T2,padding:'4px'},onclick:skip},'Skip introduction'));
+  s.appendChild(btnRow);
+  return s;
+}
+
+// ────────────────────────────── TRUST-FIRST PROVIDER PROFILE ──────────────────────────────
+function screenCustProviderProfile(back,openChat,openBooking){
+  const s=h('div',{style:{height:'calc(490px - 26px)',display:'flex',flexDirection:'column',background:'#F1F3F8'}});
+  const hdr=h('div',{style:{flexShrink:0,display:'flex',alignItems:'center',gap:'8px',padding:'8px 14px 8px',cursor:'pointer'},onclick:back});
+  hdr.appendChild(ico('back',16,'#333'));
+  hdr.appendChild(h('span',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:'#0B0D12'}},'Professional'));
+  s.appendChild(hdr);
+
+  const scroll=h('div',{cls:'screen-scroll',style:{flex:1,minHeight:0,padding:'0 0 12px'}});
+
+  const hero=h('div',{style:{margin:'0 14px 10px',borderRadius:'14px',overflow:'hidden',background:'#fff',border:'1px solid #E8E8F0',position:'relative'}});
+  const photo=h('div',{style:{height:'120px',background:'linear-gradient(145deg,#6B8CAE,#3D5A73)',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}});
+  photo.appendChild(h('div',{cls:'sora',style:{fontSize:'42px',fontWeight:800,color:'rgba(255,255,255,.25)'}},DEMO_PRO.initials));
+  const play=h('div',{style:{position:'absolute',bottom:'10px',right:'10px',display:'flex',alignItems:'center',gap:'4px',padding:'5px 9px',borderRadius:'999px',background:'rgba(11,13,18,.55)',backdropFilter:'blur(4px)',fontSize:'7.5px',fontWeight:600,color:'#fff'}});
+  play.appendChild(ico('video',10,'#fff'));
+  play.appendChild(document.createTextNode('Intro video'));
+  photo.appendChild(play);
+  hero.appendChild(photo);
+  const heroBody=h('div',{style:{padding:'12px 12px 14px'}});
+  const nameRow=h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'8px',marginBottom:'6px'}});
+  const nameCol=h('div');
+  nameCol.appendChild(h('div',{cls:'sora',style:{fontSize:'15px',fontWeight:700,color:'#0B0D12'}},DEMO_PRO.name));
+  nameCol.appendChild(h('div',{style:{fontSize:'9px',color:'#5C6578',marginTop:'2px'}},R().proCustomerTagline));
+  nameRow.append(nameCol,VerifiedByPlatformBadge());
+  heroBody.appendChild(nameRow);
+  const badges=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'5px',marginBottom:'10px'}});
+  [
+    ['Interviewed & approved','#F0F7FF','#1E40AF'],
+    ['Background check · Clear','#F0FDF4','#166534'],
+    ['ID verified','#FFFBEB','#B45309'],
+  ].forEach(([t,bg,tc])=>{
+    badges.appendChild(h('span',{cls:'trust-pill',style:{background:bg,color:tc,border:`1px solid ${tc}22`,fontSize:'7px'}},t));
+  });
+  heroBody.appendChild(badges);
+  heroBody.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#0B0D12',marginBottom:'5px'}},'About'));
+  heroBody.appendChild(h('p',{style:{fontSize:'9.5px',color:'#4B5568',lineHeight:1.5,marginBottom:'10px'}},DEMO_PRO.bio));
+  heroBody.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#0B0D12',marginBottom:'5px'}},'Why I do this work'));
+  heroBody.appendChild(h('p',{style:{fontSize:'9.5px',color:'#4B5568',lineHeight:1.5,marginBottom:'10px',fontStyle:'italic',borderLeft:'2px solid rgba(12,184,179,.4)',paddingLeft:'8px'}},DEMO_PRO.why));
+  heroBody.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#0B0D12',marginBottom:'6px'}},'Services'));
+  R().proCustomerServices.forEach(line=>{
+    const r=h('div',{style:{display:'flex',gap:'6px',alignItems:'center',marginBottom:'4px'}});
+    r.appendChild(ico('check',9,T));
+    r.appendChild(h('span',{style:{fontSize:'9px',color:'#333'}},line));
+    heroBody.appendChild(r);
+  });
+  hero.appendChild(heroBody);
+  scroll.appendChild(hero);
+
+  const trustCard=h('div',{style:{margin:'0 14px 10px',background:'#fff',borderRadius:'12px',padding:'11px 12px',border:'1px solid #E8E8F0'}});
+  trustCard.appendChild(h('div',{style:{fontSize:'8px',fontWeight:700,color:'#9CA3AF',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:'7px'}},'Trust signals'));
+  DEMO_PRO.trustLines.forEach(line=>{
+    const r=h('div',{style:{display:'flex',gap:'6px',marginBottom:'5px',alignItems:'flex-start'}});
+    r.appendChild(h('span',{style:{color:T,fontSize:'9px',flexShrink:0}},'●'));
+    r.appendChild(h('span',{style:{fontSize:'8.5px',color:'#374151',lineHeight:1.4}},line));
+    trustCard.appendChild(r);
+  });
+  trustCard.appendChild(h('div',{style:{fontSize:'8px',color:'#9CA3AF',marginTop:'6px',lineHeight:1.4}},'New to Seva — no reviews yet. Verification and our first-booking guarantee stand in place of crowdsourced ratings.'));
+  scroll.appendChild(trustCard);
+
+  scroll.appendChild(h('div',{style:{margin:'0 14px'}},TrustLayerStrip(true)));
+  scroll.appendChild(h('div',{style:{margin:'10px 14px 0'}},FirstBookingGuaranteeBlock()));
+
+  s.appendChild(scroll);
+
+  const foot=h('div',{style:{flexShrink:0,padding:'10px 14px 12px',background:'#F1F3F8',borderTop:'1px solid #E4E7EF'}});
+  const chatBtn=h('div',{cls:'press',style:{background:'#0B0D12',borderRadius:'11px',padding:'11px',textAlign:'center',cursor:'pointer',marginBottom:'7px'},onclick:openChat},
+    h('div',{style:{display:'flex',alignItems:'center',justifyContent:'center',gap:'6px'}},
+      ico('msg',14,'#fff'),
+      h('span',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:'#fff'}},'Chat first')
+    )
+  );
+  const book2=h('div',{cls:'press',style:{borderRadius:'11px',padding:'10px',textAlign:'center',cursor:'pointer',border:'1px solid #D1D5DB',background:'#fff'},onclick:openBooking},
+    h('span',{cls:'sora',style:{fontSize:'11px',fontWeight:600,color:'#0B0D12'}},'Request booking')
+  );
+  foot.append(chatBtn,book2);
+  s.appendChild(foot);
+  return s;
+}
+
+// ────────────────────────────── PRE-BOOKING CHAT ──────────────────────────────
+function screenCustChat(back,openBooking){
+  const s=h('div',{style:{display:'flex',flexDirection:'column',height:'calc(490px - 26px)',background:'#ECEEF4'}});
+  const top=h('div',{style:{flexShrink:0,display:'flex',alignItems:'center',gap:'8px',padding:'10px 12px',background:'#fff',borderBottom:'1px solid #E8E8F0'}});
+  const backBtn=h('div',{style:{cursor:'pointer'},onclick:back});
+  backBtn.appendChild(ico('back',16,'#333'));
+  const headMid=h('div',{style:{flex:1}});
+  headMid.appendChild(h('div',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:'#0B0D12'}},DEMO_PRO.name));
+  headMid.appendChild(h('div',{style:{fontSize:'7.5px',color:'#22C55E',fontWeight:600}},'● Responds within ~15 min'));
+  const callBtn=h('div',{style:{width:'36px',height:'36px',borderRadius:'18px',background:'#F5F5F8',border:'1px solid #E8E8F0',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'},onclick:()=>{}});
+  callBtn.appendChild(ico('phone',14,'#374151'));
+  top.append(backBtn,headMid,callBtn);
+  s.appendChild(top);
+
+  const area=h('div',{cls:'screen-scroll',style:{flex:1,padding:'10px 12px 8px',minHeight:0}});
+  area.appendChild(h('div',{style:{textAlign:'center',fontSize:'7.5px',color:'#9CA3AF',marginBottom:'10px'}},'Today · Messages are monitored for safety'));
+  const them=h('div',{cls:'chat-bubble-them',style:{marginBottom:'8px'}},'Hi — I’m Maya. Happy to answer anything about timing, experience with infants, or how I handle house keys.');
+  area.appendChild(them);
+  const me=h('div',{cls:'chat-bubble-me',style:{marginBottom:'10px'}},'Thanks. Do you have experience with nut allergies?');
+  area.appendChild(me);
+  const them2=h('div',{cls:'chat-bubble-them'},'Yes. I follow written plans from families and always confirm ingredients for anything I prepare. I can send my food-handling notes if helpful.');
+  area.appendChild(them2);
+  s.appendChild(area);
+
+  const suggest=h('div',{style:{flexShrink:0,background:'#fff',borderTop:'1px solid #E8E8F0',padding:'8px 10px 6px'}});
+  suggest.appendChild(h('div',{style:{fontSize:'7.5px',fontWeight:600,color:'#9CA3AF',marginBottom:'6px'}},'Suggested questions'));
+  const chips=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'5px',marginBottom:'8px'}});
+  ['How do you handle first visits?',R().chatFeeQ,'Can you do a quick video intro?'].forEach(q=>{
+    chips.appendChild(h('span',{cls:'press',style:{fontSize:'7.5px',padding:'5px 8px',borderRadius:'999px',background:'#F3F4F6',color:'#374151',cursor:'pointer',border:'1px solid #E5E7EB'}},q));
+  });
+  suggest.appendChild(chips);
+  const inputRow=h('div',{style:{display:'flex',gap:'6px',alignItems:'center'}});
+  inputRow.appendChild(h('div',{style:{flex:1,background:'#F3F4F6',borderRadius:'10px',padding:'8px 10px',fontSize:'8.5px',color:'#9CA3AF'}},'Message Maya…'));
+  inputRow.appendChild(h('div',{cls:'press',style:{padding:'8px 10px',borderRadius:'10px',background:G,fontSize:'8px',fontWeight:700,color:BG,cursor:'pointer'},onclick:openBooking},'Request'));
+  suggest.appendChild(inputRow);
+  s.appendChild(suggest);
+  return s;
+}
+
+// ────────────────────────────── BOOKING CONFIRMATION + GUARANTEE ──────────────────────────────
+function screenCustConfirm(goTrack,openBreakdown){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'10px 14px 20px',background:'#F1F3F8'}});
+  const hdr=h('div',{style:{textAlign:'center',marginBottom:'12px'}});
+  hdr.appendChild(h('div',{style:{width:'40px',height:'40px',borderRadius:'20px',background:'rgba(34,197,94,.12)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 8px'}},ico('check',20,'#16A34A')));
+  hdr.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700,color:'#0B0D12'}},'Request received'));
+  hdr.appendChild(h('div',{style:{fontSize:'9px',color:'#6B7280',marginTop:'4px',lineHeight:1.45}},'We’ll confirm timing with Maya and notify you. Nothing is charged until you approve the booking details.'));
+  s.appendChild(hdr);
+
+  s.appendChild(TrustLayerStrip(true));
+  s.appendChild(FirstBookingGuaranteeBlock());
+
+  const sum=h('div',{style:{background:'#fff',borderRadius:'12px',padding:'11px 12px',border:'1px solid #E8E8F0',marginBottom:'12px'}});
+  sum.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#0B0D12',marginBottom:'8px'}},'What happens next'));
+  ['You’ll get a chat thread if Maya has a quick question.','Funds stay in secure hold until work is marked complete.','During the visit, emergency support is one tap away.'].forEach(t=>{
+    const r=h('div',{style:{display:'flex',gap:'6px',marginBottom:'5px'}});
+    r.appendChild(ico('check',9,T));
+    r.appendChild(h('span',{style:{fontSize:'8.5px',color:'#4B5563',lineHeight:1.4}},t));
+    sum.appendChild(r);
+  });
+  s.appendChild(sum);
+
+  if(openBreakdown){
+    s.appendChild(h('div',{cls:'press',style:{textAlign:'center',marginBottom:'10px',padding:'6px'},onclick:openBreakdown},
+      h('span',{style:{fontSize:'9px',fontWeight:600,color:T}},R().confirmBreak)
+    ));
+  }
+
+  const cta=h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'12px',textAlign:'center',cursor:'pointer'},onclick:goTrack},
+    h('div',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:BG}},'View booking status')
+  );
+  s.appendChild(cta);
+  return s;
+}
+
+// ────────────────────────────── CUSTOMER HOME ──────────────────────────────
+function screenCustHome(goBook,goProfile){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'10px 14px 75px'}});
+
+  // Header
+  const hdr=h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'13px'}});
+  const hdrL=h('div');
+  hdrL.appendChild(h('div',{style:{fontSize:'10px',color:'#888'}},'Good morning ☀️'));
+  hdrL.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700,color:'#0B0D12'}},'Ashwath'));
+  const locPill=h('div',{style:{display:'flex',alignItems:'center',gap:'3px',background:'#fff',borderRadius:'20px',padding:'5px 8px',border:'1px solid #E8E8F0',fontSize:'9px',color:'#555',cursor:'pointer'}});
+  locPill.appendChild(ico('pin',9,G));
+  locPill.appendChild(document.createTextNode(' '+R().city));
+  hdr.append(hdrL,locPill);
+  s.appendChild(hdr);
+
+  const trustMini=h('div',{style:{display:'flex',alignItems:'center',gap:'6px',padding:'7px 10px',borderRadius:'8px',background:'#fff',border:'1px solid #E4E7EF',marginBottom:'10px'}});
+  trustMini.appendChild(ico('shield',11,T));
+  trustMini.appendChild(h('span',{style:{fontSize:'8px',color:'#4B5563',lineHeight:1.35}},'Same vetting for every pro — not a two-tier marketplace where “unverified” still ranks in search.'));
+  s.appendChild(trustMini);
+
+  // Search
+  const srch=h('div',{style:{display:'flex',alignItems:'center',gap:'7px',background:'#fff',borderRadius:'10px',padding:'9px 11px',border:'1px solid #E8E8F0',marginBottom:'14px'}});
+  srch.appendChild(ico('search',12,'#bbb'));
+  srch.appendChild(h('span',{style:{fontSize:'11px',color:'#aaa'}},'What do you need today?'));
+  s.appendChild(srch);
+
+  // Diwali promo
+  const promo=h('div',{cls:'press',style:{background:'linear-gradient(135deg,#0B0D12,#1B1F32)',borderRadius:'12px',padding:'12px 13px',marginBottom:'14px',border:'1px solid rgba(240,165,0,.18)',cursor:'pointer'},onclick:goBook});
+  const promoRow=h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}});
+  const promoL=h('div');
+  const pr=R();
+  promoL.appendChild(h('div',{style:{fontSize:'9px',color:G,fontWeight:700,marginBottom:'3px'}},pr.promoBadge));
+  promoL.appendChild(h('div',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:'#fff',marginBottom:'3px'}},pr.promoTitle));
+  promoL.appendChild(h('div',{style:{fontSize:'9px',color:'#8896AA'}},pr.promoSub));
+  const promoR=h('div',{style:{textAlign:'right'}});
+  promoR.appendChild(h('div',{style:{textDecoration:'line-through',fontSize:'9px',color:'#555'}},pr.promoWas));
+  promoR.appendChild(h('div',{cls:'sora',style:{fontSize:'18px',fontWeight:800,color:G}},pr.promoNow));
+  const bookNow=h('div',{style:{background:G,borderRadius:'6px',padding:'4px 9px',fontSize:'9px',fontWeight:700,color:BG,cursor:'pointer',marginTop:'4px'}},'Book Now →');
+  promoR.appendChild(bookNow);
+  promoRow.append(promoL,promoR);
+  promo.appendChild(promoRow);
+  s.appendChild(promo);
+
+  // Categories
+  s.appendChild(h('div',{style:{fontSize:'11px',fontWeight:700,color:'#0B0D12',marginBottom:'8px'}},'All Services'));
+  const cats=h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'6px',marginBottom:'14px'}});
+  (state.region==='US'
+    ?[['🚚','Move','#EFF6FF','#1D4ED8'],['📦','Load-out','#F0F9FF','#0369A1'],['👨‍🍳','Cook','#FFF1F2','#9F1239'],['🧹','Clean','#F0FFF4','#166534'],['👶','Sitter','#FDF4FF','#7E22CE'],['🧺','Laundry','#F5F3FF','#5B21B6'],['🛒','Errands','#FFFBEB','#B45309'],['🔧','Handy','#FFF7ED','#9A3412']]
+    :[['❄️','AC','#E6F4FF','#0369A1'],['🧹','Clean','#F0FFF4','#166534'],['🔧','Plumb','#FFF7ED','#9A3412'],['⚡','Electr','#FEFCE8','#854D0E'],['💆','Beauty','#FDF4FF','#7E22CE'],['👨‍🍳','Cook','#FFF1F2','#9F1239'],['🐛','Pest','#F0FFF4','#166534'],['🚚','Moving','#EFF6FF','#1D4ED8']]
+  ).forEach(([e,l,bg,tc])=>{
+    const cat=h('div',{cls:'press',style:{background:bg,borderRadius:'8px',padding:'7px 3px',textAlign:'center',cursor:'pointer'},onclick:goBook});
+    cat.appendChild(h('div',{style:{fontSize:'16px'}},e));
+    cat.appendChild(h('div',{style:{fontSize:'7.5px',color:tc,fontWeight:600,marginTop:'3px'}},l));
+    cats.appendChild(cat);
+  });
+  s.appendChild(cats);
+
+  s.appendChild(h('div',{style:{fontSize:'11px',fontWeight:700,color:'#0B0D12',marginBottom:'8px'}},'Matched for you'));
+  const match=h('div',{cls:'press',style:{background:'#fff',borderRadius:'12px',padding:'11px 12px',border:'1px solid #E8E8F0',display:'flex',alignItems:'center',gap:'10px',cursor:'pointer',marginBottom:'14px'},onclick:goProfile});
+  const av=h('div',{style:{width:'40px',height:'40px',borderRadius:'20px',background:'linear-gradient(145deg,#6B8CAE,#3D5A73)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}});
+  av.appendChild(h('span',{cls:'sora',style:{fontSize:'14px',fontWeight:800,color:'rgba(255,255,255,.9)'}},'M'));
+  const matchInfo=h('div',{style:{flex:1}});
+  matchInfo.appendChild(h('div',{style:{fontSize:'11px',fontWeight:700,color:'#0B0D12'}},DEMO_PRO.name));
+  matchInfo.appendChild(h('div',{style:{fontSize:'8.5px',color:'#6B7280',marginTop:'2px',lineHeight:1.35}},R().proCustomerTagline));
+  matchInfo.appendChild(h('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px',marginTop:'5px'}},
+    VerifiedByPlatformBadge()
+  ));
+  const matchCta=h('div',{style:{fontSize:'8px',fontWeight:700,color:T}},'View →');
+  match.append(av,matchInfo,matchCta);
+  s.appendChild(match);
+
+  // Book again
+  s.appendChild(h('div',{style:{fontSize:'11px',fontWeight:700,color:'#0B0D12',marginBottom:'8px'}},'Book Again'));
+  const again=h('div',{cls:'press',style:{background:'#fff',borderRadius:'10px',padding:'10px 12px',border:'1px solid #EBEBF0',display:'flex',alignItems:'center',gap:'9px',cursor:'pointer'},onclick:goBook});
+  const againIcon=h('div',{style:{width:'34px',height:'34px',borderRadius:'8px',background:'#E6F4FF',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'18px',flexShrink:0}});
+  againIcon.appendChild(document.createTextNode(R().againEmoji));
+  const againInfo=h('div',{style:{flex:1}});
+  againInfo.appendChild(h('div',{style:{fontSize:'11px',fontWeight:600,color:'#0B0D12'}},R().againLineTitle));
+  againInfo.appendChild(h('div',{style:{fontSize:'9px',color:'#6B7280',lineHeight:1.35}},R().againLineSub));
+  const againPrice=h('div',{style:{background:G,borderRadius:'6px',padding:'4px 8px',fontSize:'10px',fontWeight:700,color:BG}},R().againAC);
+  again.append(againIcon,againInfo,againPrice);
+  s.appendChild(again);
+
+  // Bottom nav
+  const bnav=h('div',{cls:'bottom-nav',style:{background:'#fff',borderTop:'1px solid #F0F0F0'}});
+  [{ic:'home',l:'Home',a:true},{ic:'search',l:'Search',a:false},{ic:'bell',l:'Bookings',a:false},{ic:'user',l:'Profile',a:false}].forEach(n=>{
+    const ni=h('div',{cls:'nav-item'});
+    const iw=h('div',{style:{display:'flex',justifyContent:'center',color:n.a?G:'#bbb'}});
+    iw.appendChild(ico(n.ic,16,n.a?G:'#bbb'));
+    ni.appendChild(iw);
+    ni.appendChild(h('div',{cls:'nav-label',style:{color:n.a?G:'#bbb'}},n.l));
+    bnav.appendChild(ni);
+  });
+  s.appendChild(bnav);
+  return s;
+}
+
+// ────────────────────────────── PRICE BREAKDOWN (trust / fee transparency) ──────────────────────────────
+function screenPricingBreakdown(onClose,backLabel){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'10px 14px 20px',background:'#F1F3F8',minHeight:'calc(490px - 26px)'}});
+  const backTxt=backLabel||'Back to booking';
+
+  const hdr=h('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'12px',cursor:'pointer'},onclick:onClose});
+  hdr.appendChild(ico('back',16,'#333'));
+  hdr.appendChild(h('span',{cls:'sora',style:{fontSize:'13px',fontWeight:700,color:'#0B0D12'}},'Price breakdown'));
+  s.appendChild(hdr);
+
+  const rr=R();
+  s.appendChild(h('p',{style:{fontSize:'9px',color:'#6B7280',lineHeight:1.45,marginBottom:'12px'}},rr.priceIntro));
+
+  const card=h('div',{style:{background:'#fff',borderRadius:'12px',border:'1px solid #E8E8F0',overflow:'hidden',marginBottom:'10px'}});
+  const rows=[rr.labor,rr.mat,rr.fee,rr.tax];
+  rows.forEach(([title,sub,amt],idx)=>{
+    const r=h('div',{style:{padding:'10px 12px',borderBottom:idx<rows.length-1?'1px solid #F0F0F0':'none',display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'10px'}});
+    const left=h('div',{style:{flex:1}});
+    left.appendChild(h('div',{style:{fontSize:'10px',fontWeight:600,color:'#0B0D12'}},title));
+    left.appendChild(h('div',{style:{fontSize:'8px',color:'#9CA3AF',marginTop:'2px',lineHeight:1.35}},sub));
+    r.appendChild(left);
+    r.appendChild(h('div',{cls:'sora',style:{fontSize:'11px',fontWeight:700,color:'#0B0D12',flexShrink:0}},amt));
+    card.appendChild(r);
+  });
+  const totalRow=h('div',{style:{padding:'11px 12px',background:'linear-gradient(180deg,#FAFBFD,#F4F6FA)',display:'flex',justifyContent:'space-between',alignItems:'center',borderTop:'1px solid #E8E8F0'}});
+  totalRow.appendChild(h('div',{cls:'sora',style:{fontSize:'11px',fontWeight:700,color:'#0B0D12'}},'Total due after service'));
+  totalRow.appendChild(h('div',{cls:'sora',style:{fontSize:'18px',fontWeight:800,color:G}},R().total));
+  card.appendChild(totalRow);
+  s.appendChild(card);
+
+  const feeNote=h('div',{style:{background:'rgba(12,184,179,.06)',border:'1px solid rgba(12,184,179,.2)',borderRadius:'10px',padding:'9px 11px',marginBottom:'10px'}});
+  feeNote.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#0B6B68',marginBottom:'4px'}},'What the platform fee covers'));
+  feeNote.appendChild(h('div',{style:{fontSize:'8.5px',color:'#4B5563',lineHeight:1.45}},'Payment processing, identity & background infrastructure ('+(state.region==='US'?'e.g. Checkr · Stripe Identity':'e.g. licensed KYC')+'), in-job support staffing, and contributions to the first-visit guarantee and damage programs. It is not a “trust” surcharge added at the last step — it’s listed here.'));
+  s.appendChild(feeNote);
+
+  s.appendChild(h('div',{style:{marginBottom:'8px'}},TrustLayerStrip(true)));
+
+  const done=h('div',{cls:'press',style:{borderRadius:'11px',padding:'11px',textAlign:'center',border:'1px solid #D1D5DB',background:'#fff',cursor:'pointer'},onclick:onClose},
+    h('span',{cls:'sora',style:{fontSize:'11px',fontWeight:600,color:'#0B0D12'}},backTxt)
+  );
+  s.appendChild(done);
+  return s;
+}
+
+// ────────────────────────────── CUSTOMER BOOKING ──────────────────────────────
+function screenCustBooking(goConfirm,openBreakdown){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'10px 14px 75px',background:'#F1F3F8'}});
+  let selSlot=1;
+  const bk=R();
+
+  const hdr=h('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'13px',cursor:'pointer'}});
+  hdr.appendChild(ico('back',16,'#333'));
+  hdr.appendChild(h('span',{cls:'sora',style:{fontSize:'13px',fontWeight:700,color:'#0B0D12'}},bk.bookingTitle));
+  s.appendChild(hdr);
+
+  // Hero card
+  const hero=h('div',{style:{background:'linear-gradient(135deg,#0B0D12,#1B1F32)',borderRadius:'12px',padding:'13px',marginBottom:'8px',color:'#fff'}});
+  const heroRow=h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}});
+  const heroL=h('div');
+  heroL.appendChild(h('div',{style:{fontSize:'26px',marginBottom:'6px'}},bk.bookingHeroEmoji));
+  heroL.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700}},bk.bookingHeroTitle));
+  heroL.appendChild(h('div',{style:{fontSize:'9px',color:'#8896AA',marginTop:'3px'}},bk.bookingSub));
+  const heroR=h('div',{style:{textAlign:'right'}});
+  heroR.appendChild(h('div',{style:{fontSize:'8.5px',color:T,fontWeight:600,marginBottom:'2px'}},'FIXED PRICE'));
+  heroR.appendChild(h('div',{cls:'sora',style:{fontSize:'22px',fontWeight:800,color:G}},bk.bookAC));
+  heroR.appendChild(h('div',{style:{fontSize:'8px',color:'#666'}},bk.bookingPriceFoot));
+  heroRow.append(heroL,heroR);
+  hero.appendChild(heroRow);
+  s.appendChild(hero);
+
+  const breakdownLink=h('div',{cls:'press',style:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'8px 11px',marginBottom:'12px',background:'#fff',borderRadius:'10px',border:'1px solid #E4E7EF',cursor:'pointer'},onclick:openBreakdown});
+  breakdownLink.appendChild(h('div',{style:{display:'flex',alignItems:'center',gap:'7px'}},
+    ico('bar',14,'#3D5A73'),
+    h('span',{style:{fontSize:'9px',fontWeight:600,color:'#374151'}},'See full price breakdown')
+  ));
+  breakdownLink.appendChild(h('span',{style:{fontSize:'9px',fontWeight:700,color:T}},'View →'));
+  s.appendChild(breakdownLink);
+
+  s.appendChild(TrustLayerStrip(true));
+
+  // Includes
+  const inc=h('div',{style:{background:'#fff',borderRadius:'10px',padding:'10px 12px',marginBottom:'10px',border:'1px solid #EBEBF0'}});
+  inc.appendChild(h('div',{style:{fontSize:'10px',fontWeight:700,color:'#0B0D12',marginBottom:'7px'}},"What's included"));
+  bk.bookingIncludes.forEach(it=>{
+    const row=h('div',{style:{display:'flex',gap:'6px',alignItems:'center',marginBottom:'5px'}});
+    row.appendChild(ico('check',10,'#22C55E'));
+    row.appendChild(h('span',{style:{fontSize:'10px',color:'#444'}},it));
+    inc.appendChild(row);
+  });
+  inc.appendChild(h('div',{style:{marginTop:'8px',paddingTop:'8px',borderTop:'1px solid #F0F0F0',fontSize:'8.5px',color:'#6B7280',lineHeight:1.4}},'Need extra parts or work? The pro requests an add-on — your card is not charged until you explicitly approve.'));
+  s.appendChild(inc);
+
+  // Slots
+  const slots=h('div',{style:{background:'#fff',borderRadius:'10px',padding:'10px 12px',marginBottom:'12px',border:'1px solid #EBEBF0'}});
+  slots.appendChild(h('div',{style:{fontSize:'10px',fontWeight:700,color:'#0B0D12',marginBottom:'8px'}},'Pick a time'));
+  const slotGrid=h('div',{style:{display:'flex',gap:'6px',flexWrap:'wrap'}});
+  const slotLabels=['Today 4 PM','Today 6 PM','Tomorrow 10 AM','Tomorrow 2 PM'];
+  const slotBtns=[];
+  slotLabels.forEach((sl,i)=>{
+    const btn=h('div',{cls:'press',style:{padding:'6px 10px',borderRadius:'7px',fontSize:'9px',fontWeight:600,background:i===selSlot?G:'#F5F5F8',color:i===selSlot?BG:'#555',border:`1px solid ${i===selSlot?G:'#E8E8F0'}`,cursor:'pointer'},onclick:()=>{
+      selSlot=i;
+      slotBtns.forEach((b,j)=>{
+        b.style.background=j===i?G:'#F5F5F8';
+        b.style.color=j===i?BG:'#555';
+        b.style.border=`1px solid ${j===i?G:'#E8E8F0'}`;
+      });
+    }},sl);
+    slotBtns.push(btn);
+    slotGrid.appendChild(btn);
+  });
+  slots.appendChild(slotGrid);
+  s.appendChild(slots);
+
+  // Escrow note
+  const note=h('div',{style:{display:'flex',gap:'7px',alignItems:'center',padding:'8px 10px',borderRadius:'8px',background:'rgba(12,184,179,.07)',border:'1px solid rgba(12,184,179,.18)',marginBottom:'12px',fontSize:'9px',color:T}});
+  note.appendChild(ico('shield',11,T));
+  note.appendChild(h('span',null,'Payment held securely — released only after you approve the completed work'));
+  s.appendChild(note);
+
+  s.appendChild(h('div',{style:{marginBottom:'10px'}},FirstBookingGuaranteeBlock()));
+
+  // CTA — deliberate copy: request, not impulse "Book now"
+  const cta=h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'13px',textAlign:'center',cursor:'pointer'},onclick:goConfirm});
+  cta.appendChild(h('div',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:BG}},'Send booking request — '+R().bookAC));
+  cta.appendChild(h('div',{style:{fontSize:'9px',color:'#5A3800',marginTop:'2px'}},'You can still chat · Nothing final until you confirm details'));
+  s.appendChild(cta);
+  return s;
+}
+
+// ────────────────────────────── CUSTOMER TRACKING ──────────────────────────────
+function screenCustTracking(){
+  const s=h('div',{style:{background:'#F1F3F8'}});
+
+  // Map
+  const map=h('div',{style:{height:'220px',background:'linear-gradient(180deg,#C8D8E8,#A8BFD0)',position:'relative',overflow:'hidden'}});
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','100%');svg.setAttribute('height','220');
+  svg.style.position='absolute';svg.style.inset='0';svg.style.opacity='.3';
+  for(let i=0;i<5;i++){const l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1','0');l.setAttribute('y1',i*50);l.setAttribute('x2','300');l.setAttribute('y2',i*50);l.setAttribute('stroke','#888');l.setAttribute('stroke-width','0.5');svg.appendChild(l);}
+  for(let i=0;i<6;i++){const l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1',i*55);l.setAttribute('y1','0');l.setAttribute('x2',i*55);l.setAttribute('y2','220');l.setAttribute('stroke','#888');l.setAttribute('stroke-width','0.5');svg.appendChild(l);}
+  const route=document.createElementNS('http://www.w3.org/2000/svg','path');
+  route.setAttribute('d','M 75 185 Q 120 140 160 110 Q 190 88 215 72');
+  route.setAttribute('stroke',G);route.setAttribute('stroke-width','2.5');route.setAttribute('fill','none');
+  route.setAttribute('stroke-dasharray','6 3');route.setAttribute('stroke-linecap','round');
+  svg.appendChild(route);
+  map.appendChild(svg);
+  // Pro dot
+  const dot=h('div',{style:{position:'absolute',top:'90px',left:'200px'}});
+  const dotOuter=h('div',{cls:'beat',style:{width:'14px',height:'14px',borderRadius:'7px',background:G,border:'2.5px solid #fff'}});
+  dot.appendChild(dotOuter);
+  map.appendChild(dot);
+  // ETA pill
+  const eta=h('div',{style:{position:'absolute',top:'12px',left:'50%',transform:'translateX(-50%)',background:'#0B0D12',borderRadius:'20px',padding:'6px 14px',fontSize:'10px',color:'#fff',fontWeight:700,display:'flex',alignItems:'center',gap:'6px',whiteSpace:'nowrap'}});
+  const dotG=h('div',{cls:'pulse-dot',style:{width:'7px',height:'7px',borderRadius:'4px',background:G}});
+  eta.append(dotG,R().trackEtaLine);
+  map.appendChild(eta);
+  s.appendChild(map);
+
+  // Bottom
+  const bot=h('div',{style:{padding:'14px'}});
+
+  // Pro card
+  const proCard=h('div',{style:{background:'#fff',borderRadius:'14px',padding:'13px 12px',border:'1px solid #E8E8F0',marginBottom:'10px'}});
+  const proRow=h('div',{style:{display:'flex',alignItems:'center',gap:'10px',marginBottom:'10px'}});
+  const avatar=h('div',{style:{width:'44px',height:'44px',borderRadius:'22px',background:'linear-gradient(135deg,#667eea,#764ba2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px',color:'#fff',fontWeight:700,flexShrink:0}});
+  avatar.appendChild(document.createTextNode(DEMO_PRO.initials));
+  const proInfo=h('div',{style:{flex:1}});
+  proInfo.appendChild(h('div',{cls:'sora',style:{fontSize:'13px',fontWeight:700,color:'#0B0D12'}},DEMO_PRO.name));
+  const trustRow=h('div',{style:{display:'flex',flexWrap:'wrap',alignItems:'center',gap:'4px',marginTop:'3px'}});
+  trustRow.appendChild(h('span',{style:{fontSize:'7.5px',fontWeight:600,color:'#0B6B68',background:'rgba(12,184,179,.1)',padding:'2px 6px',borderRadius:'6px'}},'Verified by Seva'));
+  trustRow.appendChild(h('span',{style:{fontSize:'8px',color:'#6B7280'}},R().trackVisitBlurb));
+  proInfo.appendChild(trustRow);
+  const callBtn=h('div',{style:{width:'34px',height:'34px',borderRadius:'17px',background:'#F5F5F8',display:'flex',alignItems:'center',justifyContent:'center',border:'1px solid #E8E8F0',cursor:'pointer',flexShrink:0}});
+  callBtn.appendChild(ico('phone',13,'#555'));
+  proRow.append(avatar,proInfo,callBtn);
+  proCard.appendChild(proRow);
+  // Progress
+  const prog=h('div',{style:{display:'flex',gap:'5px'}});
+  ['Booked','En Route','Arrived','Done'].forEach((step,i)=>{
+    const p=h('div',{style:{flex:1,textAlign:'center'}});
+    p.appendChild(h('div',{style:{width:'100%',height:'3px',borderRadius:'2px',background:i<2?G:'#EBEBF0',marginBottom:'3px'}}));
+    p.appendChild(h('div',{style:{fontSize:'7.5px',color:i<2?G:'#bbb',fontWeight:i<2?700:400}},step));
+    prog.appendChild(p);
+  });
+  proCard.appendChild(prog);
+  bot.appendChild(proCard);
+
+  // Photo note
+  const note=h('div',{style:{display:'flex',gap:'8px',alignItems:'center',padding:'9px 11px',borderRadius:'10px',background:'rgba(240,165,0,.06)',border:'1px solid rgba(240,165,0,.15)',fontSize:'9px',color:'#B37800'}});
+  note.appendChild(ico('camera',12,G));
+  const noteText=h('span');
+  const proFirst=DEMO_PRO.name.split(' ')[0];
+  noteText.innerHTML=proFirst+' will take a <strong>before photo</strong> when they arrive. You approve a <strong>completion photo</strong> before payment releases.';
+  note.appendChild(noteText);
+  bot.appendChild(note);
+  bot.appendChild(h('div',{style:{marginTop:'10px'}},TrustLayerStrip(true)));
+  s.appendChild(bot);
+  return s;
+}
+
+// ────────────────────────────── PRO JOBS ──────────────────────────────
+function screenProJobs(){
+  const s=h('div',{style:{padding:'10px 14px 75px',background:'#0E101A',minHeight:'490px'}});
+
+  const hdr=h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px'}});
+  const hdrL=h('div');
+  hdrL.appendChild(h('div',{style:{fontSize:'10px',color:T2}},'Good morning 👋'));
+  hdrL.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700,color:'#fff'}},R().proLeadName));
+  const bellWrap=h('div',{style:{position:'relative',cursor:'pointer'}});
+  bellWrap.appendChild(ico('bell',18,T2));
+  bellWrap.appendChild(h('div',{style:{position:'absolute',top:'-2px',right:'-2px',width:'7px',height:'7px',borderRadius:'4px',background:RE}}));
+  hdr.append(hdrL,bellWrap);
+  s.appendChild(hdr);
+
+  // Earnings today
+  const earn=h('div',{style:{background:CARD,borderRadius:'12px',padding:'12px 14px',marginBottom:'14px',border:'1px solid rgba(240,165,0,.15)',display:'flex',justifyContent:'space-between',alignItems:'center'}});
+  const earnL=h('div');
+  earnL.appendChild(h('div',{style:{fontSize:'9px',color:T2,marginBottom:'3px'}},"Today's earnings"));
+  earnL.appendChild(h('div',{cls:'sora',style:{fontSize:'21px',fontWeight:800,color:G}},R().earnToday));
+  earnL.appendChild(h('div',{style:{fontSize:'9px',color:T2,marginTop:'2px'}},'2 of 3 jobs done'));
+  const earnR=h('div',{style:{textAlign:'right'}});
+  const onlinePill=h('div',{style:{display:'inline-flex',gap:'4px',alignItems:'center',padding:'4px 9px',borderRadius:'20px',background:'rgba(12,184,179,.1)',marginBottom:'6px'}});
+  onlinePill.appendChild(h('div',{style:{width:'6px',height:'6px',borderRadius:'3px',background:T}}));
+  onlinePill.appendChild(h('span',{style:{fontSize:'9px',color:T,fontWeight:600}},'Online'));
+  earnR.appendChild(onlinePill);
+  earnR.appendChild(h('div',{style:{fontSize:'9px',color:T2,lineHeight:1.35}},'You keep 82% · Fee sheet in app'));
+  earn.append(earnL,earnR);
+  s.appendChild(earn);
+
+  s.appendChild(h('div',{style:{fontSize:'10px',fontWeight:700,color:'#fff',marginBottom:'8px'}},"Today's Jobs"));
+  R().proJobs.forEach(j=>{
+    const card=h('div',{style:{background:CARD,borderRadius:'10px',padding:'11px 12px',marginBottom:'8px',border:`1px solid ${j.status==='active'?'rgba(240,165,0,.25)':'rgba(255,255,255,.05)'}`}});
+    const topRow=h('div',{style:{display:'flex',alignItems:'center',gap:'9px',marginBottom:'7px'}});
+    const jIcon=h('div',{style:{width:'32px',height:'32px',borderRadius:'8px',background:'rgba(255,255,255,.04)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'17px',flexShrink:0}});
+    jIcon.appendChild(document.createTextNode(j.icon));
+    const jInfo=h('div',{style:{flex:1}});
+    jInfo.appendChild(h('div',{style:{fontSize:'11px',fontWeight:600,color:'#fff'}},j.type));
+    jInfo.appendChild(h('div',{style:{fontSize:'9px',color:T2}},j.addr));
+    const jStatus=h('div',{style:{padding:'3px 8px',borderRadius:'10px',fontSize:'9px',fontWeight:600,background:j.sbg,color:j.col}});
+    jStatus.appendChild(document.createTextNode(j.status==='done'?'✓ Done':j.status==='active'?'● Active':'○ Upcoming'));
+    topRow.append(jIcon,jInfo,jStatus);
+    card.appendChild(topRow);
+    const botRow=h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}});
+    botRow.appendChild(h('div',{style:{fontSize:'9px',color:T2}},`🕐 ${j.time}`));
+    botRow.appendChild(h('div',{cls:'sora',style:{fontSize:'13px',fontWeight:800,color:G}},j.price));
+    card.appendChild(botRow);
+    if(j.status==='active'){
+      const btn=h('div',{cls:'press',style:{marginTop:'8px',padding:'7px 10px',borderRadius:'8px',background:G,textAlign:'center',cursor:'pointer'}});
+      btn.appendChild(h('div',{cls:'sora',style:{fontSize:'10px',fontWeight:700,color:BG}},'📍 Navigate → Upload Photo'));
+      card.appendChild(btn);
+    }
+    s.appendChild(card);
+  });
+
+  // Bottom nav
+  const bnav=h('div',{cls:'bottom-nav',style:{background:'#1A1E2A',borderTop:'1px solid rgba(255,255,255,.07)'}});
+  [{ic:'home',l:'Jobs',a:true},{ic:'bar',l:'Earn',a:false},{ic:'award',l:'Badges',a:false},{ic:'user',l:'Profile',a:false}].forEach(n=>{
+    const ni=h('div',{cls:'nav-item'});
+    const iw=h('div',{style:{display:'flex',justifyContent:'center'}});
+    iw.appendChild(ico(n.ic,16,n.a?G:T2));
+    ni.appendChild(iw);
+    ni.appendChild(h('div',{cls:'nav-label',style:{color:n.a?G:T2}},n.l));
+    bnav.appendChild(ni);
+  });
+  s.appendChild(bnav);
+  return s;
+}
+
+// ────────────────────────────── PRO EARNINGS ──────────────────────────────
+function screenProEarnings(){
+  const s=h('div',{style:{padding:'10px 14px 75px',background:'#0E101A'}});
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700,color:'#fff',marginBottom:'14px'}},'Earnings'));
+
+  // Big stat
+  const big=h('div',{style:{background:CARD,borderRadius:'14px',padding:'16px',marginBottom:'12px',border:'1px solid rgba(240,165,0,.15)',textAlign:'center'}});
+  big.appendChild(h('div',{style:{fontSize:'9px',color:T2,marginBottom:'5px'}},'This week'));
+  big.appendChild(h('div',{cls:'sora',style:{fontSize:'28px',fontWeight:900,color:G,marginBottom:'4px'}},R().earnWeek));
+  const trend=h('div',{style:{display:'flex',justifyContent:'center',gap:'4px',alignItems:'center'}});
+  trend.appendChild(ico('trend',10,'#22C55E'));
+  trend.appendChild(h('span',{style:{fontSize:'9px',color:'#22C55E',fontWeight:600}},'+18% vs last week'));
+  big.appendChild(trend);
+  s.appendChild(big);
+
+  // Bar chart
+  const chart=h('div',{style:{background:CARD,borderRadius:'12px',padding:'12px 13px',marginBottom:'12px',border:'1px solid rgba(255,255,255,.05)'}});
+  chart.appendChild(h('div',{style:{fontSize:'9px',color:T2,marginBottom:'10px'}},'Daily breakdown'));
+  const bars=h('div',{style:{display:'flex',alignItems:'flex-end',gap:'5px',height:'64px'}});
+  [['M',72],['T',55],['W',88],['T',40],['F',95],['S',68],['S',42]].forEach(([d,v],i)=>{
+    const col=h('div',{style:{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:'3px'}});
+    const bar=h('div',{style:{width:'100%',borderRadius:'3px 3px 0 0',height:`${v*0.58}px`,background:i===4?G:'rgba(240,165,0,.2)'}});
+    col.append(bar,h('span',{style:{fontSize:'7.5px',color:i===4?G:T2}},d));
+    bars.appendChild(col);
+  });
+  chart.appendChild(bars);
+  s.appendChild(chart);
+
+  // Stats grid
+  const grid=h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'12px'}});
+  [['Jobs Done','14',G],['Repeat families','92%',G],['On-Time','97%',T],['Badge','Gold 🥇',G]].forEach(([l,v,c])=>{
+    const cell=h('div',{style:{background:CARD,borderRadius:'10px',padding:'10px 11px',border:'1px solid rgba(255,255,255,.05)'}});
+    cell.appendChild(h('div',{style:{fontSize:'8.5px',color:T2,marginBottom:'3px'}},l));
+    cell.appendChild(h('div',{cls:'sora',style:{fontSize:'16px',fontWeight:800,color:c}},v));
+    grid.appendChild(cell);
+  });
+  s.appendChild(grid);
+
+  // Withdraw
+  const wd=h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'13px',textAlign:'center',cursor:'pointer'}});
+  wd.appendChild(h('div',{cls:'sora',style:{fontSize:'13px',fontWeight:700,color:BG}},'Withdraw '+R().earnWeek));
+  wd.appendChild(h('div',{style:{fontSize:'9px',color:'#5A3800',marginTop:'2px'}},R().withdrawNote));
+  s.appendChild(wd);
+  return s;
+}
+
+// ═════════════════════ NEW FLOWS: Signup · AI book · Membership · Pro join ═════════════════════
+
+function flowPhoneStatus(dark){
+  return h('div',{cls:'phone-status',style:{color:dark?'rgba(255,255,255,.65)':'#1A1A2E'}},
+    h('span',null,'9:41'),
+    h('div',{cls:'phone-notch',style:{background:dark?'#333':'#1A1A2E'}}),
+    h('span',{style:{fontSize:'8px'}},'●●●'));
+}
+
+function screenSignupSplash(next){
+  // Phases: static 2s → crossfade → full-bleed 9:16 video (matches 1080×1920 asset) → crossfade → welcome
+  const crossMs=300;
+  const ease='cubic-bezier(0.33, 1, 0.68, 1)';
+  const s=h('div',{style:{height:'464px',position:'relative',backgroundColor:'#0F3D3E',overflow:'hidden'}});
+
+  const phaseStatic=h('div',{style:{position:'absolute',inset:'0',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'20px',zIndex:2,opacity:'1'}});
+  const logoStatic=SevaMark('splash');
+  logoStatic.style.position='relative';
+  phaseStatic.appendChild(logoStatic);
+
+  const phaseVideo=h('div',{style:{position:'absolute',inset:'0',display:'block',zIndex:3,backgroundColor:'#0F3D3E',overflow:'hidden',opacity:'0',pointerEvents:'none'}});
+  const vid=document.createElement('video');
+  vid.setAttribute('playsinline','');
+  vid.setAttribute('webkit-playsinline','');
+  vid.muted=true;
+  vid.setAttribute('src','assets/seva_splash.mp4');
+  Object.assign(vid.style,{position:'absolute',inset:'0',width:'100%',height:'100%',objectFit:'cover',display:'block',backgroundColor:'#0F3D3E'});
+  phaseVideo.appendChild(vid);
+
+  const phaseWelcome=h('div',{style:{position:'absolute',inset:'0',display:'none',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'20px',zIndex:4,opacity:'0'}});
+  const logoWelcome=SevaMark('splash');
+  logoWelcome.style.position='relative';
+  logoWelcome.style.zIndex='1';
+  phaseWelcome.appendChild(logoWelcome);
+  const actions=h('div',{style:{marginTop:'12px',width:'100%',maxWidth:'310px',display:'flex',flexDirection:'column',gap:'10px',position:'relative',zIndex:1}});
+  const getStarted=h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'12px 14px',textAlign:'center',cursor:'pointer',fontSize:'12px',fontWeight:900,color:BG,boxShadow:'0 16px 48px rgba(240,165,0,.14)'}},'Get Started');
+  getStarted.onclick=(e)=>{e&&e.stopPropagation&&e.stopPropagation(); next();};
+  actions.appendChild(getStarted);
+  const signIn=h('div',{cls:'press',style:{background:'rgba(255,255,255,.07)',border:'1px solid rgba(255,255,255,.12)',borderRadius:'12px',padding:'12px 14px',textAlign:'center',cursor:'pointer',fontSize:'12px',fontWeight:900,color:'#E4E8EF'}},'Sign in');
+  signIn.onclick=(e)=>{e&&e.stopPropagation&&e.stopPropagation(); next();};
+  actions.appendChild(signIn);
+  phaseWelcome.appendChild(actions);
+
+  s.appendChild(phaseStatic);
+  s.appendChild(phaseVideo);
+  s.appendChild(phaseWelcome);
+
+  let tVideo=null,tFallback=null,welcoming=false;
+  const goWelcome=()=>{
+    if(welcoming) return;
+    welcoming=true;
+    if(tVideo){clearTimeout(tVideo);tVideo=null;}
+    if(tFallback){clearTimeout(tFallback);tFallback=null;}
+    phaseWelcome.style.display='flex';
+    phaseWelcome.style.transition='opacity '+crossMs+'ms '+ease;
+    phaseVideo.style.transition='opacity '+crossMs+'ms '+ease;
+    requestAnimationFrame(()=>{
+      phaseVideo.style.opacity='0';
+      phaseWelcome.style.opacity='1';
+    });
+    setTimeout(()=>{
+      phaseVideo.style.display='none';
+      phaseStatic.style.display='none';
+      phaseVideo.style.pointerEvents='none';
+      try{vid.pause();}catch(e){}
+      phaseVideo.style.transition='';
+      phaseWelcome.style.transition='';
+    },crossMs+40);
+  };
+  const startVideo=()=>{
+    phaseVideo.style.display='block';
+    phaseVideo.style.pointerEvents='auto';
+    phaseStatic.style.transition='opacity '+crossMs+'ms '+ease;
+    phaseVideo.style.transition='opacity '+crossMs+'ms '+ease;
+    const p=vid.play();
+    if(p&&typeof p.catch==='function') p.catch(()=>{goWelcome();});
+    requestAnimationFrame(()=>{
+      phaseStatic.style.opacity='0';
+      phaseVideo.style.opacity='1';
+    });
+    setTimeout(()=>{
+      phaseStatic.style.display='none';
+      phaseStatic.style.opacity='1';
+      phaseStatic.style.transition='';
+      phaseVideo.style.transition='';
+    },crossMs+40);
+    tFallback=setTimeout(goWelcome,12000);
+  };
+  vid.addEventListener('ended',goWelcome);
+  vid.addEventListener('error',()=>{setTimeout(goWelcome,400);});
+
+  setTimeout(startVideo,2000);
+
+  return s;
+}
+
+function screenSignupPhone(next){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'12px 14px 20px',background:'#fff',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'15px',fontWeight:700,color:'#0B0D12',marginBottom:'6px'}},'Enter mobile number'));
+  s.appendChild(h('div',{style:{fontSize:'9px',color:'#6B7280',marginBottom:'16px',lineHeight:1.4}},'We’ll send a one-time code. Standard SMS rates may apply.'));
+  const row=h('div',{style:{display:'flex',gap:'8px',alignItems:'center',border:'1px solid #E5E7EB',borderRadius:'12px',padding:'10px 12px',marginBottom:'16px'}});
+  const flag=h('div',{style:{display:'flex',alignItems:'center',gap:'5px',paddingRight:'8px',borderRight:'1px solid #E5E7EB'}});
+  const rr=R();
+  flag.appendChild(h('span',{style:{fontSize:'16px'}},rr.flag));
+  flag.appendChild(h('span',{style:{fontSize:'11px',fontWeight:600,color:'#374151'}},rr.dial));
+  row.appendChild(flag);
+  row.appendChild(h('span',{style:{fontSize:'13px',fontWeight:600,color:'#0B0D12',letterSpacing:'.12em'}},rr.phoneSample));
+  s.appendChild(row);
+  const btn=h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'12px',textAlign:'center',cursor:'pointer'},onclick:next},
+    h('span',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:BG}},'Send OTP'));
+  s.appendChild(btn);
+  return s;
+}
+
+function screenSignupOtp(next){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'12px 14px 20px',background:'#fff',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'15px',fontWeight:700,color:'#0B0D12',marginBottom:'6px'}},'Verify number'));
+  s.appendChild(h('div',{style:{fontSize:'9px',color:'#6B7280',marginBottom:'14px'}},R().otpSent));
+  const boxes=h('div',{style:{display:'flex',gap:'6px',justifyContent:'center',marginBottom:'8px'}});
+  '4206'.split('').forEach(d=>{
+    const b=h('div',{style:{width:'32px',height:'38px',borderRadius:'8px',border:'1px solid #D1D5DB',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'15px',fontWeight:700,color:'#0B0D12'}},d);
+    boxes.appendChild(b);
+  });
+  const blink=h('div',{style:{width:'32px',height:'38px',borderRadius:'8px',border:'1px dashed #F0A500',display:'flex',alignItems:'center',justifyContent:'center'}});
+  blink.appendChild(h('span',{cls:'otp-cursor'}));
+  boxes.appendChild(blink);
+  s.appendChild(boxes);
+  s.appendChild(h('div',{style:{fontSize:'8px',color:'#9CA3AF',textAlign:'center',marginBottom:'16px'}},'Resend in 0:42'));
+  s.appendChild(h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'12px',textAlign:'center',cursor:'pointer'},onclick:next},
+    h('span',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:BG}},'Verify & continue')));
+  return s;
+}
+
+function screenSignupLocation(next){
+  const s=h('div',{style:{height:'464px',background:'#0E101A',position:'relative',overflow:'hidden'}});
+  const map=h('div',{style:{height:'62%',background:'linear-gradient(160deg,#1a2840,#0d1829)',position:'relative'}});
+  const center=h('div',{style:{position:'absolute',left:'50%',top:'50%',transform:'translate(-50%,-50%)',width:'56px',height:'56px'}});
+  center.appendChild(h('div',{cls:'loc-ring'}));
+  center.appendChild(h('div',{cls:'loc-ring d2'}));
+  center.appendChild(h('div',{cls:'loc-ring d3'}));
+  const pin=h('div',{style:{position:'absolute',left:'50%',top:'50%',transform:'translate(-50%,-65%)',width:'12px',height:'12px',borderRadius:'50%',background:G,boxShadow:'0 0 0 3px rgba(240,165,0,.35)',zIndex:2}});
+  map.appendChild(center);
+  map.appendChild(pin);
+  s.appendChild(map);
+  const sheet=h('div',{style:{flex:1,padding:'14px',background:'#141824',borderRadius:'16px 16px 0 0',marginTop:'-12px',position:'relative',zIndex:3}});
+  sheet.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700,color:'#fff',marginBottom:'6px'}},'Enable location'));
+  sheet.appendChild(h('div',{style:{fontSize:'9px',color:T2,lineHeight:1.45,marginBottom:'14px'}},'We use your area to show verified pros nearby — never sold to advertisers.'));
+  sheet.appendChild(h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'12px',textAlign:'center',cursor:'pointer',marginBottom:'8px'},onclick:next},
+    h('span',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:BG}},'Allow while using app')));
+  sheet.appendChild(h('div',{cls:'tab-btn',style:{textAlign:'center',fontSize:'9px',color:T2,padding:'6px'}},'Enter address manually'));
+  s.appendChild(sheet);
+  return s;
+}
+
+function screenSignupProfile(next){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'12px 14px 20px',background:'#F1F3F8',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'15px',fontWeight:700,color:'#0B0D12',marginBottom:'4px'}},'Set up your profile'));
+  s.appendChild(h('div',{style:{fontSize:'9px',color:'#6B7280',marginBottom:'16px'}},'A real name helps pros recognize you at the door.'));
+  const av=h('div',{style:{width:'72px',height:'72px',borderRadius:'36px',background:'#E5E7EB',border:'2px dashed #D1D5DB',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px',fontSize:'22px',color:'#9CA3AF'}},'+');
+  s.appendChild(av);
+  const inp=(ph,v)=>h('div',{style:{background:'#fff',borderRadius:'10px',border:'1px solid #E5E7EB',padding:'10px 12px',marginBottom:'10px'}},
+    h('div',{style:{fontSize:'7px',color:'#9CA3AF',marginBottom:'3px'}},ph),
+    h('div',{style:{fontSize:'11px',fontWeight:600,color:'#0B0D12'}},v));
+  s.appendChild(inp('First name','Ashwath'));
+  s.appendChild(inp('Last name','Kumar'));
+  s.appendChild(h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'12px',textAlign:'center',cursor:'pointer',marginTop:'8px'},onclick:next},
+    h('span',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:BG}},'Finish')));
+  return s;
+}
+
+function renderSignupFlow(){
+  const lightSteps=[1,2,4];
+  const inner=h('div',{});
+  inner.className=lightSteps.includes(state.signupStep)?'phone-inner-light':'phone-inner-dark';
+  inner.appendChild(flowPhoneStatus(!lightSteps.includes(state.signupStep)));
+  const next=()=>{if(state.signupStep<4){state.signupStep++;renderApp();}};
+  const steps=[screenSignupSplash,screenSignupPhone,screenSignupOtp,screenSignupLocation,screenSignupProfile];
+  inner.appendChild(steps[state.signupStep](next));
+  return inner;
+}
+
+function screenAiCamera(shot){
+  const rr=R();
+  const s=h('div',{style:{height:'464px',background:'#0a0a0f',position:'relative',overflow:'hidden'}});
+  const vf=h('div',{style:{position:'absolute',inset:'14% 8% 22%',border:'1px solid rgba(255,255,255,.2)',borderRadius:'12px',overflow:'hidden',background:'linear-gradient(180deg,#1a1d28,#252a3a)'}});
+  vf.appendChild(h('div',{cls:'ai-scan-line'}));
+  const cr=[['2px 0 0 2px','8%','8%'],['2px 2px 0 0','8%','92%'],['0 0 2px 2px','92%','8%'],['0 2px 2px 0','92%','92%']];
+  cr.forEach(([bw,t,l])=>{
+    const c=h('div',{style:{position:'absolute',width:'16px',height:'16px',borderColor:'rgba(240,165,0,.75)',borderStyle:'solid',borderWidth:bw,top:t,left:l}});
+    vf.appendChild(c);
+  });
+  if(rr.aiPreview==='handyman'){
+    const jamb=h('div',{style:{position:'absolute',left:'10%',top:'14%',width:'13%',bottom:'22%',background:'linear-gradient(90deg,#C9B8A4,#A89882)',borderRadius:'3px',boxShadow:'inset -2px 0 6px rgba(0,0,0,.2)'}});
+    vf.appendChild(jamb);
+    const scrape=h('div',{style:{position:'absolute',left:'12%',top:'32%',width:'8%',height:'26%',background:'linear-gradient(165deg,rgba(255,255,255,.4),rgba(255,255,255,.08))',borderRadius:'2px',transform:'rotate(4deg)',border:'1px solid rgba(240,165,0,.25)'}});
+    vf.appendChild(scrape);
+    const sofa=h('div',{style:{position:'absolute',right:'6%',bottom:'16%',width:'46%',height:'36%',background:'linear-gradient(155deg,#3D342C,#5C4D40)',borderRadius:'14px 14px 10px 10px',boxShadow:'0 8px 20px rgba(0,0,0,.45)'}});
+    vf.appendChild(sofa);
+    vf.appendChild(h('div',{style:{position:'absolute',right:'20%',bottom:'30%',width:'22%',height:'10%',background:'rgba(0,0,0,.22)',borderRadius:'4px'}}));
+  }else{
+    const pipe=h('div',{style:{position:'absolute',left:'28%',top:'38%',width:'45%',height:'8px',background:'linear-gradient(90deg,#6B7280,#9CA3AF)',borderRadius:'4px',transform:'rotate(-8deg)',boxShadow:'0 2px 8px rgba(0,0,0,.4)'}});
+    vf.appendChild(pipe);
+    const drip=h('div',{style:{position:'absolute',left:'48%',top:'46%',width:'4px',height:'10px',background:'rgba(96,165,250,.6)',borderRadius:'0 0 2px 2px'}});
+    vf.appendChild(drip);
+  }
+  s.appendChild(vf);
+  s.appendChild(h('div',{style:{position:'absolute',bottom:'88px',left:0,right:0,textAlign:'center',fontSize:'8px',color:'rgba(255,255,255,.5)'}},rr.aiCamHint));
+  const shut=h('div',{style:{position:'absolute',bottom:'28px',left:'50%',transform:'translateX(-50%)',width:'52px',height:'52px',borderRadius:'50%',border:'3px solid rgba(255,255,255,.35)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'},onclick:shot});
+  shut.appendChild(h('div',{style:{width:'40px',height:'40px',borderRadius:'50%',background:G}}));
+  s.appendChild(shut);
+  return s;
+}
+
+function screenAiAnalyze(){
+  const rr=R();
+  const s=h('div',{cls:'screen-scroll',style:{padding:'12px 12px 20px',background:'#0E101A',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700,color:'#fff',marginBottom:'10px'}},'Analyzing image…'));
+  const prev=h('div',{style:{position:'relative',height:'120px',borderRadius:'12px',overflow:'hidden',background:'linear-gradient(180deg,#1a1d28,#252a3a)',marginBottom:'12px',border:'1px solid rgba(255,255,255,.08)'}});
+  if(rr.aiPreview==='handyman'){
+    prev.appendChild(h('div',{style:{position:'absolute',left:'8%',top:'12%',width:'11%',bottom:'18%',background:'linear-gradient(90deg,#C9B8A4,#A89882)',borderRadius:'2px'}}));
+    prev.appendChild(h('div',{style:{position:'absolute',left:'9%',top:'28%',width:'7%',height:'32%',background:'linear-gradient(165deg,rgba(255,255,255,.35),rgba(255,255,255,.06))',borderRadius:'2px',transform:'rotate(3deg)',border:'1px solid rgba(240,165,0,.2)'}}));
+    prev.appendChild(h('div',{style:{position:'absolute',right:'6%',bottom:'14%',width:'44%',height:'42%',background:'linear-gradient(155deg,#3D342C,#5C4D40)',borderRadius:'10px 10px 6px 6px'}}));
+    prev.appendChild(h('div',{style:{position:'absolute',right:'18%',bottom:'26%',width:'20%',height:'12%',background:'rgba(0,0,0,.2)',borderRadius:'3px'}}));
+  }else{
+    prev.appendChild(h('div',{style:{position:'absolute',left:'22%',top:'32%',width:'52%',height:'14px',background:'linear-gradient(90deg,#6B7280,#9CA3AF)',borderRadius:'4px',transform:'rotate(-8deg)'}}));
+  }
+  const box=h('div',{style:{position:'absolute',left:'18%',top:'24%',width:'58%',height:'36%',border:'2px solid '+G,boxShadow:'0 0 0 1px rgba(240,165,0,.3)',borderRadius:'6px'}});
+  prev.appendChild(box);
+  prev.appendChild(h('div',{style:{position:'absolute',bottom:'6px',left:'8px',fontSize:'7px',fontWeight:700,color:G,background:'rgba(0,0,0,.55)',padding:'3px 6px',borderRadius:'4px'}},'DETECTED'));
+  s.appendChild(prev);
+  rr.aiAnalyzeSteps.forEach((t,i)=>{
+    const r=h('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}});
+    const done=i<3;
+    r.appendChild(h('div',{style:{width:'16px',height:'16px',borderRadius:'50%',background:done?T:'rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},done?ico('check',9,BG):h('div',{cls:i===3?'ai-step-dot':'',style:{width:'6px',height:'6px',borderRadius:'50%',background:i===3?G:'rgba(255,255,255,.2)'}})));
+    r.appendChild(h('span',{style:{fontSize:'9px',color:done?'#A7B4C8':'#6B7280'}},t));
+    s.appendChild(r);
+  });
+  return s;
+}
+
+function screenAiResult(book){
+  const rr=R();
+  const cols=[T,T2,T2];
+  const s=h('div',{cls:'screen-scroll',style:{padding:'12px 12px 20px',background:'#F1F3F8',minHeight:'calc(490px - 26px)'}});
+  const card=h('div',{style:{background:'#fff',borderRadius:'14px',padding:'12px',border:'1px solid #E8E8F0',marginBottom:'10px'}});
+  card.appendChild(h('div',{style:{fontSize:'8px',fontWeight:700,color:T,marginBottom:'4px'}},'AI DIAGNOSIS'));
+  card.appendChild(h('div',{cls:'sora',style:{fontSize:'13px',fontWeight:700,color:'#0B0D12',marginBottom:'6px'}},rr.aiDiagTitle));
+  const confRow=h('div',{style:{display:'flex',alignItems:'baseline',gap:'8px',marginBottom:'8px'}});
+  confRow.appendChild(h('div',{style:{fontSize:'20px',fontWeight:800,color:G}},rr.aiDiagPct));
+  confRow.appendChild(h('span',{style:{fontSize:'9px',color:'#6B7280'}},'confidence · verify on site'));
+  card.appendChild(confRow);
+  const priceRow=h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',paddingTop:'8px',borderTop:'1px solid #F0F0F0'}});
+  priceRow.appendChild(h('span',{style:{fontSize:'9px',color:'#6B7280'}},'Fixed price estimate'));
+  priceRow.appendChild(h('span',{cls:'sora',style:{fontSize:'18px',fontWeight:800,color:'#0B0D12'}},rr.bookAI));
+  card.appendChild(priceRow);
+  s.appendChild(card);
+  s.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#0B0D12',marginBottom:'6px'}},'Nearest verified pros'));
+  rr.aiProNames.forEach((n,i)=>{
+    const d=rr.aiDists[i]||rr.aiDists[0];
+    const col=cols[i]||T2;
+    const p=h('div',{style:{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',background:'#fff',borderRadius:'10px',border:'1px solid #E8E8F0',marginBottom:'6px'}});
+    p.appendChild(h('div',{style:{width:'28px',height:'28px',borderRadius:'8px',background:'rgba(12,184,179,.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'10px',fontWeight:700,color:col}},String(i+1)));
+    const mid=h('div',{style:{flex:1}});
+    mid.appendChild(h('div',{style:{fontSize:'10px',fontWeight:600,color:'#0B0D12'}},n));
+    mid.appendChild(h('div',{style:{fontSize:'7.5px',color:'#9CA3AF'}},d+' · Verified'));
+    p.appendChild(mid);
+    if(i===0) p.appendChild(h('span',{style:{fontSize:'7px',fontWeight:700,color:G}},'CLOSEST'));
+    s.appendChild(p);
+  });
+  s.appendChild(h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'12px',textAlign:'center',cursor:'pointer',marginTop:'6px'},onclick:book},
+    h('span',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:BG}},rr.aiBookCta+' — '+rr.bookAI)));
+  return s;
+}
+
+function renderAiBookingFlow(){
+  const inner=h('div',{});
+  inner.className=state.aiStep===2?'phone-inner-light':'phone-inner-dark';
+  inner.appendChild(flowPhoneStatus(state.aiStep!==2));
+  const shot=()=>{state.aiStep=1;renderApp();window.clearTimeout(window._aiT);window._aiT=setTimeout(()=>{state.aiStep=2;renderApp();},2800);};
+  const book=()=>{state.tab='customer';state.cScreen='booking';state.aiStep=0;renderApp();};
+  if(state.aiStep===0) inner.appendChild(screenAiCamera(shot));
+  if(state.aiStep===1) inner.appendChild(screenAiAnalyze());
+  if(state.aiStep===2) inner.appendChild(screenAiResult(book));
+  return inner;
+}
+
+function screenMembership(){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'10px 10px 20px',background:'#0B0D12',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700,color:'#fff',textAlign:'center',marginBottom:'4px'}},'Seva Membership'));
+  s.appendChild(h('div',{style:{fontSize:'8px',color:T2,textAlign:'center',marginBottom:'12px'}},'Save on every booking · Cancel anytime'));
+  const toggle=h('div',{style:{display:'flex',background:'rgba(255,255,255,.08)',borderRadius:'10px',padding:'3px',marginBottom:'12px'}});
+  const mBtn=h('div',{cls:'press',style:{flex:1,textAlign:'center',padding:'7px',borderRadius:'8px',fontSize:'9px',fontWeight:700,cursor:'pointer',background:!state.memAnnual?'rgba(240,165,0,.25)':'transparent',color:!state.memAnnual?G:'#8896AA'}},'Monthly');
+  mBtn.onclick=()=>{state.memAnnual=false;renderApp();};
+  const yBtn=h('div',{cls:'press',style:{flex:1,textAlign:'center',padding:'7px',borderRadius:'8px',fontSize:'9px',fontWeight:700,cursor:'pointer',background:state.memAnnual?'rgba(240,165,0,.25)':'transparent',color:state.memAnnual?G:'#8896AA'}},'Annual · −20%');
+  yBtn.onclick=()=>{state.memAnnual=true;renderApp();};
+  toggle.append(mBtn,yBtn);
+  s.appendChild(toggle);
+  const rr=R();
+  const mult=state.memAnnual?0.8:1;
+  const fmt=p=>rr.moneySym+Math.round(p*mult);
+  const mp=rr.memPrices;
+  const plans=[
+    {id:'basic',name:'Basic',sub:'Occasional help',price:mp[0],feat:['5% off services','Standard support','Member checkout']},
+    {id:'pro',name:'Pro',sub:'Most families',price:mp[1],feat:['12% off + priority match','Free rescheduling','Extended guarantee','24/7 line'],hi:1},
+    {id:'elite',name:'Elite',sub:'Full home care',price:mp[2],feat:['20% off + top pros','Dedicated manager','Annual home audit','Complimentary visits'],hi:0},
+  ];
+  plans.forEach(pl=>{
+    const card=h('div',{style:{
+      borderRadius:'12px',padding:'10px 10px 11px',marginBottom:'8px',
+      background:pl.hi?'linear-gradient(145deg,#161A28,#0E121C)':'rgba(255,255,255,.04)',
+      border:pl.hi?`2px solid ${G}`:'1px solid rgba(255,255,255,.1)',
+      boxShadow:pl.hi?'0 0 24px rgba(240,165,0,.12)':'none'
+    }});
+    if(pl.hi) card.appendChild(h('div',{style:{fontSize:'7px',fontWeight:700,color:G,marginBottom:'4px',letterSpacing:'.08em'}},'RECOMMENDED'));
+    const top=h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}});
+    top.appendChild(h('div',null,h('div',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:'#fff'}},pl.name),h('div',{style:{fontSize:'7.5px',color:T2,marginTop:'2px'}},pl.sub)));
+    top.appendChild(h('div',{style:{textAlign:'right'}},h('div',{cls:'sora',style:{fontSize:'16px',fontWeight:800,color:pl.hi?G:'#fff'}},fmt(pl.price)),h('div',{style:{fontSize:'7px',color:'#6B7280'}},state.memAnnual?'/yr':'/mo')));
+    card.appendChild(top);
+    pl.feat.forEach(f=>{
+      const r=h('div',{style:{display:'flex',gap:'5px',alignItems:'center',marginTop:'5px'}});
+      r.appendChild(ico('check',9,pl.hi?G:T));
+      r.appendChild(h('span',{style:{fontSize:'8px',color:'#C8D0DC'}},f));
+      card.appendChild(r);
+    });
+    s.appendChild(card);
+  });
+  s.appendChild(h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'11px',textAlign:'center',marginTop:'4px'}},
+    h('span',{cls:'sora',style:{fontSize:'11px',fontWeight:700,color:BG}},'Continue with Pro')));
+  return s;
+}
+
+function screenProJoinWelcome(next){
+  const rr=R();
+  const s=h('div',{cls:'screen-scroll',style:{padding:'16px 14px 20px',background:'linear-gradient(180deg,#0E101A,#12182A)',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{style:{fontSize:'9px',color:G,fontWeight:700,marginBottom:'8px',letterSpacing:'.1em'}},'EARN ON YOUR TERMS'));
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'18px',fontWeight:800,color:'#fff',lineHeight:1.2,marginBottom:'10px'}},rr.earnBand));
+  s.appendChild(h('div',{style:{fontSize:'9px',color:T2,lineHeight:1.45,marginBottom:'16px'}},rr.earnSub));
+  const stats=h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'16px'}});
+  [[rr.payoutL,rr.payoutR],['Seva fee','Shown upfront']].forEach(([a,b])=>{
+    const c=h('div',{style:{background:CARD,borderRadius:'10px',padding:'10px',border:'1px solid rgba(255,255,255,.06)'}});
+    c.appendChild(h('div',{style:{fontSize:'7.5px',color:T2}},a));
+    c.appendChild(h('div',{style:{fontSize:'11px',fontWeight:700,color:'#fff',marginTop:'3px'}},b));
+    stats.appendChild(c);
+  });
+  s.appendChild(stats);
+  s.appendChild(h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'12px',textAlign:'center',cursor:'pointer'},onclick:next},
+    h('span',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:BG}},'Start application')));
+  return s;
+}
+
+const PRO_SKILLS=['AC & HVAC','Plumbing','Electrical','Deep clean','Cook','Babysit','Pest control','Appliance repair'];
+
+function screenProJoinSkills(next){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'12px 12px 20px',background:'#0E101A',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700,color:'#fff',marginBottom:'4px'}},'What do you offer?'));
+  s.appendChild(h('div',{style:{fontSize:'8.5px',color:T2,marginBottom:'12px'}},'Tap to select all that apply'));
+  const grid=h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px'}});
+  PRO_SKILLS.forEach(sk=>{
+    const on=!!state.proSkills[sk];
+    const cell=h('div',{cls:'press',style:{
+      borderRadius:'10px',padding:'9px 8px',border:on?`2px solid ${G}`:'1px solid rgba(255,255,255,.1)',
+      background:on?'rgba(240,165,0,.1)':'rgba(255,255,255,.04)',cursor:'pointer',position:'relative',minHeight:'40px',display:'flex',alignItems:'center'
+    },onclick:()=>{state.proSkills[sk]=!state.proSkills[sk];renderApp();}});
+    cell.appendChild(h('span',{style:{fontSize:'8.5px',fontWeight:600,color:'#fff',paddingRight:on?'16px':'0'}},sk));
+    if(on) cell.appendChild(h('div',{style:{position:'absolute',top:'6px',right:'6px'}},ico('check',12,G)));
+    grid.appendChild(cell);
+  });
+  s.appendChild(grid);
+  s.appendChild(h('div',{cls:'press',style:{background:Object.keys(state.proSkills).filter(k=>state.proSkills[k]).length?G:'#374151',borderRadius:'12px',padding:'12px',textAlign:'center',cursor:'pointer',marginTop:'12px'},onclick:()=>{if(Object.keys(state.proSkills).filter(k=>state.proSkills[k]).length)next();}},
+    h('span',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:Object.keys(state.proSkills).filter(k=>state.proSkills[k]).length?BG:'#9CA3AF'}},'Continue')));
+  return s;
+}
+
+function screenProJoinId(next){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'12px 12px 20px',background:'#0E101A',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700,color:'#fff',marginBottom:'10px'}},'Verify identity'));
+  const aad=h('div',{cls:'press',style:{background:CARD,borderRadius:'12px',padding:'14px',border:'1px dashed rgba(240,165,0,.4)',marginBottom:'10px',textAlign:'center',cursor:'pointer'}});
+  const rr=R();
+  aad.appendChild(h('div',{style:{fontSize:'20px',marginBottom:'4px'}},'🪪'));
+  aad.appendChild(h('div',{style:{fontSize:'10px',fontWeight:600,color:'#fff'}},rr.idHead));
+  aad.appendChild(h('div',{style:{fontSize:'7.5px',color:T2,marginTop:'3px'}},rr.idSub));
+  s.appendChild(aad);
+  const selfie=h('div',{cls:'press',style:{background:CARD,borderRadius:'12px',padding:'14px',border:'1px dashed rgba(255,255,255,.15)',marginBottom:'10px',textAlign:'center',cursor:'pointer'}});
+  selfie.appendChild(h('div',{style:{fontSize:'20px',marginBottom:'4px'}},'🤳'));
+  selfie.appendChild(h('div',{style:{fontSize:'10px',fontWeight:600,color:'#fff'}},'Take a live selfie'));
+  selfie.appendChild(h('div',{style:{fontSize:'7.5px',color:T2,marginTop:'3px'}},'We match to your ID photo'));
+  s.appendChild(selfie);
+  s.appendChild(h('div',{style:{fontSize:'7px',color:T2,lineHeight:1.4,marginBottom:'12px',padding:'0 4px'}},rr.idFoot));
+  s.appendChild(h('div',{cls:'press',style:{background:G,borderRadius:'12px',padding:'12px',textAlign:'center',cursor:'pointer'},onclick:next},
+    h('span',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:BG}},'Submit for review')));
+  return s;
+}
+
+function screenProJoinTracker(){
+  const s=h('div',{cls:'screen-scroll',style:{padding:'16px 14px 20px',background:'#0E101A',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{style:{width:'48px',height:'48px',borderRadius:'50%',background:'rgba(34,197,94,.15)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px'}},ico('check',22,'#22C55E')));
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'15px',fontWeight:700,color:'#fff',textAlign:'center',marginBottom:'4px'}},'Application received'));
+  s.appendChild(h('div',{style:{fontSize:'8.5px',color:T2,textAlign:'center',lineHeight:1.45,marginBottom:'18px'}},'We’re reviewing your documents. Most pros hear back within 48 hours.'));
+  const steps=['Application received','ID & background check','Video interview','Approved on Seva'];
+  steps.forEach((label,i)=>{
+    const done=i<2;
+    const live=i===2;
+    const row=h('div',{style:{display:'flex',gap:'10px',marginBottom:'10px',alignItems:'center'}});
+    const dot=h('div',{style:{width:'20px',height:'20px',borderRadius:'50%',background:done?T:live?'rgba(240,165,0,.2)':'rgba(255,255,255,.1)',border:live?`2px solid ${G}`:'none',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},done?ico('check',10,BG):live?h('div',{cls:'pulse-dot',style:{width:'8px',height:'8px',borderRadius:'50%',background:G}}):null);
+    row.appendChild(dot);
+    const txt=h('div',{style:{flex:1}});
+    txt.appendChild(h('div',{style:{fontSize:'10px',fontWeight:600,color:live?'#fff':done?'#C8D0DC':'#6B7280'}},label));
+    if(live) txt.appendChild(h('div',{style:{fontSize:'7.5px',color:G,marginTop:'2px'}},'● In progress'));
+    row.appendChild(txt);
+    s.appendChild(row);
+  });
+  return s;
+}
+
+function renderProJoinFlow(){
+  const inner=h('div',{cls:'phone-inner-dark'});
+  inner.appendChild(flowPhoneStatus(true));
+  const next=()=>{if(state.proJoinStep<3){state.proJoinStep++;renderApp();}};
+  if(state.proJoinStep===0) inner.appendChild(screenProJoinWelcome(next));
+  if(state.proJoinStep===1) inner.appendChild(screenProJoinSkills(next));
+  if(state.proJoinStep===2) inner.appendChild(screenProJoinId(next));
+  if(state.proJoinStep===3) inner.appendChild(screenProJoinTracker());
+  return inner;
+}
+
+// ────────────────────────────── REWARDS (customer wallet + pro quests) ──────────────────────────────
+function screenCustRewards(){
+  const rr=R();
+  const s=h('div',{cls:'screen-scroll',style:{padding:'12px 12px 20px',background:'#F1F3F8',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'15px',fontWeight:700,color:'#0B0D12',marginBottom:'2px'}},'Seva Credits'));
+  s.appendChild(h('div',{style:{fontSize:'8.5px',color:'#6B7280',marginBottom:'12px',lineHeight:1.35}},'Real money value toward bookings · Credits from referrals, membership, and trust actions — not opaque points.'));
+  const bal=h('div',{style:{background:'linear-gradient(135deg,#0B0D12,#1B2438)',borderRadius:'14px',padding:'14px',color:'#fff',marginBottom:'12px',border:'1px solid rgba(240,165,0,.22)'}});
+  bal.appendChild(h('div',{style:{fontSize:'7.5px',color:'rgba(255,255,255,.55)',letterSpacing:'.08em',marginBottom:'4px'}},'AVAILABLE'));
+  bal.appendChild(h('div',{cls:'sora',style:{fontSize:'28px',fontWeight:800,color:G}},rr.rwBal));
+  bal.appendChild(h('div',{style:{fontSize:'8px',color:'rgba(255,255,255,.5)',marginTop:'8px',lineHeight:1.35}},'Pro membership: 1.25× credit earn on eligible spends'));
+  s.appendChild(bal);
+  const ref=h('div',{cls:'press',style:{background:'#fff',borderRadius:'12px',padding:'12px',border:'1px solid #E8E8F0',marginBottom:'10px',cursor:'pointer'}});
+  ref.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#0B0D12',marginBottom:'4px'}},'Invite a friend'));
+  ref.appendChild(h('div',{style:{fontSize:'8.5px',color:'#4B5563',lineHeight:1.45}},'You both get '+rr.rwReferEach+' in Seva Credits when their first paid job completes — not just signup.'));
+  s.appendChild(ref);
+  s.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#0B0D12',marginBottom:'6px'}},'Recent activity'));
+  [
+    ['Pro membership credit',rr.rwMemBonus,'2d ago'],
+    ['Completion tap bonus',rr.rwConfirm,'4d ago'],
+    ['Referral (pending)',rr.rwReferEach,'—'],
+  ].forEach(([t,amt,d])=>{
+    const r=h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 0',borderBottom:'1px solid #EEF0F3'}});
+    const L=h('div',{});
+    L.appendChild(h('div',{style:{fontSize:'9px',fontWeight:600,color:'#374151'}},t));
+    L.appendChild(h('div',{style:{fontSize:'7.5px',color:'#9CA3AF'}},d));
+    r.appendChild(L);
+    r.appendChild(h('span',{style:{fontSize:'9px',fontWeight:700,color:t.includes('pending')?'#9CA3AF':T}},(t.includes('pending')?'':'+')+amt));
+    s.appendChild(r);
+  });
+  s.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#0B0D12',margin:'12px 0 6px'}},'Earn more'));
+  const earnMore=[
+    'Book again within 30 days · +'+rr.rwBookAgain+' credits',
+    'Confirm job done in-app · +'+rr.rwConfirm+' each time (stops fraud, helps pros)',
+    'Stack with Member plan for multiplier on eligible bookings',
+  ];
+  earnMore.forEach(txt=>{
+    const r=h('div',{style:{display:'flex',gap:'6px',alignItems:'flex-start',marginBottom:'5px'}});
+    r.appendChild(ico('check',9,G));
+    r.appendChild(h('span',{style:{fontSize:'8.5px',color:'#4B5563',lineHeight:1.35}},txt));
+    s.appendChild(r);
+  });
+  return s;
+}
+
+function screenProRewards(){
+  const rr=R();
+  const s=h('div',{cls:'screen-scroll',style:{padding:'12px 12px 20px',background:'#0E101A',minHeight:'calc(490px - 26px)'}});
+  s.appendChild(h('div',{cls:'sora',style:{fontSize:'14px',fontWeight:700,color:'#fff',marginBottom:'2px'}},'Rewards & bonuses'));
+  s.appendChild(h('div',{style:{fontSize:'8px',color:T2,marginBottom:'12px',lineHeight:1.35}},'Quests & tiers tied to on-time, completion & low disputes — not star-chasing.'));
+  const tier=h('div',{style:{borderRadius:'12px',padding:'12px',background:'linear-gradient(145deg,#161A28,#0E121C)',border:'2px solid '+G,marginBottom:'10px',boxShadow:'0 0 20px rgba(240,165,0,.1)'}});
+  tier.appendChild(h('div',{style:{fontSize:'7px',fontWeight:700,color:G,letterSpacing:'.1em',marginBottom:'4px'}},'SEVA STANDARD · ACTIVE'));
+  tier.appendChild(h('div',{style:{fontSize:'10px',fontWeight:700,color:'#fff',marginBottom:'4px'}},'Top reliability band this month'));
+  tier.appendChild(h('div',{style:{fontSize:'8px',color:T2,lineHeight:1.45}},rr.rwFeeNote+' · priority in matching for cold-start cities.'));
+  s.appendChild(tier);
+  const quest=h('div',{style:{background:CARD,borderRadius:'12px',padding:'12px',border:'1px solid rgba(240,165,0,.22)',marginBottom:'10px'}});
+  quest.appendChild(h('div',{style:{fontSize:'9px',fontWeight:700,color:'#fff',marginBottom:'8px'}},'Weekly quest'));
+  const barBg=h('div',{style:{height:'6px',borderRadius:'3px',background:'rgba(255,255,255,.08)',overflow:'hidden',marginBottom:'6px'}});
+  barBg.appendChild(h('div',{style:{width:'62.5%',height:'100%',background:G,borderRadius:'3px'}}));
+  quest.appendChild(barBg);
+  quest.appendChild(h('div',{style:{fontSize:'8px',color:T2,marginBottom:'4px'}},'5 / 8 eligible completed jobs'));
+  quest.appendChild(h('div',{cls:'sora',style:{fontSize:'12px',fontWeight:800,color:G}},'3 more · '+rr.rwQuest+' bonus'));
+  s.appendChild(quest);
+  const rep=h('div',{style:{background:CARD,borderRadius:'12px',padding:'11px',border:'1px solid rgba(255,255,255,.06)',marginBottom:'10px'}});
+  rep.appendChild(h('div',{style:{fontSize:'7.5px',color:T2,letterSpacing:'.06em',marginBottom:'6px'}},'REPEAT HOUSEHOLDS'));
+  rep.appendChild(h('div',{style:{fontSize:'9px',color:'#E5E7EB',lineHeight:1.45}},'Extra payout credit when the same customer books you again — rewards retention, not one-off churn.'));
+  s.appendChild(rep);
+  const ref=h('div',{style:{background:CARD,borderRadius:'12px',padding:'11px',border:'1px solid rgba(255,255,255,.06)'}});
+  ref.appendChild(h('div',{style:{fontSize:'7.5px',color:T2,letterSpacing:'.06em',marginBottom:'6px'}},'INVITE A PRO'));
+  ref.appendChild(h('div',{style:{fontSize:'9px',color:'#E5E7EB',lineHeight:1.45}},'Earn '+rr.rwProRef+' after they pass vetting and complete a first paid job.'));
+  s.appendChild(ref);
+  return s;
+}
+
+let __logoLabId=0;
+
+function logoLabCard(title,subtitle,lightPreview,darkPreview){
+  const card=h('div',{style:{borderRadius:'14px',border:'1px solid rgba(255,255,255,.1)',overflow:'hidden',background:'rgba(18,20,30,.6)'}});
+  const head=h('div',{style:{padding:'12px 14px',borderBottom:'1px solid rgba(255,255,255,.06)'}});
+  head.appendChild(h('div',{cls:'sora',style:{fontSize:'12px',fontWeight:700,color:'#F4F4F8'}},title));
+  head.appendChild(h('div',{style:{fontSize:'9px',color:T2,marginTop:'3px',lineHeight:1.4}},subtitle));
+  card.appendChild(head);
+  const row=h('div',{style:{display:'flex',minHeight:'112px'}});
+  row.appendChild(h('div',{style:{flex:1,background:'#F8F9FC',display:'flex',alignItems:'center',justifyContent:'center',padding:'18px 12px'}},lightPreview));
+  row.appendChild(h('div',{style:{flex:1,background:'#0B0D12',display:'flex',alignItems:'center',justifyContent:'center',padding:'18px 12px'}},darkPreview));
+  card.appendChild(row);
+  return card;
+}
+
+function svgMonolineS(){
+  const id='lm'+(__logoLabId++);
+  const wrap=document.createElement('div');
+  wrap.innerHTML=`<svg width="96" height="108" viewBox="0 0 100 118" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs><linearGradient id="${id}" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#FFF8E7"/><stop offset="40%" stop-color="#E8B020"/><stop offset="100%" stop-color="#6B4208"/>
+</linearGradient></defs>
+<path fill="none" stroke="url(#${id})" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"
+d="M78 28 C32 24 12 48 12 66 C12 88 34 98 52 98 C70 98 88 108 88 128 C88 150 48 162 18 142"/>
+</svg>`;
+  return wrap.firstChild;
+}
+
+function svgOutlineS(){
+  const id='lo'+(__logoLabId++);
+  const wrap=document.createElement('div');
+  wrap.innerHTML=`<svg width="96" height="104" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs><linearGradient id="${id}" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#FFF8E7"/><stop offset="45%" stop-color="#D4A012"/><stop offset="100%" stop-color="#5C3A08"/>
+</linearGradient></defs>
+<text x="50" y="92" text-anchor="middle" font-family="Sora,Arial,sans-serif" font-size="102" font-weight="800" fill="none" stroke="url(#${id})" stroke-width="4" stroke-linejoin="round">S</text>
+</svg>`;
+  return wrap.firstChild;
+}
+
+/* ── Logo lab: Bézier chain (getPointAtLength) + optional guide spine ── */
+const CHAIN_S_SPINE='M152,46 C72,38 34,62 40,108 C44,132 70,144 116,150 C158,158 168,188 152,218 C136,238 68,236 48,196';
+const CHAIN_ICONS={
+  truck:'M2.5,14.5 h14.5 v4.5 h7.5 v2.8 H2.5 z M4.9,20 a2.3,2.3 0 1 1 4.7,0 M12.4,20 a2.3,2.3 0 1 1 4.7,0',
+  house:'M12,3.2 L2.5,12 h3.8 v9.5 h11.4 V12 h3.8 z M9.8,15 v6.5 h4.4 v-6.5',
+  wrench:'M5.2,5.3 L18.8,18.9 M9.8,7.8 l6.2,6.2 M6.2,16.2 l10,-8.5',
+  droplet:'M12,4.5 q6.5,9.5 0,17.5 Q5.5,18 12,4.5',
+  snowflake:'M12,3 v18 M3.5,12 h17 M5.8,5.5 l12.4,13 M18.2,5.5 L5.8,18.5',
+  plug:'M12,2.8 v7.5 M9.2,5.5 h5.6 M9.2,9.5 h5.6',
+  fork:'M18.5,3 v17 M17,3 v5.5 M18.5,3 v5.5 M20,3 v5.5',
+  package:'M4,8.2 l8,-4 l8,4 v12 l-8,4 l-8,-4 z M4,8.2 l8,4 l8,-4',
+  person:'M12,7.8 a3,3 0 1 1 .01,0 M7.6,21.2 q4.4,-7.5 8.8,0',
+  sofa:'M5,12.5 h14 v3.8 H5 z M7.2,12.5 v-3.4 h9.6 v3.4',
+  paint:'M17.2,5 h5.8 M17.2,5 v-3.5 h5.8 v3.5 M15,3.8 v-3',
+  broom:'M6.8,21.5 L13.5,8.2 M5.2,22.8 l3.4,-1.2',
+  pin:'M12,20.5 s6,-4.5 6,-9 a6,6 0 1 0-12 0c0,4.5 6 9 6 9z',
+  shield:'M12,3.6 l7.2,2.8 v5.4 q0,5.2 -7.2,10.2 Q4.8,16.8 4.8,11.8 V6.4 Z',
+  ac:'M5.2,17.6 h13.6 a1.7,1.7 0 0 1 1.7,1.7 v3.4 a1.7,1.7 0 0 1 -1.7,1.7 H5.2 a1.7,1.7 0 0 1 -1.7,-1.7 v-3.4 a1.7,1.7 0 0 1 1.7,-1.7 z M7.5,19.6 h9',
+};
+const CHAIN_ORDER=['truck','house','wrench','droplet','snowflake','plug','fork','package','person','sofa','paint','broom','pin','shield','ac','truck'];
+
+function chainSvgMarkup(suf,iconColor,spineStroke){
+  const symHtml=Object.keys(CHAIN_ICONS).map(k=>'<symbol id="'+suf+'-sym-'+k+'" viewBox="0 0 24 24"><path d="'+CHAIN_ICONS[k]+'" fill="none" stroke="currentColor" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round"/></symbol>').join('');
+  return '<svg data-chain="'+suf+'" viewBox="0 0 200 232" xmlns="http://www.w3.org/2000/svg" style="max-height:300px;width:100%;display:block" aria-label="Seva services along S curve">'+
+'<defs>'+symHtml+'</defs>'+
+'<path class="seva-chain-spine" data-op="0.32" d="'+CHAIN_S_SPINE+'" fill="none" stroke="'+spineStroke+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.32"/>'+
+'<g class="seva-chain-icons" fill="none" style="color:'+iconColor+'"></g>'+
+'</svg>';
+}
+
+function initSevaChainPlaceIcons(svg){
+  if(!svg||svg.dataset.chainPlaced) return;
+  svg.dataset.chainPlaced='1';
+  const suf=svg.getAttribute('data-chain');
+  const path=svg.querySelector('.seva-chain-spine');
+  const layer=svg.querySelector('.seva-chain-icons');
+  if(!path||!layer||!suf) return;
+  const plen=path.getTotalLength();
+  if(plen<=0) return;
+  layer.innerHTML='';
+  const n=CHAIN_ORDER.length;
+  const delta=2.8;
+  for(let i=0;i<n;i++){
+    const t=(n<=1?0.5*plen:(i/(n-1))*plen);
+    const p=path.getPointAtLength(t);
+    const p2=path.getPointAtLength(Math.min(t+delta,plen));
+    const ang=Math.atan2(p2.y-p.y,p2.x-p.x)*180/Math.PI;
+    const u=document.createElementNS('http://www.w3.org/2000/svg','use');
+    u.setAttribute('href','#'+suf+'-sym-'+CHAIN_ORDER[i]);
+    u.setAttribute('transform','translate('+p.x.toFixed(2)+','+p.y.toFixed(2)+') rotate('+ang.toFixed(2)+') scale(0.76) translate(-12,-12)');
+    layer.appendChild(u);
+  }
+}
+
+function appendLogoLabBezierChain(wrap){
+  const id='ch'+(__logoLabId++);
+  const block=h('div',{style:{marginTop:'26px',padding:'18px',borderRadius:'14px',border:'1px solid rgba(255,255,255,.08)',background:'rgba(14,16,24,.78)'}});
+  block.appendChild(h('div',{cls:'sora',style:{fontSize:'13px',fontWeight:700,color:'#fff',marginBottom:'4px'}},'07 · Services on a Bézier (runtime layout)'));
+  block.appendChild(h('div',{style:{fontSize:'9px',color:T2,marginBottom:'10px',lineHeight:1.45}},'(b) Icons placed with getPointAtLength + tangent — even spacing along one path. (a) Optional faint guide underneath. Same idea as the hand-placed chain, but mathematically regular.'));
+
+  const chkWrap=h('label',{style:{display:'inline-flex',alignItems:'center',gap:'8px',cursor:'pointer',marginBottom:'14px',fontSize:'10px',color:'#C8CED9',userSelect:'none'}});
+  const cb=document.createElement('input');
+  cb.type='checkbox';
+  cb.checked=true;
+  chkWrap.appendChild(cb);
+  chkWrap.appendChild(h('span',null,'Show faint guide curve'));
+  block.appendChild(chkWrap);
+
+  const row=h('div',{style:{display:'flex',gap:'12px',flexWrap:'wrap',alignItems:'stretch'}});
+  const lightCell=h('div',{style:{flex:'1 1 300px',background:'#F8F9FC',borderRadius:'12px',padding:'18px',display:'flex',alignItems:'center',justifyContent:'center'}});
+  lightCell.innerHTML=chainSvgMarkup(id+'L','#3D2806','#9A6B18');
+  const darkCell=h('div',{style:{flex:'1 1 300px',background:'#0B0D12',borderRadius:'12px',padding:'18px',display:'flex',alignItems:'center',justifyContent:'center'}});
+  darkCell.innerHTML=chainSvgMarkup(id+'D','#E8CE9A','#C9A227');
+  row.appendChild(lightCell);
+  row.appendChild(darkCell);
+  block.appendChild(row);
+  wrap.appendChild(block);
+
+  const syncSpine=()=>{
+    const show=cb.checked;
+    [lightCell.querySelector('svg'),darkCell.querySelector('svg')].forEach(svg=>{
+      if(!svg) return;
+      const spine=svg.querySelector('.seva-chain-spine');
+      if(!spine) return;
+      const op=spine.getAttribute('data-op')||'0.32';
+      spine.setAttribute('opacity',show?op:'0');
+    });
+  };
+  cb.addEventListener('change',syncSpine);
+  requestAnimationFrame(()=>{
+    initSevaChainPlaceIcons(lightCell.querySelector('svg'));
+    initSevaChainPlaceIcons(darkCell.querySelector('svg'));
+    syncSpine();
+  });
+}
+
+/** Standalone section: S mark directions without the default square tile */
+function renderLogoVariations(){
+  const wrap=h('div',{cls:'fade-in',style:{maxWidth:'920px',display:'flex',flexDirection:'column',alignItems:'center',gap:'10px'}});
+  wrap.appendChild(h('h2',{cls:'sora',style:{fontSize:'22px',fontWeight:800,color:'#fff',marginBottom:'0'}},'SEVA Logo (Updated)'));
+  wrap.appendChild(h('img',{src:'seva_logo_new.png',alt:'SEVA logo',style:{width:'560px',maxWidth:'100%',height:'auto',borderRadius:'18px',filter:'drop-shadow(0 18px 40px rgba(0,0,0,.35))'}}));
+  wrap.appendChild(h('p',{style:{fontSize:'12px',color:T2,lineHeight:1.55,maxWidth:'720px',textAlign:'center'}},'Cleared previous logo variations and replaced them everywhere with your new official splash/logo.'));
+  return wrap;
+}
+
+// ────────────────────────────── MAIN RENDER ──────────────────────────────
+function renderApp(){
+  const app=document.getElementById('app');
+  app.innerHTML='';
+
+  const root=h('div',{style:{background:BG,minHeight:'100vh',color:'#fff',borderRadius:'12px',overflow:'hidden'}});
+
+  // Top header
+  const top=h('div',{style:{padding:'18px 20px 0',borderBottom:'1px solid rgba(255,255,255,.06)'}});
+  const brandRow=h('div',{style:{display:'flex',alignItems:'center',gap:'10px',marginBottom:'14px'}});
+  brandRow.append(
+    SevaMark('header'),
+    h('span',{style:{fontSize:'10px',padding:'2px 9px',borderRadius:'12px',background:'rgba(240,165,0,.1)',color:G,fontWeight:600}},'Preview')
+  );
+  top.appendChild(brandRow);
+
+  const regRow=h('div',{style:{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap',marginBottom:'12px'}});
+  regRow.appendChild(h('span',{style:{fontSize:'10px',color:T2}},'Market:'));
+  ['IN','US'].forEach(code=>{
+    const on=state.region===code;
+    regRow.appendChild(h('div',{cls:'press',style:{padding:'5px 12px',borderRadius:'999px',fontSize:'10px',fontWeight:600,cursor:'pointer',background:on?G:'rgba(255,255,255,.08)',color:on?BG:'#C8D0DC',border:on?'none':'1px solid rgba(255,255,255,.12)'},onclick:()=>{state.region=code;renderApp();}},code==='IN'?'🇮🇳 India':'🇺🇸 United States'));
+  });
+  regRow.appendChild(h('span',{style:{fontSize:'9px',color:T2,maxWidth:'340px',lineHeight:1.35}},'Switches currency, phone, tax labels, ID copy, and sample addresses. Legal KYC differs by country.'));
+  top.appendChild(regRow);
+
+  // Tab rows (wrap for many flows)
+  const tabRow=h('div',{style:{display:'flex',gap:'4px',flexWrap:'wrap',alignItems:'center'}});
+  [
+    {id:'landing',label:'🌐 Web'},
+    {id:'logoLab',label:'◆ Logo'},
+    {id:'customer',label:'📱 Customer'},
+    {id:'pro',label:'🔨 Pro'},
+    {id:'splashTab',label:'✨ Splash',resetSignupStep:true},
+    {id:'signupFlow',label:'👤 Signup'},
+    {id:'aiBooking',label:'🤖 AI book'},
+    {id:'membership',label:'💎 Member'},
+    {id:'proJoin',label:'🔨 Join'},
+    {id:'rewards',label:'🎁 Rewards'},
+    {id:'adminDash',label:'🛠 Admin'},
+  ].forEach(t=>{
+    const btn=h('div',{cls:'tab-btn',style:{padding:'7px 12px',borderRadius:'8px 8px 0 0',background:state.tab===t.id?G:'transparent',color:state.tab===t.id?BG:T2,fontSize:'11px',fontWeight:500,cursor:'pointer'},onclick:()=>{state.tab=t.id; if(t.resetSignupStep) state.signupStep=0; renderApp();}},t.label);
+    tabRow.appendChild(btn);
+  });
+  top.appendChild(tabRow);
+  root.appendChild(top);
+
+  // Content
+  const content=h('div',{style:{padding:'22px 20px'}});
+
+  if(state.tab==='landing'){
+    content.appendChild(renderLanding());
+  }
+
+  if(state.tab==='logoLab'){
+    content.appendChild(renderLogoVariations());
+  }
+
+  if(state.tab==='customer'){
+    const wrap=h('div',{cls:'fade-in',style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'10px'}});
+    wrap.appendChild(h('p',{style:{fontSize:'11px',color:T2,maxWidth:'560px',textAlign:'center',lineHeight:1.45}},'Positioning vs. open gig boards + catalog home apps: vetting over volume, scope lock over bundles, escrow over rush-to-book · Flow: onboard → match → chat → request → confirm · Tap below to jump'));
+    const row1=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'5px',justifyContent:'center'}});
+    [{id:'onboarding',label:'🛡️ Onboarding'},{id:'home',label:'🏠 Home'},{id:'profile',label:'👤 Profile'},{id:'chat',label:'💬 Chat'}].forEach(sc=>{
+      row1.appendChild(h('div',{cls:'press',style:{padding:'5px 10px',borderRadius:'20px',background:state.cScreen===sc.id?G:'rgba(255,255,255,.07)',color:state.cScreen===sc.id?BG:T2,fontSize:'10px',fontWeight:600,cursor:'pointer'},onclick:()=>{state.cScreen=sc.id;renderApp();}},sc.label));
+    });
+    const row2=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'5px',justifyContent:'center'}});
+    [{id:'booking',label:'📋 Request'},{id:'pricing',label:'💰 Price'},{id:'confirm',label:'✓ Confirm'},{id:'tracking',label:'📍 Live'}].forEach(sc=>{
+      row2.appendChild(h('div',{cls:'press',style:{padding:'5px 10px',borderRadius:'20px',background:state.cScreen===sc.id?G:'rgba(255,255,255,.07)',color:state.cScreen===sc.id?BG:T2,fontSize:'10px',fontWeight:600,cursor:'pointer'},onclick:()=>{
+        if(sc.id==='pricing'){state.cPricingReturn='booking';state.cScreen='pricing';}
+        else state.cScreen=sc.id;
+        renderApp();
+      }},sc.label));
+    });
+    wrap.appendChild(row1);
+    wrap.appendChild(row2);
+    const phone=h('div',{cls:'phone-wrap'});
+    const inner=h('div',{cls:'phone-inner-light'});
+    inner.appendChild(h('div',{cls:'phone-status',style:{color:'#1A1A2E'}},h('span',null,'9:41'),h('div',{cls:'phone-notch',style:{background:'#1A1A2E'}}),h('span',{style:{fontSize:'8px'}},'●●●')));
+    const goHome=()=>{state.cScreen='home';renderApp();};
+    const goProfile=()=>{state.cScreen='profile';renderApp();};
+    const goChat=()=>{state.cScreen='chat';renderApp();};
+    const goBooking=()=>{state.cScreen='booking';renderApp();};
+    const goConfirm=()=>{state.cScreen='confirm';renderApp();};
+    const goTrack=()=>{state.cScreen='tracking';renderApp();};
+    const finishOnboard=()=>{state.cScreen='home';state.cOnboard=0;renderApp();};
+    const openPricingFromBooking=()=>{state.cPricingReturn='booking';state.cScreen='pricing';renderApp();};
+    const openPricingFromConfirm=()=>{state.cPricingReturn='confirm';state.cScreen='pricing';renderApp();};
+    const closePricing=()=>{state.cScreen=state.cPricingReturn||'booking';state.cPricingReturn=null;renderApp();};
+    const pricingBackLabel=state.cPricingReturn==='confirm'?'Back to confirmation':'Back to booking';
+    if(state.cScreen==='onboarding') inner.appendChild(screenCustOnboarding(finishOnboard,finishOnboard));
+    if(state.cScreen==='home') inner.appendChild(screenCustHome(goBooking,goProfile));
+    if(state.cScreen==='profile') inner.appendChild(screenCustProviderProfile(goHome,goChat,goBooking));
+    if(state.cScreen==='chat') inner.appendChild(screenCustChat(goProfile,goBooking));
+    if(state.cScreen==='booking') inner.appendChild(screenCustBooking(goConfirm,openPricingFromBooking));
+    if(state.cScreen==='pricing') inner.appendChild(screenPricingBreakdown(closePricing,pricingBackLabel));
+    if(state.cScreen==='confirm') inner.appendChild(screenCustConfirm(goTrack,openPricingFromConfirm));
+    if(state.cScreen==='tracking') inner.appendChild(screenCustTracking());
+    phone.appendChild(inner);
+    wrap.appendChild(phone);
+    content.appendChild(wrap);
+  }
+
+  if(state.tab==='signupFlow'){
+    const wrap=h('div',{cls:'fade-in',style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'8px'}});
+    wrap.appendChild(h('p',{style:{fontSize:'11px',color:T2,textAlign:'center'}},R().signupFlowHint+' · Blinking OTP · Pulse rings'));
+    const chips=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px',justifyContent:'center'}});
+    [0,1,2,3,4].forEach(i=>{
+      chips.appendChild(h('div',{cls:'press',style:{padding:'4px 8px',borderRadius:'12px',background:state.signupStep===i?G:'rgba(255,255,255,.07)',color:state.signupStep===i?BG:T2,fontSize:'9px',fontWeight:600,cursor:'pointer'},onclick:()=>{state.signupStep=i;renderApp();}},String(i)));
+    });
+    wrap.appendChild(chips);
+    const phone=h('div',{cls:'phone-wrap'});
+    phone.appendChild(renderSignupFlow());
+    wrap.appendChild(phone);
+    content.appendChild(wrap);
+  }
+
+  if(state.tab==='aiBooking'){
+    const wrap=h('div',{cls:'fade-in',style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'8px'}});
+    wrap.appendChild(h('p',{style:{fontSize:'11px',color:T2,textAlign:'center'}},R().aiTabHint+' · Jump steps:'));
+    const chips=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px',justifyContent:'center'}});
+    [0,1,2].forEach(i=>{
+      chips.appendChild(h('div',{cls:'press',style:{padding:'4px 8px',borderRadius:'12px',background:state.aiStep===i?G:'rgba(255,255,255,.07)',color:state.aiStep===i?BG:T2,fontSize:'9px',fontWeight:600,cursor:'pointer'},onclick:()=>{state.aiStep=i;window.clearTimeout(window._aiT);renderApp();}},['Cam','Scan','Done'][i]));
+    });
+    wrap.appendChild(chips);
+    const phone=h('div',{cls:'phone-wrap'});
+    phone.appendChild(renderAiBookingFlow());
+    wrap.appendChild(phone);
+    content.appendChild(wrap);
+  }
+
+  if(state.tab==='membership'){
+    const wrap=h('div',{cls:'fade-in',style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'8px'}});
+    wrap.appendChild(h('p',{style:{fontSize:'11px',color:T2,textAlign:'center'}},'3 tiers · Toggle Annual — prices drop 20% instantly · Pro = gold border'));
+    const phone=h('div',{cls:'phone-wrap'});
+    const inner=h('div',{cls:'phone-inner-dark'});
+    inner.appendChild(flowPhoneStatus(true));
+    inner.appendChild(screenMembership());
+    phone.appendChild(inner);
+    wrap.appendChild(phone);
+    content.appendChild(wrap);
+  }
+
+  if(state.tab==='splashTab'){
+    const wrap=h('div',{cls:'fade-in',style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'8px'}});
+    wrap.appendChild(h('p',{style:{fontSize:'11px',color:T2,textAlign:'center'}},'Splash preview · Tap to continue'));
+    const phone=h('div',{cls:'phone-wrap'});
+    phone.appendChild(renderSignupFlow());
+    wrap.appendChild(phone);
+    content.appendChild(wrap);
+  }
+
+  if(state.tab==='proJoin'){
+    const wrap=h('div',{cls:'fade-in',style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'8px'}});
+    wrap.appendChild(h('p',{style:{fontSize:'11px',color:T2,textAlign:'center'}},R().proJoinFlowHint));
+    const chips=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px',justifyContent:'center'}});
+    [0,1,2,3].forEach(i=>{
+      chips.appendChild(h('div',{cls:'press',style:{padding:'4px 8px',borderRadius:'12px',background:state.proJoinStep===i?G:'rgba(255,255,255,.07)',color:state.proJoinStep===i?BG:T2,fontSize:'9px',fontWeight:600,cursor:'pointer'},onclick:()=>{state.proJoinStep=i;renderApp();}},String(i)));
+    });
+    wrap.appendChild(chips);
+    const phone=h('div',{cls:'phone-wrap'});
+    phone.appendChild(renderProJoinFlow());
+    wrap.appendChild(phone);
+    content.appendChild(wrap);
+  }
+
+  if(state.tab==='pro'){
+    const wrap=h('div',{cls:'fade-in',style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'14px'}});
+    wrap.appendChild(h('p',{style:{fontSize:'11px',color:T2,maxWidth:'420px',textAlign:'center',lineHeight:1.45}},'Supply-side wedge: visible take rate & predictable penalties vs. opaque commission stacks on large marketplaces'));
+    const screenBtns=h('div',{style:{display:'flex',gap:'6px',justifyContent:'center'}});
+    [{id:'jobs',label:'💼 My Jobs'},{id:'earnings',label:'💰 Earnings'}].forEach(sc=>{
+      const btn=h('div',{cls:'press',style:{padding:'6px 13px',borderRadius:'20px',background:state.pScreen===sc.id?G:'rgba(255,255,255,.07)',color:state.pScreen===sc.id?BG:T2,fontSize:'11px',fontWeight:600,cursor:'pointer'},onclick:()=>{state.pScreen=sc.id;renderApp();}},sc.label);
+      screenBtns.appendChild(btn);
+    });
+    wrap.appendChild(screenBtns);
+    const phone=h('div',{cls:'phone-wrap'});
+    const inner=h('div',{cls:'phone-inner-dark'});
+    inner.appendChild(h('div',{cls:'phone-status',style:{color:'rgba(255,255,255,.6)'}},h('span',null,'9:41'),h('div',{cls:'phone-notch',style:{background:'#333'}}),h('span',{style:{fontSize:'8px'}},'●●●')));
+    if(state.pScreen==='jobs') inner.appendChild(screenProJobs());
+    if(state.pScreen==='earnings') inner.appendChild(screenProEarnings());
+    phone.appendChild(inner);
+    wrap.appendChild(phone);
+    content.appendChild(wrap);
+  }
+
+  if(state.tab==='rewards'){
+    const wrap=h('div',{cls:'fade-in',style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'8px'}});
+    wrap.appendChild(h('p',{style:{fontSize:'11px',color:T2,maxWidth:'520px',textAlign:'center',lineHeight:1.45}},'Uber-style clarity: wallet + referral on first paid job · Pro quests & Standard tier vs star games · Toggle 🇮🇳 / 🇺🇸 for amounts'));
+    const chips=h('div',{style:{display:'flex',gap:'6px',justifyContent:'center',flexWrap:'wrap'}});
+    [{id:'cust',l:'👤 Customer wallet'},{id:'pro',l:'🔨 Pro quests'}].forEach(x=>{
+      chips.appendChild(h('div',{cls:'press',style:{padding:'5px 14px',borderRadius:'20px',background:state.rewardPanel===x.id?G:'rgba(255,255,255,.07)',color:state.rewardPanel===x.id?BG:T2,fontSize:'10px',fontWeight:600,cursor:'pointer'},onclick:()=>{state.rewardPanel=x.id;renderApp();}},x.l));
+    });
+    wrap.appendChild(chips);
+    const phone=h('div',{cls:'phone-wrap'});
+    const inner=h('div',{cls:state.rewardPanel==='cust'?'phone-inner-light':'phone-inner-dark'});
+    inner.appendChild(h('div',{cls:'phone-status',style:{color:state.rewardPanel==='cust'?'#1A1A2E':'rgba(255,255,255,.6)'}},h('span',null,'9:41'),h('div',{cls:'phone-notch',style:{background:state.rewardPanel==='cust'?'#1A1A2E':'#333'}}),h('span',{style:{fontSize:'8px'}},'●●●')));
+    if(state.rewardPanel==='cust') inner.appendChild(screenCustRewards());
+    else inner.appendChild(screenProRewards());
+    phone.appendChild(inner);
+    wrap.appendChild(phone);
+    content.appendChild(wrap);
+  }
+
+  if(state.tab==='adminDash'){
+    content.appendChild(renderAdminDashboardPanel());
+  }
+
+  root.appendChild(content);
+  app.appendChild(root);
+}
+
+function renderAdminDashboardPanel(){
+  const wrap=h('div',{cls:'fade-in',style:{maxWidth:'720px',margin:'0 auto'}});
+  wrap.appendChild(h('h2',{cls:'sora',style:{fontSize:'20px',fontWeight:800,color:'#fff',marginBottom:'10px'}},'Internal admin (React)'));
+  wrap.appendChild(h('p',{style:{fontSize:'12px',color:T2,lineHeight:1.55,marginBottom:'14px'}},'Operators dashboard: users, vetting, bookings, disputes, metrics. Lives in '));
+  wrap.appendChild(h('code',{style:{display:'block',fontSize:'11px',background:'rgba(0,0,0,.25)',padding:'12px 14px',borderRadius:'8px',color:'#C8D0DC',marginBottom:'12px',whiteSpace:'pre-wrap'}},
+'cd admin\nnpm install\nnpm run dev\n→ http://localhost:5173'));
+  wrap.appendChild(h('p',{style:{fontSize:'11px',color:T2,lineHeight:1.5}},'Production-style static build: '));
+  wrap.appendChild(h('code',{style:{display:'block',fontSize:'11px',background:'rgba(0,0,0,.25)',padding:'10px 14px',borderRadius:'8px',color:'#C8D0DC',marginBottom:'12px'}},'npm run build  →  admin/dist/'));
+  wrap.appendChild(h('p',{style:{fontSize:'11px',color:T2}},'Mock in-memory data today; wire to Firestore / API when backend is live.'));
+  return wrap;
+}
+
+renderApp();
+</script>
+</body>
+</html>

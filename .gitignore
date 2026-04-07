@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+admin/node_modules/
+
+# Admin web build output
+admin/dist/
+
+# React Native
+.bundle/
+.expo/
+.expo-shared/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+dist/
+build/
+
+# Metro / caches
+.metro-health-check*
+*.log
+.DS_Store
+
+# Android
+android/.gradle/
+android/app/build/
+android/app/.cxx/
+android/build/
+android/.cxx/
+*.apk
+*.aab
+
+# iOS
+ios/Pods/
+ios/build/
+*.xcuserstate
+
+# Env / IDE
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
