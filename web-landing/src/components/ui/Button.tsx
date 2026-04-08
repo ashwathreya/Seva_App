@@ -17,7 +17,7 @@ export function Button({
   ...rest
 }: Props) {
   const base =
-    'inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-medium tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lux-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-lux-charcoal disabled:pointer-events-none disabled:opacity-45';
+    'inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-medium tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lux-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-lux-deep disabled:pointer-events-none disabled:opacity-45';
   const styles: Record<Variant, string> = {
     primary:
       'bg-lux-gold text-lux-charcoal shadow-goldGlow hover:bg-lux-gold-hover hover:shadow-goldGlowHover active:scale-[0.98]',

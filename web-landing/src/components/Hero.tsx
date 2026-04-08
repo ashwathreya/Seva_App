@@ -29,8 +29,11 @@ export function Hero({
   onBrowse,
 }: Props) {
   return (
-    <section className="relative overflow-hidden bg-lux-charcoal pt-24 pb-20 sm:pt-28 sm:pb-24 lg:min-h-[min(92vh,920px)] lg:pt-32 lg:pb-28">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(201,169,110,0.08),transparent)]" aria-hidden />
+    <section className="relative overflow-hidden bg-lux-deep pt-24 pb-20 sm:pt-28 sm:pb-24 lg:min-h-[min(92vh,920px)] lg:pt-32 lg:pb-28">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-lux-teal/20 via-transparent to-lux-deep" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 bg-lux-hero" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 bg-lux-hero-floor" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(201,169,110,0.07),transparent)]" aria-hidden />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-10">
         <div className="max-w-xl lg:max-w-none">
@@ -94,8 +97,8 @@ export function Hero({
 
         <div className="relative lg:justify-self-end">
           <div className="group relative aspect-[4/5] overflow-hidden rounded-sm sm:aspect-[4/5] lg:max-h-[640px] lg:max-w-[520px]">
-            <div className="absolute inset-0 bg-lux-charcoal/50 mix-blend-multiply" aria-hidden />
-            <div className="absolute inset-0 bg-gradient-to-t from-lux-charcoal via-lux-charcoal/40 to-transparent" aria-hidden />
+            <div className="absolute inset-0 bg-lux-teal/45 mix-blend-multiply" aria-hidden />
+            <div className="absolute inset-0 bg-gradient-to-t from-lux-deep via-lux-teal/35 to-transparent" aria-hidden />
             <img
               src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1000&q=85"
               alt="Refined living space"
