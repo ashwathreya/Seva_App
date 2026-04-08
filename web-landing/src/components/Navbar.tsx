@@ -1,20 +1,26 @@
 import { useState } from 'react';
 import { Button } from './ui/Button';
+import type { SessionUser } from '../session';
+import { firstName } from '../session';
 
 type Props = {
   scrolled: boolean;
+  user: SessionUser | null;
   onLogin: () => void;
   onSignup: () => void;
+  onLogout: () => void;
   onBook: () => void;
 };
 
-const links = [
+const baseLinks = [
+  { href: '#dashboard', label: 'Dashboard' },
+  { href: '#customer-experience', label: 'Customer flow' },
   { href: '#services', label: 'Services' },
   { href: '#how', label: 'How It Works' },
   { href: '#providers', label: 'Become a Provider' },
-];
+] as const;
 
-export function Navbar({ scrolled, onLogin, onSignup, onBook }: Props) {
+export function Navbar({ scrolled, user, onLogin, onSignup, onLogout, onBook }: Props) {
   const [open, setOpen] = useState(false);
   const onDark = !scrolled && !open;
 
@@ -40,21 +46,37 @@ export function Navbar({ scrolled, onLogin, onSignup, onBook }: Props) {
           />
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
-          {links.map((l) => (
+        <nav className="hidden items-center gap-6 lg:gap-8 md:flex" aria-label="Main">
+          {baseLinks.map((l) => (
             <a key={l.href} href={l.href} className={`text-sm font-medium transition-colors ${linkClass}`}>
               {l.label}
             </a>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 sm:flex">
-          <Button variant="ghost" className={`!py-2 !px-4 ${scrolled ? '' : '!text-seva-ink'}`} onClick={onLogin}>
-            Log in
-          </Button>
-          <Button className="!py-2 !px-4" onClick={onSignup}>
-            Sign up
-          </Button>
+        <div className="hidden items-center gap-2 sm:flex sm:gap-3">
+          {user ? (
+            <>
+              <a
+                href="#dashboard"
+                className={`max-w-[140px] truncate text-sm font-semibold transition-colors ${linkClass}`}
+                title={user.displayName}>
+                Hi, {firstName(user.displayName)}
+              </a>
+              <Button variant="ghost" className={`!py-2 !px-3 ${scrolled ? '' : '!text-seva-ink'}`} onClick={onLogout}>
+                Log out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" className={`!py-2 !px-4 ${scrolled ? '' : '!text-seva-ink'}`} onClick={onLogin}>
+                Log in
+              </Button>
+              <Button className="!py-2 !px-4" onClick={onSignup}>
+                Sign up
+              </Button>
+            </>
+          )}
         </div>
 
         <button
@@ -76,7 +98,7 @@ export function Navbar({ scrolled, onLogin, onSignup, onBook }: Props) {
       {open ? (
         <div className="border-t border-white/10 bg-seva-deep px-4 py-4 shadow-lg md:hidden">
           <nav className="flex flex-col gap-1" aria-label="Mobile">
-            {links.map((l) => (
+            {baseLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
@@ -86,12 +108,23 @@ export function Navbar({ scrolled, onLogin, onSignup, onBook }: Props) {
               </a>
             ))}
             <hr className="my-2 border-white/10" />
-            <Button variant="ghost" className="w-full justify-center" onClick={() => { setOpen(false); onLogin(); }}>
-              Log in
-            </Button>
-            <Button className="w-full justify-center" onClick={() => { setOpen(false); onSignup(); }}>
-              Sign up
-            </Button>
+            {user ? (
+              <>
+                <p className="px-3 py-1 text-sm text-seva-muted">Signed in as {user.displayName}</p>
+                <Button variant="ghost" className="w-full justify-center" onClick={() => { setOpen(false); onLogout(); }}>
+                  Log out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" className="w-full justify-center" onClick={() => { setOpen(false); onLogin(); }}>
+                  Log in
+                </Button>
+                <Button className="w-full justify-center" onClick={() => { setOpen(false); onSignup(); }}>
+                  Sign up
+                </Button>
+              </>
+            )}
             <Button variant="outline" className="w-full justify-center" onClick={() => { setOpen(false); onBook(); }}>
               Book a Service
             </Button>

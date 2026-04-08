@@ -3,6 +3,8 @@ import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { PasswordStrength } from './ui/PasswordStrength';
 import { GoogleButton } from './GoogleButton';
+import type { SessionUser } from '../session';
+import { displayNameFromLoginId, emailFromLoginId } from '../session';
 
 export type AuthMode = 'closed' | 'login' | 'signup' | 'forgot' | 'reset';
 
@@ -10,9 +12,10 @@ type Props = {
   mode: AuthMode;
   onClose: () => void;
   onSuccess: (msg: string) => void;
+  onAuthenticated?: (user: SessionUser) => void;
 };
 
-export function AuthModal({ mode, onClose, onSuccess }: Props) {
+export function AuthModal({ mode, onClose, onSuccess, onAuthenticated }: Props) {
   const [internal, setInternal] = useState<'login' | 'signup' | 'forgot' | 'reset'>('login');
   const [loading, setLoading] = useState(false);
 
@@ -64,6 +67,11 @@ export function AuthModal({ mode, onClose, onSuccess }: Props) {
     setLoading(true);
     await new Promise((r) => setTimeout(r, 900));
     setLoading(false);
+    const user: SessionUser = {
+      displayName: displayNameFromLoginId(loginEmail),
+      email: emailFromLoginId(loginEmail),
+    };
+    onAuthenticated?.(user);
     onSuccess('Welcome back — you’re signed in.');
     onClose();
   };
@@ -83,6 +91,11 @@ export function AuthModal({ mode, onClose, onSuccess }: Props) {
     setLoading(true);
     await new Promise((r) => setTimeout(r, 1000));
     setLoading(false);
+    const user: SessionUser = {
+      displayName: signupName.trim(),
+      email: signupEmail.trim().toLowerCase(),
+    };
+    onAuthenticated?.(user);
     onSuccess('Account created — let’s find your first booking.');
     onClose();
   };
@@ -184,7 +197,14 @@ export function AuthModal({ mode, onClose, onSuccess }: Props) {
               </button>
             </div>
             {divider}
-            <GoogleButton label="Continue with Google" onClick={() => onSuccess('Google sign-in would open here.')} />
+            <GoogleButton
+              label="Continue with Google"
+              onClick={() => {
+                onAuthenticated?.({ displayName: 'Alex Rivera', email: 'alex.rivera@gmail.com' });
+                onSuccess('Signed in with Google (demo).');
+                onClose();
+              }}
+            />
             <Button className="mt-6 w-full" onClick={submitLogin} loading={loading}>
               Sign in
             </Button>
@@ -246,7 +266,14 @@ export function AuthModal({ mode, onClose, onSuccess }: Props) {
               </div>
             </div>
             {divider}
-            <GoogleButton label="Continue with Google" onClick={() => onSuccess('Google sign-up would open here.')} />
+            <GoogleButton
+              label="Continue with Google"
+              onClick={() => {
+                onAuthenticated?.({ displayName: 'Alex Rivera', email: 'alex.rivera@gmail.com' });
+                onSuccess('Account linked with Google (demo).');
+                onClose();
+              }}
+            />
             <Button className="mt-6 w-full" onClick={submitSignup} loading={loading}>
               Create account
             </Button>

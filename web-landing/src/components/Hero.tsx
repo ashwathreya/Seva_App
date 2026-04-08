@@ -12,6 +12,7 @@ const SERVICES = [
 type Props = {
   location: string;
   service: string;
+  userDisplayName?: string | null;
   onLocationChange: (v: string) => void;
   onServiceChange: (v: string) => void;
   onBook: () => void;
@@ -21,6 +22,7 @@ type Props = {
 export function Hero({
   location,
   service,
+  userDisplayName,
   onLocationChange,
   onServiceChange,
   onBook,
@@ -46,6 +48,11 @@ export function Hero({
           <p className="mt-4 max-w-xl text-lg text-seva-ink/90 sm:text-xl">
             Verified professionals. Transparent pricing. Instant booking.
           </p>
+          {userDisplayName ? (
+            <p className="mt-2 text-sm font-medium text-seva-gold/95">
+              Signed in as <span className="text-white">{userDisplayName}</span> — your dashboard is below.
+            </p>
+          ) : null}
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <Button className="w-full min-w-[200px] sm:w-auto" onClick={onBook}>
