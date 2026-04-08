@@ -110,7 +110,7 @@ export function App() {
 
       {toast ? (
         <div
-          className="fixed left-1/2 top-20 z-[110] max-w-md -translate-x-1/2 rounded-xl border border-[#F0A500]/40 bg-[#071F20] px-5 py-3 text-center text-sm font-medium text-[#EAF3F3] shadow-lg animate-[fadeSlide_0.3s_ease-out]"
+          className="fixed left-1/2 top-20 z-[110] max-w-md -translate-x-1/2 rounded-lg border border-lux-gold/30 bg-lux-surface px-5 py-3 text-center text-sm font-medium text-lux-parchment shadow-[0_16px_48px_rgba(0,0,0,0.45)] animate-[fadeSlide_0.3s_ease-out]"
           role="status">
           {toast}
         </div>

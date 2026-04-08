@@ -17,15 +17,15 @@ export function Button({
   ...rest
 }: Props) {
   const base =
-    'inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-seva-gold focus-visible:ring-offset-2 focus-visible:ring-offset-seva-deep disabled:opacity-50 disabled:pointer-events-none';
+    'inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-medium tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lux-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-lux-charcoal disabled:pointer-events-none disabled:opacity-45';
   const styles: Record<Variant, string> = {
     primary:
-      'bg-seva-gold text-seva-night shadow-md hover:brightness-105 hover:shadow-goldGlow active:scale-[0.98]',
+      'bg-lux-gold text-lux-charcoal shadow-goldGlow hover:bg-lux-gold-hover hover:shadow-goldGlowHover active:scale-[0.98]',
     secondary:
-      'border border-white/20 bg-white/10 text-seva-ink backdrop-blur-sm hover:bg-white/15 active:scale-[0.98]',
-    ghost: 'text-seva-ink hover:bg-white/10',
+      'border border-white/[0.12] bg-white/[0.04] text-lux-parchment hover:border-white/[0.18] hover:bg-white/[0.07] active:scale-[0.98]',
+    ghost: 'text-lux-parchment/90 hover:bg-white/[0.06]',
     outline:
-      'border-2 border-seva-gold/50 bg-transparent text-seva-gold hover:bg-seva-gold/10',
+      'border border-lux-gold/40 bg-transparent text-lux-gold hover:border-lux-gold/60 hover:bg-lux-gold/[0.08]',
   };
 
   return (

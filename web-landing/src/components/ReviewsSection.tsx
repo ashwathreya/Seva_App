@@ -1,59 +1,67 @@
+import { Reveal } from './Reveal';
+
 const reviews = [
   {
     name: 'Priya N.',
     loc: 'Jersey City',
-    text: 'Booked a deep clean before family flew in. Pro showed up on time, brought supplies, and the place looked magazine-level. Price matched the quote in the app.',
+    text: 'Booked a deep clean before family flew in. The pro arrived on time, the home looked immaculate, and the invoice matched the quote exactly.',
     rating: 5,
-    img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80',
+    img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=85',
   },
   {
     name: 'David M.',
     loc: 'Hoboken',
-    text: 'Had a leak under the sink on a Sunday. Matched with someone in under 20 minutes, fixed same day. Way less stress than calling random numbers from search.',
+    text: 'Sunday leak under the sink — matched within twenty minutes, resolved same day. Finally a service that respects both my time and my home.',
     rating: 5,
-    img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80',
+    img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=85',
   },
   {
     name: 'Elena R.',
     loc: 'Newark',
-    text: 'Used SEVA for TV mounting and a few odd jobs. Every pro had reviews I could actually trust. Escrow meant I wasn’t paying until I was happy.',
+    text: 'Mounting, small repairs, and honest pricing. Escrow meant I paid only when the work met my standard. That’s the trust I was looking for.',
     rating: 5,
-    img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80',
+    img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=85',
   },
 ];
 
 export function ReviewsSection() {
   return (
-    <section className="border-t border-white/10 bg-seva-soft py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Customers stick with SEVA</h2>
-          <p className="mt-3 text-lg text-seva-muted">Real bookings from busy households across North Jersey.</p>
-        </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+    <section className="border-t border-white/[0.06] bg-lux-surface py-20 sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+        <Reveal>
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-lux-muted">Testimonials</p>
+            <h2 className="mt-4 font-serif text-3xl font-semibold tracking-tight text-lux-parchment sm:text-4xl">
+              Trusted by discerning households
+            </h2>
+            <p className="mt-4 text-base text-lux-muted sm:text-lg">North Jersey homeowners who expect more.</p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid gap-6 md:grid-cols-3 md:gap-8">
           {reviews.map((r) => (
-            <blockquote
-              key={r.name}
-              className="flex flex-col rounded-2xl border border-white/10 bg-seva-deep/60 p-6 shadow-sm transition-shadow hover:border-seva-gold/20 hover:shadow-md">
-              <div className="flex items-center gap-3">
-                <img
-                  src={r.img}
-                  alt=""
-                  className="h-12 w-12 rounded-full object-cover ring-2 ring-seva-gold/30"
-                  width={48}
-                  height={48}
-                />
-                <div>
-                  <cite className="not-italic font-bold text-white">{r.name}</cite>
-                  <p className="text-xs text-seva-muted">{r.loc}</p>
+            <Reveal key={r.name}>
+              <blockquote className="flex h-full flex-col border border-white/[0.06] bg-lux-charcoal/50 p-8 transition-all duration-300 hover:border-lux-gold/15 hover:shadow-innerLight">
+                <div className="flex items-center gap-4">
+                  <img
+                    src={r.img}
+                    alt=""
+                    className="h-14 w-14 rounded-full object-cover ring-1 ring-lux-gold/20"
+                    width={56}
+                    height={56}
+                  />
+                  <div>
+                    <cite className="not-italic font-serif text-lg font-medium text-lux-parchment">{r.name}</cite>
+                    <p className="text-xs uppercase tracking-wider text-lux-muted">{r.loc}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="mt-3 text-seva-gold" aria-label={`${r.rating} out of 5`}>
-                {'★'.repeat(r.rating)}
-                <span className="sr-only">{r.rating} stars</span>
-              </div>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-seva-ink/90">“{r.text}”</p>
-            </blockquote>
+                <div className="mt-5 text-lux-gold/90" aria-label={`${r.rating} out of 5 stars`}>
+                  {'★'.repeat(r.rating)}
+                  <span className="sr-only">{r.rating} stars</span>
+                </div>
+                <p className="mt-4 flex-1 text-sm leading-relaxed text-lux-parchment/85">“{r.text}”</p>
+              </blockquote>
+            </Reveal>
           ))}
         </div>
       </div>

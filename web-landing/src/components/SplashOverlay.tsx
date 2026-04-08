@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const SPLASH_BG = '#0F3D3E';
+const SPLASH_BG = '#0f0f0f';
 const EXIT_MS = 400;
 const LOGO_HOLD_MS = 2000;
 const VIDEO_MAX_MS = 15000;

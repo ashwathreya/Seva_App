@@ -7,6 +7,6 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply antialiased bg-seva-deep text-seva-ink;
+    @apply antialiased bg-lux-charcoal font-sans text-lux-parchment;
   }
 }

@@ -1,4 +1,5 @@
 import { Button } from './ui/Button';
+import { Reveal } from './Reveal';
 import type { SessionUser } from '../session';
 import { firstName } from '../session';
 
@@ -7,7 +8,6 @@ type Props = {
   location: string;
   service: string;
   onSignIn: () => void;
-  /** Opens in-app home (good morning, matched pro, etc.) */
   onOpenHome: () => void;
   onRequestBooking: () => void;
   onBrowseServices: () => void;
@@ -25,67 +25,73 @@ export function UserDashboardSection({
   onLogout,
 }: Props) {
   return (
-    <section id="dashboard" className="scroll-mt-24 border-t border-white/10 bg-seva-soft/30 py-12 sm:py-14">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-xs font-semibold uppercase tracking-[0.14em] text-seva-gold">Your account</h2>
-        <p className="mx-auto mt-2 max-w-2xl text-center text-2xl font-bold tracking-tight text-seva-ink sm:text-3xl">
-          {user ? `Welcome back, ${firstName(user.displayName)}` : 'Sign in for your dashboard'}
-        </p>
+    <section id="dashboard" className="scroll-mt-24 border-t border-white/[0.06] bg-lux-surface py-16 sm:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+        <Reveal>
+          <p className="text-center text-[11px] font-medium uppercase tracking-[0.25em] text-lux-muted">Account</p>
+          <p className="mx-auto mt-4 max-w-2xl text-center font-serif text-3xl font-semibold tracking-tight text-lux-parchment sm:text-4xl">
+            {user ? `Welcome back, ${firstName(user.displayName)}` : 'Your private dashboard'}
+          </p>
+        </Reveal>
 
         {user ? (
-          <div className="mx-auto mt-8 max-w-3xl overflow-hidden rounded-2xl border border-white/10 bg-seva-deep/80 shadow-card backdrop-blur-sm">
-            <div className="border-b border-white/10 bg-gradient-to-r from-seva-teal/20 to-transparent px-5 py-4 sm:px-6">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-center gap-3">
-                  <div
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-seva-gold/20 text-lg font-bold text-seva-gold"
-                    aria-hidden>
-                    {firstName(user.displayName).charAt(0).toUpperCase()}
+          <Reveal>
+            <div className="mx-auto mt-10 max-w-3xl overflow-hidden border border-white/[0.08] bg-lux-charcoal/80 shadow-card">
+              <div className="border-b border-white/[0.06] bg-gradient-to-r from-lux-gold/[0.08] to-transparent px-6 py-5 sm:px-8">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-lux-gold/25 bg-lux-gold/10 font-serif text-xl text-lux-gold"
+                      aria-hidden>
+                      {firstName(user.displayName).charAt(0).toUpperCase()}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate font-medium text-lux-parchment">{user.displayName}</p>
+                      <p className="truncate text-sm text-lux-muted">{user.email}</p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <p className="truncate font-semibold text-white">{user.displayName}</p>
-                    <p className="truncate text-sm text-seva-muted">{user.email}</p>
-                  </div>
+                  <Button variant="ghost" className="shrink-0 self-start sm:self-center" onClick={onLogout}>
+                    Log out
+                  </Button>
                 </div>
-                <Button variant="ghost" className="shrink-0 self-start sm:self-center" onClick={onLogout}>
-                  Log out
+              </div>
+              <div className="grid gap-4 p-6 sm:grid-cols-2 sm:p-8">
+                <div className="border border-white/[0.06] bg-lux-surface/40 p-5">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-lux-muted">Saved location</p>
+                  <p className="mt-2 text-lux-parchment">{location || '—'}</p>
+                </div>
+                <div className="border border-white/[0.06] bg-lux-surface/40 p-5">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-lux-muted">Service focus</p>
+                  <p className="mt-2 text-lux-parchment">{service || '—'}</p>
+                </div>
+              </div>
+              <div className="grid gap-3 border-t border-white/[0.06] p-6 sm:grid-cols-3 sm:p-8">
+                <Button variant="secondary" className="w-full" onClick={onOpenHome}>
+                  Open home
+                </Button>
+                <Button className="w-full" onClick={onRequestBooking}>
+                  Request booking
+                </Button>
+                <Button variant="secondary" className="w-full" onClick={onBrowseServices}>
+                  Browse services
                 </Button>
               </div>
+              <p className="border-t border-white/[0.04] px-6 py-4 text-center text-xs text-lux-muted sm:px-8">
+                Demo — preferences stay on this device until you connect the mobile app.
+              </p>
             </div>
-            <div className="grid gap-4 p-5 sm:grid-cols-2 sm:p-6">
-              <div className="rounded-xl border border-white/10 bg-black/20 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-seva-muted">Saved location</p>
-                <p className="mt-1 font-medium text-seva-ink">{location || '—'}</p>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-black/20 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-seva-muted">Service focus</p>
-                <p className="mt-1 font-medium text-seva-ink">{service || '—'}</p>
-              </div>
-            </div>
-            <div className="grid gap-3 border-t border-white/10 p-5 sm:grid-cols-3 sm:p-6">
-              <Button variant="secondary" className="w-full" onClick={onOpenHome}>
-                Open home
-              </Button>
-              <Button className="w-full" onClick={onRequestBooking}>
-                Request booking
-              </Button>
-              <Button variant="secondary" className="w-full" onClick={onBrowseServices}>
-                Browse services
-              </Button>
-            </div>
-            <p className="border-t border-white/5 px-5 py-3 text-center text-xs text-seva-muted sm:px-6">
-              Demo mode — preferences are stored on this device only. Real accounts will sync with the SEVA app.
-            </p>
-          </div>
+          </Reveal>
         ) : (
-          <div className="mx-auto mt-8 max-w-lg rounded-2xl border border-white/10 bg-seva-deep/60 p-6 text-center shadow-card">
-            <p className="text-seva-muted">
-              After you sign in, open your SEVA home to browse matched pros, chat, and complete requests — all in one place.
-            </p>
-            <Button className="mt-5" onClick={onSignIn}>
-              Sign in or create account
-            </Button>
-          </div>
+          <Reveal>
+            <div className="mx-auto mt-10 max-w-lg border border-white/[0.08] bg-lux-charcoal/60 p-8 text-center">
+              <p className="text-sm leading-relaxed text-lux-muted">
+                Sign in to open your SEVA home, browse matched professionals, and manage bookings in one calm place.
+              </p>
+              <Button className="mt-8" onClick={onSignIn}>
+                Sign in or create account
+              </Button>
+            </div>
+          </Reveal>
         )}
       </div>
     </section>

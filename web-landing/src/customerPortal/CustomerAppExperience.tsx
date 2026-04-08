@@ -730,25 +730,25 @@ export function CustomerAppExperience({
 
   return (
     <div
-      className="fixed inset-0 z-[95] flex flex-col bg-seva-deep"
+      className="fixed inset-0 z-[95] flex flex-col bg-lux-charcoal"
       role="dialog"
       aria-modal="true"
       aria-label="SEVA">
-      <header className="flex shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-seva-deep/95 px-3 py-3 backdrop-blur-md sm:gap-4 sm:px-5">
+      <header className="flex shrink-0 items-center justify-between gap-2 border-b border-white/[0.06] bg-lux-charcoal/95 px-3 py-3 backdrop-blur-xl sm:gap-4 sm:px-5">
         <button
           type="button"
           onClick={onClose}
-          className="shrink-0 text-left text-xs font-semibold text-seva-gold transition hover:text-white sm:text-sm">
+          className="shrink-0 text-left text-xs font-semibold text-lux-gold transition hover:text-lux-parchment sm:text-sm">
           ← Marketing site
         </button>
         <img src="/seva_logo_new.png" alt="SEVA" className="h-7 w-auto opacity-95 sm:h-8" width={120} height={32} />
-        <span className="max-w-[100px] shrink-0 truncate text-right text-[10px] font-medium text-seva-muted sm:max-w-[140px] sm:text-xs">
+        <span className="max-w-[100px] shrink-0 truncate text-right text-[10px] font-medium text-lux-muted sm:max-w-[140px] sm:text-xs">
           {homeGreetingName?.trim() ? firstName(homeGreetingName) : '\u00a0'}
         </span>
       </header>
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <div className="flex flex-1 justify-center overflow-y-auto px-3 py-4 sm:px-6 sm:py-6">
-          <div className="h-fit w-full max-w-md min-h-[min(520px,75vh)] overflow-hidden rounded-2xl border border-seva-gold/25 bg-seva-soft/20 shadow-[0_24px_80px_rgba(0,0,0,0.5)]">
+          <div className="h-fit w-full max-w-md min-h-[min(520px,75vh)] overflow-hidden rounded-2xl border border-lux-gold/20 bg-lux-surface/30 shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
             <div className="max-h-[min(720px,calc(100vh-8rem))] min-h-[min(520px,70vh)] overflow-y-auto">{renderPanel()}</div>
           </div>
         </div>

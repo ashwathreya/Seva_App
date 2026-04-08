@@ -1,43 +1,110 @@
 import { Button } from './ui/Button';
+import { Reveal } from './Reveal';
 
 const services = [
-  { name: 'Cleaning', price: 'From $98', emoji: '🧹', tint: 'bg-sky-500/15 text-sky-100 ring-sky-400/30' },
-  { name: 'Plumbing', price: 'From $95', emoji: '🔧', tint: 'bg-amber-500/15 text-amber-100 ring-amber-400/30' },
-  { name: 'Electrical', price: 'From $105', emoji: '⚡', tint: 'bg-violet-500/15 text-violet-100 ring-violet-400/30' },
-  { name: 'AC repair', price: 'From $89', emoji: '❄️', tint: 'bg-cyan-500/15 text-cyan-100 ring-cyan-400/30' },
-  { name: 'Handyman', price: 'From $65', emoji: '🛠️', tint: 'bg-orange-500/15 text-orange-100 ring-orange-400/30' },
-  { name: 'Painting', price: 'From $120', emoji: '🎨', tint: 'bg-rose-500/15 text-rose-100 ring-rose-400/30' },
-  { name: 'Moving help', price: 'From $118', emoji: '📦', tint: 'bg-indigo-500/15 text-indigo-100 ring-indigo-400/30' },
-  { name: 'Mounting', price: 'From $69', emoji: '📺', tint: 'bg-white/10 text-seva-ink ring-white/20' },
+  {
+    name: 'Cleaning',
+    price: 'From $98',
+    rating: 4.9,
+    img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=85',
+    alt: 'Immaculate home interior',
+  },
+  {
+    name: 'Plumbing',
+    price: 'From $95',
+    rating: 4.8,
+    img: 'https://images.unsplash.com/photo-1585704032919-ce89e91875c4?w=800&q=85',
+    alt: 'Professional plumbing work',
+  },
+  {
+    name: 'Electrical',
+    price: 'From $105',
+    rating: 4.9,
+    img: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=800&q=85',
+    alt: 'Electrical installation',
+  },
+  {
+    name: 'AC repair',
+    price: 'From $89',
+    rating: 4.8,
+    img: 'https://images.unsplash.com/photo-1631545846186-c09538dbfe5b?w=800&q=85',
+    alt: 'Climate control service',
+  },
+  {
+    name: 'Handyman',
+    price: 'From $65',
+    rating: 4.9,
+    img: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=800&q=85',
+    alt: 'Handyman at work',
+  },
+  {
+    name: 'Painting',
+    price: 'From $120',
+    rating: 4.8,
+    img: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=800&q=85',
+    alt: 'Interior painting',
+  },
+  {
+    name: 'Moving help',
+    price: 'From $118',
+    rating: 4.9,
+    img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=85',
+    alt: 'Moving and delivery',
+  },
+  {
+    name: 'Mounting',
+    price: 'From $69',
+    rating: 4.8,
+    img: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=800&q=85',
+    alt: 'TV and fixture mounting',
+  },
 ];
 
 type Props = { onBook: () => void };
 
 export function ServicesGrid({ onBook }: Props) {
   return (
-    <section id="services" className="scroll-mt-20 bg-seva-deep py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Popular services</h2>
-          <p className="mt-3 text-lg text-seva-muted">
-            Upfront starting prices for standard visits. Final quotes are locked before work begins.
-          </p>
-        </div>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <section id="services" className="scroll-mt-20 bg-lux-charcoal py-20 sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+        <Reveal>
+          <div className="max-w-2xl">
+            <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-lux-muted">Services</p>
+            <h2 className="mt-4 font-serif text-3xl font-semibold tracking-tight text-lux-parchment sm:text-4xl lg:text-[2.75rem]">
+              Curated for your home
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-lux-muted sm:text-lg">
+              Clear starting prices. Final quotes are fixed before any work begins — no surprises.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {services.map((s) => (
-            <article
-              key={s.name}
-              className="flex flex-col rounded-2xl border border-white/10 bg-seva-soft/40 p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-seva-gold/35 hover:shadow-cardHover">
-              <div
-                className={`inline-flex h-12 w-12 items-center justify-center rounded-xl text-2xl ring-1 ${s.tint}`}>
-                <span aria-hidden>{s.emoji}</span>
-              </div>
-              <h3 className="mt-4 text-lg font-bold text-white">{s.name}</h3>
-              <p className="mt-1 text-sm font-semibold text-seva-gold">{s.price}</p>
-              <Button variant="secondary" className="mt-5 w-full" onClick={onBook}>
-                Book now
-              </Button>
-            </article>
+            <Reveal key={s.name}>
+              <article className="group flex h-full flex-col overflow-hidden rounded-sm border border-white/[0.06] bg-lux-surface shadow-card transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:border-lux-gold/25 hover:shadow-goldGlowHover">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img
+                    src={s.img}
+                    alt={s.alt}
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    width={800}
+                    height={600}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-lux-charcoal/80 via-transparent to-transparent opacity-80" />
+                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-lux-charcoal/70 px-2.5 py-1 text-[11px] text-lux-parchment backdrop-blur-sm">
+                    <span className="text-lux-gold">★</span>
+                    {s.rating}
+                  </div>
+                </div>
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="font-serif text-xl font-semibold text-lux-parchment">{s.name}</h3>
+                  <p className="mt-1 text-sm text-lux-gold/95">{s.price}</p>
+                  <Button variant="secondary" className="mt-5 w-full" onClick={onBook}>
+                    Book
+                  </Button>
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>
