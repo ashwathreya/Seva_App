@@ -110,6 +110,7 @@ export function CustomerAppExperience({
   const [onboardIdx, setOnboardIdx] = useState(0);
   const [pricingReturn, setPricingReturn] = useState<PricingReturn>('home');
   const [slot, setSlot] = useState(1);
+  const [selectedProvider, setSelectedProvider] = useState(0);
   const [bookingSubmitting, setBookingSubmitting] = useState(false);
   const [pendingScrollBookings, setPendingScrollBookings] = useState(false);
   const prevOpen = useRef(false);
@@ -389,11 +390,52 @@ export function CustomerAppExperience({
       case 'booking': {
         const bk = US_CUSTOMER;
         const slotLabels = ['Today 4 PM', 'Today 6 PM', 'Tomorrow 10 AM', 'Tomorrow 2 PM'];
+        const providers = [
+          { name: 'John Doe', rating: '4.8', exp: '7 yrs', price: '$189', availability: 'Today 6 PM' },
+          { name: 'Maya Chen', rating: '4.9', exp: '9 yrs', price: '$198', availability: 'Tomorrow 10 AM' },
+          { name: 'Carlos M', rating: '4.7', exp: '5 yrs', price: '$182', availability: 'Tomorrow 2 PM' },
+        ] as const;
+        const selectedPro = providers[selectedProvider] ?? providers[0];
         return (
           <div className={`${panelBg} min-h-[480px] space-y-3 p-4 sm:p-5`}>
+            <div className="rounded-xl border border-[#E4E7EF] bg-white p-3">
+              <p className="text-[10px] font-bold uppercase tracking-wide text-[#9CA3AF]">Guided booking flow</p>
+              <div className="mt-2 grid grid-cols-3 gap-1.5 text-[9px] font-medium">
+                {[
+                  '1. Service',
+                  '2. Details',
+                  '3. Address/time',
+                  '4. Providers',
+                  '5. Summary',
+                  '6. Secure pay',
+                  '7. Confirm',
+                  '8. Tracking',
+                  '9. Review',
+                ].map((step, i) => (
+                  <div
+                    key={step}
+                    className={`rounded-md border px-1.5 py-1 text-center ${
+                      i < 6 ? 'border-seva-gold/30 bg-seva-gold/10 text-[#7A5300]' : 'border-[#E8E8F0] bg-[#F7F7FA] text-[#9CA3AF]'
+                    }`}>
+                    {step}
+                  </div>
+                ))}
+              </div>
+            </div>
             <button type="button" onClick={goHome} className="flex items-center gap-2 text-sm font-bold text-[#0B0D12] hover:underline">
               ← {bk.bookingTitle}
             </button>
+            <div className="rounded-[10px] border border-[#E8E8F0] bg-white p-3">
+              <p className="mb-2 text-xs font-bold text-[#0B0D12]">Step 1 — Service selection</p>
+              <div className="rounded-lg border border-[#EBEBF0] bg-[#F8FAFC] px-3 py-2 text-xs text-[#94A3B8]">What service do you need?</div>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {['Moving', 'Home cleaning', 'Plumbing', 'Handyman'].map((tag) => (
+                  <span key={tag} className="rounded-full border border-[#E5E7EB] bg-white px-2 py-1 text-[10px] text-[#475569]">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
             <div className="rounded-xl bg-gradient-to-br from-[#0B0D12] to-[#1B1F32] p-4 text-white">
               <div className="flex justify-between gap-3">
                 <div>
@@ -407,6 +449,12 @@ export function CustomerAppExperience({
                   <p className="text-[10px] text-[#666]">{bk.bookingPriceFoot}</p>
                 </div>
               </div>
+            </div>
+            <div className="rounded-[10px] border border-[#EBEBF0] bg-white p-3">
+              <p className="mb-2 text-xs font-bold text-[#0B0D12]">Step 2 — Service details</p>
+              <p className="text-[11px] leading-relaxed text-[#6B7280]">
+                {bk.bookingSub}. Photos, inclusions, and reviews are visible before checkout so there are no surprises.
+              </p>
             </div>
             <button
               type="button"
@@ -430,7 +478,10 @@ export function CustomerAppExperience({
               </p>
             </div>
             <div className="rounded-[10px] border border-[#EBEBF0] bg-white p-3">
-              <p className="mb-2 text-xs font-bold text-[#0B0D12]">Pick a time</p>
+              <p className="mb-2 text-xs font-bold text-[#0B0D12]">Step 3 — Location + time</p>
+              <div className="mb-2 rounded-lg border border-[#E8E8F0] bg-[#F8FAFC] px-2.5 py-2 text-[11px] text-[#475569]">
+                Address: 88 Hudson Street, Jersey City, NJ
+              </div>
               <div className="flex flex-wrap gap-1.5">
                 {slotLabels.map((sl, i) => (
                   <button
@@ -447,9 +498,51 @@ export function CustomerAppExperience({
                 ))}
               </div>
             </div>
+            <div className="rounded-[10px] border border-[#EBEBF0] bg-white p-3">
+              <div className="mb-2 flex items-center justify-between">
+                <p className="text-xs font-bold text-[#0B0D12]">Step 4 — Provider matching</p>
+                <button
+                  type="button"
+                  onClick={() => setSelectedProvider(0)}
+                  className="text-[10px] font-semibold text-seva-teal hover:underline">
+                  Auto-assign best fit
+                </button>
+              </div>
+              <div className="space-y-2">
+                {providers.map((pro, idx) => (
+                  <button
+                    key={pro.name}
+                    type="button"
+                    onClick={() => setSelectedProvider(idx)}
+                    className={`w-full rounded-lg border px-3 py-2 text-left transition ${
+                      selectedProvider === idx
+                        ? 'border-seva-gold bg-seva-gold/10'
+                        : 'border-[#E8E8F0] bg-white hover:border-seva-teal/35'
+                    }`}>
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-xs font-bold text-[#0B0D12]">{pro.name}</p>
+                      <p className="text-xs font-semibold text-[#334155]">{pro.price}</p>
+                    </div>
+                    <p className="mt-0.5 text-[10px] text-[#6B7280]">
+                      ⭐ {pro.rating} · {pro.exp} experience · Available {pro.availability}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-[10px] border border-[#EBEBF0] bg-white p-3">
+              <p className="mb-2 text-xs font-bold text-[#0B0D12]">Step 5 — Booking summary</p>
+              <div className="space-y-1 text-[11px] text-[#475569]">
+                <p>Service: {bk.bookingHeroTitle}</p>
+                <p>Provider: {selectedPro.name}</p>
+                <p>Date/time: {slotLabels[slot] ?? slotLabels[0]}</p>
+                <p>Address: 88 Hudson Street, Jersey City, NJ</p>
+                <p className="font-semibold text-[#0B0D12]">Price estimate: {selectedPro.price}</p>
+              </div>
+            </div>
             <div className="flex items-center gap-2 rounded-lg border border-seva-teal/20 bg-seva-teal/10 px-2.5 py-2 text-xs text-seva-teal">
               <span>🛡️</span>
-              Payment held securely — released only after you approve the completed work
+              Step 6 — Secure payment escrow: charged now, released only after completion approval
             </div>
             <FirstBookingGuaranteeBlock />
             <button
@@ -463,8 +556,8 @@ export function CustomerAppExperience({
                   try {
                     appendBooking({
                       serviceTitle: bk.bookingHeroTitle,
-                      proName: DEMO_PRO.name,
-                      priceLabel: bk.bookAC,
+                      proName: selectedPro.name,
+                      priceLabel: selectedPro.price,
                       scheduledLabel: slotLabels[slot] ?? slotLabels[0]!,
                       status: 'requested',
                     });
@@ -486,8 +579,8 @@ export function CustomerAppExperience({
                 </span>
               ) : (
                 <>
-                  <p className="text-sm font-bold text-seva-deep">Send booking request — {bk.bookAC}</p>
-                  <p className="mt-0.5 text-xs text-[#5A3800]">You can still chat · Nothing final until you confirm details</p>
+                  <p className="text-sm font-bold text-seva-deep">Step 7 — Confirm booking request</p>
+                  <p className="mt-0.5 text-xs text-[#5A3800]">Provider assigned instantly · live tracking appears after confirmation</p>
                 </>
               )}
             </button>
