@@ -17,15 +17,15 @@ export function Button({
   ...rest
 }: Props) {
   const base =
-    'inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-medium tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lux-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-lux-deep disabled:pointer-events-none disabled:opacity-45';
+    'inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-medium tracking-wide transition-all duration-200 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ds-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ds-base disabled:pointer-events-none disabled:opacity-45';
   const styles: Record<Variant, string> = {
     primary:
-      'bg-lux-gold text-lux-charcoal shadow-goldGlow hover:bg-lux-gold-hover hover:shadow-goldGlowHover active:scale-[0.98]',
+      'bg-ds-gold text-ds-base shadow-goldGlow hover:bg-ds-goldHi hover:shadow-goldGlowHover hover:scale-[1.02] active:scale-[0.98]',
     secondary:
-      'border border-white/[0.12] bg-white/[0.04] text-lux-parchment hover:border-white/[0.18] hover:bg-white/[0.07] active:scale-[0.98]',
-    ghost: 'text-lux-parchment/90 hover:bg-white/[0.06]',
+      'border border-ds-line bg-ds-elevated text-ds-text hover:border-ds-gold/35 hover:bg-ds-surface active:scale-[0.98]',
+    ghost: 'text-ds-text hover:bg-ds-surface/80 active:scale-[0.98]',
     outline:
-      'border border-lux-gold/40 bg-transparent text-lux-gold hover:border-lux-gold/60 hover:bg-lux-gold/[0.08]',
+      'border border-ds-gold/55 bg-transparent text-ds-gold hover:border-ds-gold hover:bg-ds-goldSoft/50 hover:scale-[1.02] active:scale-[0.98]',
   };
 
   return (

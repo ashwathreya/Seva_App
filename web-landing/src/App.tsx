@@ -13,6 +13,7 @@ import { FinalCta } from './components/FinalCta';
 import { Footer } from './components/Footer';
 import { MobileStickyCta } from './components/MobileStickyCta';
 import { CustomerAppExperience, type CustomerAppScreen } from './customerPortal/CustomerAppExperience';
+import { ProviderAppExperience } from './providerPortal/ProviderAppExperience';
 import { clearSession, loadSession, saveSession, type SessionUser } from './session';
 
 export function App() {
@@ -25,6 +26,7 @@ export function App() {
   const [user, setUser] = useState<SessionUser | null>(null);
   const [customerAppOpen, setCustomerAppOpen] = useState(false);
   const [customerEntryScreen, setCustomerEntryScreen] = useState<CustomerAppScreen>('home');
+  const [providerAppOpen, setProviderAppOpen] = useState(false);
 
   useEffect(() => {
     setUser(loadSession());
@@ -101,6 +103,7 @@ export function App() {
     clearSession();
     setUser(null);
     setCustomerAppOpen(false);
+    setProviderAppOpen(false);
     showToast('You’re signed out.');
   }, [showToast]);
 
@@ -110,7 +113,7 @@ export function App() {
 
       {toast ? (
         <div
-          className="fixed left-1/2 top-20 z-[110] max-w-md -translate-x-1/2 rounded-lg border border-lux-gold/30 bg-lux-surface px-5 py-3 text-center text-sm font-medium text-lux-parchment shadow-[0_16px_48px_rgba(0,0,0,0.45)] animate-[fadeSlide_0.3s_ease-out]"
+          className="fixed left-1/2 top-20 z-[110] max-w-md -translate-x-1/2 rounded-xl border border-ds-gold/30 bg-ds-surface px-5 py-3 text-center text-sm font-medium text-ds-text shadow-[0_16px_48px_rgba(0,0,0,0.45)] animate-[fadeSlide_0.25s_ease-out]"
           role="status">
           {toast}
         </div>
@@ -130,6 +133,7 @@ export function App() {
         onSignup={() => setAuthMode('signup')}
         onLogout={handleLogout}
         onBook={goToBookingFlow}
+        onProWorkspace={() => setProviderAppOpen(true)}
       />
 
       <main className="pb-24 sm:pb-0">
@@ -157,10 +161,7 @@ export function App() {
         <HowItWorks />
         <FeaturedPros
           onViewProfile={() => openCustomerApp('profile')}
-          onBecomePro={() => {
-            document.getElementById('providers')?.scrollIntoView({ behavior: 'smooth' });
-            showToast('Provider onboarding — download the SEVA Pro app or apply on web (coming soon).');
-          }}
+          onBecomePro={() => setProviderAppOpen(true)}
         />
         <ReviewsSection />
         <FinalCta onBook={goToBookingFlow} />
@@ -176,6 +177,12 @@ export function App() {
         homeGreetingName={user?.displayName ?? null}
         sessionUser={user}
         onOnboardingComplete={handleOnboardingComplete}
+      />
+
+      <ProviderAppExperience
+        open={providerAppOpen}
+        onClose={() => setProviderAppOpen(false)}
+        proDisplayName={user?.displayName ?? null}
       />
 
       <AuthModal
