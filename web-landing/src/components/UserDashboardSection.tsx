@@ -7,6 +7,8 @@ type Props = {
   location: string;
   service: string;
   onSignIn: () => void;
+  /** Opens in-app home (good morning, matched pro, etc.) */
+  onOpenHome: () => void;
   onRequestBooking: () => void;
   onBrowseServices: () => void;
   onLogout: () => void;
@@ -17,6 +19,7 @@ export function UserDashboardSection({
   location,
   service,
   onSignIn,
+  onOpenHome,
   onRequestBooking,
   onBrowseServices,
   onLogout,
@@ -59,11 +62,14 @@ export function UserDashboardSection({
                 <p className="mt-1 font-medium text-seva-ink">{service || '—'}</p>
               </div>
             </div>
-            <div className="flex flex-col gap-3 border-t border-white/10 p-5 sm:flex-row sm:p-6">
-              <Button className="flex-1" onClick={onRequestBooking}>
-                Continue to booking
+            <div className="grid gap-3 border-t border-white/10 p-5 sm:grid-cols-3 sm:p-6">
+              <Button variant="secondary" className="w-full" onClick={onOpenHome}>
+                Open home
               </Button>
-              <Button variant="secondary" className="flex-1" onClick={onBrowseServices}>
+              <Button className="w-full" onClick={onRequestBooking}>
+                Request booking
+              </Button>
+              <Button variant="secondary" className="w-full" onClick={onBrowseServices}>
                 Browse services
               </Button>
             </div>
@@ -74,7 +80,7 @@ export function UserDashboardSection({
         ) : (
           <div className="mx-auto mt-8 max-w-lg rounded-2xl border border-white/10 bg-seva-deep/60 p-6 text-center shadow-card">
             <p className="text-seva-muted">
-              After you sign in, your name appears here with quick links to book and browse — same flow as the mobile app preview.
+              After you sign in, open your SEVA home to browse matched pros, chat, and complete requests — all in one place.
             </p>
             <Button className="mt-5" onClick={onSignIn}>
               Sign in or create account

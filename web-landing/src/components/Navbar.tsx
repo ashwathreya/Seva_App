@@ -14,7 +14,6 @@ type Props = {
 
 const baseLinks = [
   { href: '#dashboard', label: 'Dashboard' },
-  { href: '#customer-experience', label: 'Customer flow' },
   { href: '#services', label: 'Services' },
   { href: '#how', label: 'How It Works' },
   { href: '#providers', label: 'Become a Provider' },

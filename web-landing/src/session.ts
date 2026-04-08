@@ -3,6 +3,8 @@ const STORAGE_KEY = 'seva_session_v1';
 export type SessionUser = {
   displayName: string;
   email: string;
+  /** `false` until the user finishes the trust onboarding (set on new signups). Omitted/`true` = done or legacy session. */
+  onboardingComplete?: boolean;
 };
 
 export function loadSession(): SessionUser | null {
@@ -10,7 +12,13 @@ export function loadSession(): SessionUser | null {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const p = JSON.parse(raw) as SessionUser;
-    if (typeof p?.displayName === 'string' && typeof p?.email === 'string') return p;
+    if (typeof p?.displayName === 'string' && typeof p?.email === 'string') {
+      return {
+        displayName: p.displayName,
+        email: p.email,
+        onboardingComplete: p.onboardingComplete === false ? false : true,
+      };
+    }
   } catch {
     /* ignore */
   }

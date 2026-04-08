@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { firstName } from '../session';
 import { DEMO_PRO, ONBOARD_STEPS, US_CUSTOMER } from './copy';
 
@@ -42,7 +42,7 @@ function StrokeIcon({ name, size, color, className }: { name: string; size: numb
   );
 }
 
-export type CustomerPortalScreen =
+export type CustomerAppScreen =
   | 'onboarding'
   | 'home'
   | 'profile'
@@ -52,20 +52,12 @@ export type CustomerPortalScreen =
   | 'confirm'
   | 'tracking';
 
-type Screen = CustomerPortalScreen;
+/** @deprecated use CustomerAppScreen */
+export type CustomerPortalScreen = CustomerAppScreen;
+
+type Screen = CustomerAppScreen;
 
 type PricingReturn = 'booking' | 'confirm' | 'home';
-
-const NAV: { id: Screen; label: string; icon: string }[] = [
-  { id: 'onboarding', label: 'Onboarding', icon: '🛡️' },
-  { id: 'home', label: 'Home', icon: '🏠' },
-  { id: 'profile', label: 'Profile', icon: '👤' },
-  { id: 'chat', label: 'Chat', icon: '💬' },
-  { id: 'booking', label: 'Request', icon: '📋' },
-  { id: 'pricing', label: 'Price', icon: '💰' },
-  { id: 'confirm', label: 'Confirm', icon: '✓' },
-  { id: 'tracking', label: 'Live', icon: '📍' },
-];
 
 function TrustLayerStrip({ compact = false }: { compact?: boolean }) {
   const rows: [ReactNode, string][] = [
@@ -122,29 +114,43 @@ function VerifiedBadge() {
   );
 }
 
-type PortalProps = {
-  focusScreen?: CustomerPortalScreen | null;
-  onFocusConsumed?: () => void;
-  /** When set, customer Home demo uses this name instead of the placeholder. */
+type CustomerAppExperienceProps = {
+  open: boolean;
+  onClose: () => void;
+  /** Which screen to show when the overlay opens */
+  entryScreen: CustomerAppScreen;
   homeGreetingName?: string | null;
+  /** Called when user finishes or skips trust onboarding */
+  onOnboardingComplete?: () => void;
 };
 
-export function CustomerPortalSection({
-  focusScreen = null,
-  onFocusConsumed,
+export function CustomerAppExperience({
+  open,
+  onClose,
+  entryScreen,
   homeGreetingName = null,
-}: PortalProps) {
-  const [screen, setScreen] = useState<Screen>('onboarding');
+  onOnboardingComplete,
+}: CustomerAppExperienceProps) {
+  const [screen, setScreen] = useState<Screen>('home');
   const [onboardIdx, setOnboardIdx] = useState(0);
   const [pricingReturn, setPricingReturn] = useState<PricingReturn>('home');
   const [slot, setSlot] = useState(1);
+  const prevOpen = useRef(false);
 
   useEffect(() => {
-    if (!focusScreen) return;
-    setScreen(focusScreen);
-    if (focusScreen === 'pricing') setPricingReturn('home');
-    onFocusConsumed?.();
-  }, [focusScreen, onFocusConsumed]);
+    if (open && !prevOpen.current) {
+      setScreen(entryScreen);
+      if (entryScreen === 'onboarding') setOnboardIdx(0);
+      if (entryScreen === 'pricing') setPricingReturn('home');
+    }
+    prevOpen.current = open;
+  }, [open, entryScreen]);
+
+  const finishOnboarding = useCallback(() => {
+    onOnboardingComplete?.();
+    setOnboardIdx(0);
+    setScreen('home');
+  }, [onOnboardingComplete]);
 
   const openPricing = useCallback((ret: PricingReturn) => {
     setPricingReturn(ret);
@@ -196,10 +202,8 @@ export function CustomerPortalSection({
                 className="rounded-xl py-3 text-center text-xs font-bold transition active:scale-[0.99] hover:brightness-105"
                 style={{ background: PV.gold, color: PV.onGold }}
                 onClick={() => {
-                  if (last) {
-                    setScreen('home');
-                    setOnboardIdx(0);
-                  } else setOnboardIdx((i) => i + 1);
+                  if (last) finishOnboarding();
+                  else setOnboardIdx((i) => i + 1);
                 }}>
                 {last ? 'Meet professionals' : 'Continue'}
               </button>
@@ -207,10 +211,7 @@ export function CustomerPortalSection({
                 type="button"
                 className="cursor-pointer py-1 text-center text-[9px] transition hover:opacity-80"
                 style={{ color: PV.muted }}
-                onClick={() => {
-                  setOnboardIdx(0);
-                  setScreen('home');
-                }}>
+                onClick={finishOnboarding}>
                 Skip introduction
               </button>
             </div>
@@ -725,51 +726,33 @@ export function CustomerPortalSection({
     }
   };
 
-  const onNav = (id: Screen) => {
-    if (id === 'pricing') setPricingReturn('home');
-    if (id === 'onboarding') setOnboardIdx(0);
-    setScreen(id);
-  };
+  if (!open) return null;
 
   return (
-    <section id="customer-experience" className="scroll-mt-24 border-t border-white/10 bg-seva-deep py-16 sm:py-20">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <p className="mx-auto mb-2 max-w-3xl text-center text-xs font-semibold uppercase tracking-[0.14em] text-seva-gold/90">
-          Customer experience
-        </p>
-        <h2 className="mx-auto mb-3 max-w-3xl text-center font-sans text-2xl font-bold tracking-tight text-seva-ink sm:text-3xl">
-          Onboard → match → chat → request → confirm
-        </h2>
-        <p className="mx-auto mb-10 max-w-3xl text-center text-sm leading-relaxed text-seva-muted sm:text-base">
-          Positioning vs. open gig boards + catalog home apps: vetting over volume, scope lock over bundles, escrow over rush-to-book. Tap a step to explore the flow — interactive demo; the full product ships in the app.
-        </p>
-
-        <div className="overflow-hidden rounded-2xl border border-white/10 bg-seva-soft/40 shadow-card">
-          <div className="flex flex-col lg:flex-row lg:min-h-[560px]">
-            <nav
-              className="flex shrink-0 gap-1 overflow-x-auto border-b border-white/10 bg-seva-deep/80 p-2 lg:w-52 lg:flex-col lg:overflow-visible lg:border-b-0 lg:border-r lg:p-3"
-              aria-label="Customer flow steps">
-              {NAV.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => onNav(item.id)}
-                  className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition lg:w-full ${
-                    screen === item.id
-                      ? 'bg-seva-gold/20 font-semibold text-seva-gold'
-                      : 'text-seva-ink/80 hover:bg-white/10 hover:text-seva-ink'
-                  }`}>
-                  <span className="text-lg leading-none" aria-hidden>
-                    {item.icon}
-                  </span>
-                  <span>{item.label}</span>
-                </button>
-              ))}
-            </nav>
-            <div className="min-h-[min(560px,70vh)] min-w-0 flex-1 overflow-y-auto">{renderPanel()}</div>
+    <div
+      className="fixed inset-0 z-[95] flex flex-col bg-seva-deep"
+      role="dialog"
+      aria-modal="true"
+      aria-label="SEVA">
+      <header className="flex shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-seva-deep/95 px-3 py-3 backdrop-blur-md sm:gap-4 sm:px-5">
+        <button
+          type="button"
+          onClick={onClose}
+          className="shrink-0 text-left text-xs font-semibold text-seva-gold transition hover:text-white sm:text-sm">
+          ← Marketing site
+        </button>
+        <img src="/seva_logo_new.png" alt="SEVA" className="h-7 w-auto opacity-95 sm:h-8" width={120} height={32} />
+        <span className="max-w-[100px] shrink-0 truncate text-right text-[10px] font-medium text-seva-muted sm:max-w-[140px] sm:text-xs">
+          {homeGreetingName?.trim() ? firstName(homeGreetingName) : '\u00a0'}
+        </span>
+      </header>
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+        <div className="flex flex-1 justify-center overflow-y-auto px-3 py-4 sm:px-6 sm:py-6">
+          <div className="h-fit w-full max-w-md min-h-[min(520px,75vh)] overflow-hidden rounded-2xl border border-seva-gold/25 bg-seva-soft/20 shadow-[0_24px_80px_rgba(0,0,0,0.5)]">
+            <div className="max-h-[min(720px,calc(100vh-8rem))] min-h-[min(520px,70vh)] overflow-y-auto">{renderPanel()}</div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

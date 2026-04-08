@@ -8,11 +8,13 @@ import { displayNameFromLoginId, emailFromLoginId } from '../session';
 
 export type AuthMode = 'closed' | 'login' | 'signup' | 'forgot' | 'reset';
 
+export type AuthSuccessMeta = { isNewSignup: boolean };
+
 type Props = {
   mode: AuthMode;
   onClose: () => void;
   onSuccess: (msg: string) => void;
-  onAuthenticated?: (user: SessionUser) => void;
+  onAuthenticated?: (user: SessionUser, meta: AuthSuccessMeta) => void;
 };
 
 export function AuthModal({ mode, onClose, onSuccess, onAuthenticated }: Props) {
@@ -71,7 +73,7 @@ export function AuthModal({ mode, onClose, onSuccess, onAuthenticated }: Props) 
       displayName: displayNameFromLoginId(loginEmail),
       email: emailFromLoginId(loginEmail),
     };
-    onAuthenticated?.(user);
+    onAuthenticated?.(user, { isNewSignup: false });
     onSuccess('Welcome back — you’re signed in.');
     onClose();
   };
@@ -95,8 +97,8 @@ export function AuthModal({ mode, onClose, onSuccess, onAuthenticated }: Props) 
       displayName: signupName.trim(),
       email: signupEmail.trim().toLowerCase(),
     };
-    onAuthenticated?.(user);
-    onSuccess('Account created — let’s find your first booking.');
+    onAuthenticated?.(user, { isNewSignup: true });
+    onSuccess('Account created — next, a quick intro to how SEVA protects your home.');
     onClose();
   };
 
@@ -200,7 +202,7 @@ export function AuthModal({ mode, onClose, onSuccess, onAuthenticated }: Props) 
             <GoogleButton
               label="Continue with Google"
               onClick={() => {
-                onAuthenticated?.({ displayName: 'Alex Rivera', email: 'alex.rivera@gmail.com' });
+                onAuthenticated?.({ displayName: 'Alex Rivera', email: 'alex.rivera@gmail.com' }, { isNewSignup: false });
                 onSuccess('Signed in with Google (demo).');
                 onClose();
               }}
@@ -269,7 +271,7 @@ export function AuthModal({ mode, onClose, onSuccess, onAuthenticated }: Props) 
             <GoogleButton
               label="Continue with Google"
               onClick={() => {
-                onAuthenticated?.({ displayName: 'Alex Rivera', email: 'alex.rivera@gmail.com' });
+                onAuthenticated?.({ displayName: 'Alex Rivera', email: 'alex.rivera@gmail.com' }, { isNewSignup: true });
                 onSuccess('Account linked with Google (demo).');
                 onClose();
               }}

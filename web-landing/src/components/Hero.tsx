@@ -50,7 +50,7 @@ export function Hero({
           </p>
           {userDisplayName ? (
             <p className="mt-2 text-sm font-medium text-seva-gold/95">
-              Signed in as <span className="text-white">{userDisplayName}</span> — your dashboard is below.
+              Signed in as <span className="text-white">{userDisplayName}</span> — use <span className="text-white">Dashboard</span> to open your home or request a booking.
             </p>
           ) : null}
 
