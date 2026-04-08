@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { firstName } from '../session';
+import { firstName, type SessionUser } from '../session';
+import { appendBooking } from './bookingsStore';
+import { CustomerDashboard } from './CustomerDashboard';
 import { DEMO_PRO, ONBOARD_STEPS, US_CUSTOMER } from './copy';
+import { StrokeIcon } from './StrokeIcon';
 
 /** Preview.html tokens: G gold, T teal, BG on-gold text */
 const PV = {
@@ -11,36 +14,6 @@ const PV = {
   body: '#5C6578',
   ink: '#0B0D12',
 } as const;
-
-const STROKE_PATHS: Record<string, string[]> = {
-  shield: ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10'],
-  check: ['M20 6L9 17l-5-5'],
-  msg: ['M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z'],
-  lock: ['M19 11H5a2 2 0 00-2 2v6a2 2 0 002 2h14a2 2 0 002-2v-6a2 2 0 00-2-2', 'M7 11V7a5 5 0 0110 0v4'],
-  pin: ['M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z', 'M12 10m-3 0a3 3 0 106 0 3 3 0 00-6 0'],
-  search: ['M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0'],
-  home: ['M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z', 'M9 22V12h6v10'],
-  bell: ['M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9', 'M13.73 21a2 2 0 01-3.46 0'],
-  user: ['M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2', 'M12 11a4 4 0 100-8 4 4 0 000 8'],
-  life: ['M22 12h-4l-3 9L9 3l-3 9H2'],
-};
-
-function StrokeIcon({ name, size, color, className }: { name: string; size: number; color: string; className?: string }) {
-  const paths = STROKE_PATHS[name] ?? [];
-  return (
-    <svg
-      className={`shrink-0 ${className ?? ''}`}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden>
-      {paths.map((d) => (
-        <path key={d.slice(0, 24)} d={d} stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-      ))}
-    </svg>
-  );
-}
 
 export type CustomerAppScreen =
   | 'onboarding'
@@ -120,6 +93,7 @@ type CustomerAppExperienceProps = {
   /** Which screen to show when the overlay opens */
   entryScreen: CustomerAppScreen;
   homeGreetingName?: string | null;
+  sessionUser: Pick<SessionUser, 'displayName' | 'email' | 'onboardingComplete'> | null;
   /** Called when user finishes or skips trust onboarding */
   onOnboardingComplete?: () => void;
 };
@@ -129,12 +103,15 @@ export function CustomerAppExperience({
   onClose,
   entryScreen,
   homeGreetingName = null,
+  sessionUser,
   onOnboardingComplete,
 }: CustomerAppExperienceProps) {
   const [screen, setScreen] = useState<Screen>('home');
   const [onboardIdx, setOnboardIdx] = useState(0);
   const [pricingReturn, setPricingReturn] = useState<PricingReturn>('home');
   const [slot, setSlot] = useState(1);
+  const [bookingSubmitting, setBookingSubmitting] = useState(false);
+  const [pendingScrollBookings, setPendingScrollBookings] = useState(false);
   const prevOpen = useRef(false);
 
   useEffect(() => {
@@ -145,6 +122,15 @@ export function CustomerAppExperience({
     }
     prevOpen.current = open;
   }, [open, entryScreen]);
+
+  useEffect(() => {
+    if (screen !== 'home' || !pendingScrollBookings) return;
+    const id = window.requestAnimationFrame(() => {
+      document.getElementById('customer-bookings-anchor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setPendingScrollBookings(false);
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [screen, pendingScrollBookings]);
 
   const finishOnboarding = useCallback(() => {
     onOnboardingComplete?.();
@@ -166,6 +152,15 @@ export function CustomerAppExperience({
   const goBook = useCallback(() => setScreen('booking'), []);
   const goProfile = useCallback(() => setScreen('profile'), []);
   const goHome = useCallback(() => setScreen('home'), []);
+
+  const handleBookingsNav = useCallback(() => {
+    if (screen === 'home') {
+      document.getElementById('customer-bookings-anchor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      setPendingScrollBookings(true);
+      setScreen('home');
+    }
+  }, [screen]);
 
   const panelBg = 'bg-[#F1F3F8]';
 
@@ -220,129 +215,24 @@ export function CustomerAppExperience({
       }
       case 'home':
         return (
-          <div className={`relative ${panelBg} min-h-[480px] px-3.5 pb-[72px] pt-2.5 sm:px-[14px]`}>
-            {/* Header — preview: 10px muted, 14px name, 9px loc pill */}
-            <div className="mb-3 flex items-center justify-between">
-              <div>
-                <p className="text-[10px] text-[#888]">Good morning ☀️</p>
-                <p className="text-sm font-bold leading-tight text-[#0B0D12]">
-                  {homeGreetingName?.trim() ? firstName(homeGreetingName) : 'Ashwath'}
-                </p>
-              </div>
-              <button
-                type="button"
-                className="flex cursor-pointer items-center gap-0.5 rounded-full border border-[#E8E8F0] bg-white py-1.5 pl-2 pr-2 text-[9px] text-[#555] transition hover:bg-[#fafafa]">
-                <StrokeIcon name="pin" size={9} color={PV.gold} />
-                {US_CUSTOMER.city}
-              </button>
-            </div>
-            <div className="mb-2.5 flex items-center gap-1.5 rounded-lg border border-[#E4E7EF] bg-white px-2.5 py-1.5">
-              <StrokeIcon name="shield" size={11} color={PV.teal} />
-              <span className="text-[8px] leading-[1.35] text-[#4B5563]">
-                Same vetting for every pro — not a two-tier marketplace where “unverified” still ranks in search.
-              </span>
-            </div>
-            <div className="mb-3.5 flex items-center gap-1.5 rounded-[10px] border border-[#E8E8F0] bg-white px-3 py-2.5">
-              <StrokeIcon name="search" size={12} color="#bbb" />
-              <span className="text-[11px] text-[#aaa]">What do you need today?</span>
-            </div>
-            <button
-              type="button"
-              onClick={goBook}
-              className="mb-3.5 w-full cursor-pointer rounded-xl border border-[rgba(240,165,0,0.18)] bg-gradient-to-br from-[#0B0D12] to-[#1B1F32] px-3 py-3 text-left transition hover:opacity-95 active:scale-[0.995]">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="mb-0.5 text-[9px] font-bold" style={{ color: PV.gold }}>
-                    {US_CUSTOMER.promoBadge}
-                  </p>
-                  <p className="text-xs font-bold text-white">{US_CUSTOMER.promoTitle}</p>
-                  <p className="mt-0.5 text-[9px] text-[#8896AA]">{US_CUSTOMER.promoSub}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[9px] text-[#555] line-through">{US_CUSTOMER.promoWas}</p>
-                  <p className="text-[18px] font-extrabold leading-tight" style={{ color: PV.gold }}>
-                    {US_CUSTOMER.promoNow}
-                  </p>
-                  <div
-                    className="mt-1 inline-block cursor-pointer rounded-md px-2 py-1 text-[9px] font-bold"
-                    style={{ background: PV.gold, color: PV.onGold }}>
-                    Book Now →
-                  </div>
-                </div>
-              </div>
-            </button>
-            <p className="mb-2 text-[11px] font-bold text-[#0B0D12]">All Services</p>
-            <div className="mb-3.5 grid grid-cols-4 gap-1.5">
+          <div className={`relative ${panelBg} min-h-[480px]`}>
+            <CustomerDashboard
+              sessionUser={sessionUser}
+              fallbackGreetingName={homeGreetingName?.trim() ? firstName(homeGreetingName) : 'there'}
+              cityLabel={US_CUSTOMER.city}
+              onBook={goBook}
+              onViewProviders={goProfile}
+              onContactSupport={() => {
+                window.location.href = 'mailto:support@seva.app?subject=SEVA%20—%20Customer%20support';
+              }}
+              onOpenBookingStatus={() => setScreen('tracking')}
+            />
+            <div className="sticky bottom-0 left-0 right-0 z-10 flex justify-around border-t border-[#E8ECF0] bg-white/95 px-1 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_24px_rgba(15,23,42,0.06)] backdrop-blur-md supports-[backdrop-filter]:bg-white/80">
               {(
                 [
-                  ['🚚', 'Move', '#EFF6FF', '#1D4ED8'],
-                  ['📦', 'Load-out', '#F0F9FF', '#0369A1'],
-                  ['👨‍🍳', 'Cook', '#FFF1F2', '#9F1239'],
-                  ['🧹', 'Clean', '#F0FFF4', '#166534'],
-                  ['👶', 'Sitter', '#FDF4FF', '#7E22CE'],
-                  ['🧺', 'Laundry', '#F5F3FF', '#5B21B6'],
-                  ['🛒', 'Errands', '#FFFBEB', '#B45309'],
-                  ['🔧', 'Handy', '#FFF7ED', '#9A3412'],
-                ] as const
-              ).map(([e, l, bg, tc]) => (
-                <button
-                  key={l}
-                  type="button"
-                  onClick={goBook}
-                  className="cursor-pointer rounded-lg py-[7px] text-center transition active:scale-[0.98] hover:ring-2 hover:ring-[#F0A500]/35"
-                  style={{ background: bg }}>
-                  <div className="text-base leading-none">{e}</div>
-                  <div className="mt-0.5 text-[7.5px] font-semibold leading-tight" style={{ color: tc }}>
-                    {l}
-                  </div>
-                </button>
-              ))}
-            </div>
-            <p className="mb-2 text-[11px] font-bold text-[#0B0D12]">Matched for you</p>
-            <button
-              type="button"
-              onClick={goProfile}
-              className="mb-3.5 flex w-full cursor-pointer items-center gap-2.5 rounded-xl border border-[#E8E8F0] bg-white px-3 py-2.5 text-left transition hover:border-[rgba(12,184,179,0.35)] active:scale-[0.995]">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#6B8CAE] to-[#3D5A73] text-sm font-extrabold text-[rgba(255,255,255,0.9)]">
-                M
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-[11px] font-bold text-[#0B0D12]">{DEMO_PRO.name}</p>
-                <p className="mt-0.5 text-[8.5px] leading-[1.35] text-[#6B7280]">{US_CUSTOMER.proCustomerTagline}</p>
-                <div className="mt-1.5">
-                  <VerifiedBadge />
-                </div>
-              </div>
-              <span className="shrink-0 text-[8px] font-bold" style={{ color: PV.teal }}>
-                View →
-              </span>
-            </button>
-            <p className="mb-2 text-[11px] font-bold text-[#0B0D12]">Book Again</p>
-            <button
-              type="button"
-              onClick={goBook}
-              className="flex w-full cursor-pointer items-center gap-2 rounded-[10px] border border-[#EBEBF0] bg-white px-3 py-2.5 text-left transition hover:border-[#F0A500]/25 active:scale-[0.995]">
-              <div className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-lg bg-[#E6F4FF] text-lg leading-none">
-                {US_CUSTOMER.againEmoji}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-[11px] font-semibold text-[#0B0D12]">{US_CUSTOMER.againLineTitle}</p>
-                <p className="text-[9px] leading-[1.35] text-[#6B7280]">{US_CUSTOMER.againLineSub}</p>
-              </div>
-              <span
-                className="shrink-0 rounded-md px-2 py-1 text-[10px] font-bold"
-                style={{ background: PV.gold, color: PV.onGold }}>
-                {US_CUSTOMER.againAC}
-              </span>
-            </button>
-
-            {/* Bottom nav — preview .bottom-nav */}
-            <div className="absolute bottom-0 left-0 right-0 flex justify-around border-t border-[#F0F0F0] bg-white px-2 pb-3 pt-2">
-              {(
-                [
-                  { icon: 'home' as const, label: 'Home', active: true, onClick: () => {} },
-                  { icon: 'search' as const, label: 'Search', active: false, onClick: () => {} },
-                  { icon: 'bell' as const, label: 'Bookings', active: false, onClick: () => setScreen('confirm') },
+                  { icon: 'home' as const, label: 'Home', active: true, onClick: goHome },
+                  { icon: 'search' as const, label: 'Book', active: false, onClick: goBook },
+                  { icon: 'bell' as const, label: 'Bookings', active: false, onClick: handleBookingsNav },
                   { icon: 'user' as const, label: 'Profile', active: false, onClick: goProfile },
                 ] as const
               ).map((item) => (
@@ -350,13 +240,13 @@ export function CustomerAppExperience({
                   key={item.label}
                   type="button"
                   onClick={item.onClick}
-                  className="min-w-[56px] text-center transition hover:opacity-90">
+                  className="min-w-[56px] rounded-lg py-1 text-center transition hover:bg-black/[0.03] active:scale-[0.97]">
                   <div className="flex justify-center">
-                    <StrokeIcon name={item.icon} size={16} color={item.active ? PV.gold : '#bbb'} />
+                    <StrokeIcon name={item.icon} size={18} color={item.active ? PV.gold : '#A8B0BE'} />
                   </div>
                   <div
-                    className="mt-0.5 text-[7.5px] font-medium"
-                    style={{ color: item.active ? PV.gold : '#bbb' }}>
+                    className="mt-0.5 text-[8px] font-semibold tracking-wide"
+                    style={{ color: item.active ? PV.gold : '#A8B0BE' }}>
                     {item.label}
                   </div>
                 </button>
@@ -564,10 +454,42 @@ export function CustomerAppExperience({
             <FirstBookingGuaranteeBlock />
             <button
               type="button"
-              onClick={() => setScreen('confirm')}
-              className="w-full rounded-xl bg-seva-gold py-3 text-center transition hover:brightness-105">
-              <p className="text-sm font-bold text-seva-deep">Send booking request — {bk.bookAC}</p>
-              <p className="mt-0.5 text-xs text-[#5A3800]">You can still chat · Nothing final until you confirm details</p>
+              disabled={bookingSubmitting}
+              aria-busy={bookingSubmitting}
+              onClick={() => {
+                if (bookingSubmitting) return;
+                setBookingSubmitting(true);
+                window.setTimeout(() => {
+                  try {
+                    appendBooking({
+                      serviceTitle: bk.bookingHeroTitle,
+                      proName: DEMO_PRO.name,
+                      priceLabel: bk.bookAC,
+                      scheduledLabel: slotLabels[slot] ?? slotLabels[0]!,
+                      status: 'requested',
+                    });
+                  } catch {
+                    /* storage full / private mode */
+                  }
+                  setBookingSubmitting(false);
+                  setScreen('confirm');
+                }, 520);
+              }}
+              className="w-full rounded-xl bg-seva-gold py-3 text-center transition hover:brightness-105 disabled:pointer-events-none disabled:opacity-55">
+              {bookingSubmitting ? (
+                <span className="inline-flex items-center justify-center gap-2 text-sm font-bold text-seva-deep">
+                  <span
+                    className="h-4 w-4 animate-spin rounded-full border-2 border-seva-deep/25 border-t-seva-deep"
+                    aria-hidden
+                  />
+                  Sending request…
+                </span>
+              ) : (
+                <>
+                  <p className="text-sm font-bold text-seva-deep">Send booking request — {bk.bookAC}</p>
+                  <p className="mt-0.5 text-xs text-[#5A3800]">You can still chat · Nothing final until you confirm details</p>
+                </>
+              )}
             </button>
           </div>
         );

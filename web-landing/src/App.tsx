@@ -174,6 +174,7 @@ export function App() {
         onClose={() => setCustomerAppOpen(false)}
         entryScreen={customerEntryScreen}
         homeGreetingName={user?.displayName ?? null}
+        sessionUser={user}
         onOnboardingComplete={handleOnboardingComplete}
       />
 
