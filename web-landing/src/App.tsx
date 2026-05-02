@@ -11,7 +11,8 @@ import { ReviewsSection } from './components/ReviewsSection';
 import { FinalCta } from './components/FinalCta';
 import { Footer } from './components/Footer';
 import { MobileStickyCta } from './components/MobileStickyCta';
-import { clearSession, loadSession, type SessionUser } from './session';
+import { AuthModal, type AuthMode, type AuthSuccessMeta } from './components/AuthModal';
+import { clearSession, loadSession, saveSession, type SessionUser } from './session';
 
 export function App() {
   const [splashDone, setSplashDone] = useState(false);
@@ -20,6 +21,7 @@ export function App() {
   const [location, setLocation] = useState('07302');
   const [service, setService] = useState('Home cleaning');
   const [user, setUser] = useState<SessionUser | null>(null);
+  const [authMode, setAuthMode] = useState<AuthMode>('closed');
 
   useEffect(() => {
     setUser(loadSession());
@@ -39,6 +41,15 @@ export function App() {
   }, [toast]);
 
   const showToast = useCallback((msg: string) => setToast(msg), []);
+
+  const handleAuthenticated = useCallback((u: SessionUser, meta: AuthSuccessMeta) => {
+    const next: SessionUser = meta.isNewSignup ? { ...u, onboardingComplete: false } : u;
+    saveSession(next);
+    setUser(next);
+    requestAnimationFrame(() => {
+      document.getElementById('dashboard')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }, []);
 
   const goToBookingFlow = useCallback(() => {
     document.getElementById('dashboard')?.scrollIntoView({ behavior: 'smooth' });
@@ -76,8 +87,8 @@ export function App() {
       <Navbar
         scrolled={scrolled}
         user={user}
-        onLogin={() => document.getElementById('dashboard')?.scrollIntoView({ behavior: 'smooth' })}
-        onSignup={() => document.getElementById('dashboard')?.scrollIntoView({ behavior: 'smooth' })}
+        onLogin={() => setAuthMode('login')}
+        onSignup={() => setAuthMode('signup')}
         onLogout={handleLogout}
         onBook={goToBookingFlow}
         onProWorkspace={() => document.getElementById('providers')?.scrollIntoView({ behavior: 'smooth' })}
@@ -98,7 +109,7 @@ export function App() {
           user={user}
           location={location}
           service={service}
-          onSignIn={() => showToast('Account and onboarding screens were removed from lightbox flow.')}
+          onSignIn={() => setAuthMode('login')}
           onOpenHome={goToBookingFlow}
           onRequestBooking={goToBookingFlow}
           onBrowseServices={goToServices}
@@ -116,6 +127,13 @@ export function App() {
       </main>
 
       <MobileStickyCta onBook={goToBookingFlow} />
+
+      <AuthModal
+        mode={authMode}
+        onClose={() => setAuthMode('closed')}
+        onSuccess={showToast}
+        onAuthenticated={handleAuthenticated}
+      />
     </>
   );
 }
