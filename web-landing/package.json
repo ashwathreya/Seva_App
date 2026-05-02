@@ -4,8 +4,9 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
+    "predev": "node ../scripts/copy-sevapreview-to-web-public.js",
     "dev": "vite",
-    "build": "vite build",
+    "build": "node ../scripts/copy-sevapreview-to-web-public.js && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

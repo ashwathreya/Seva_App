@@ -4,6 +4,9 @@ admin/node_modules/
 
 # Marketing site (Vite build output — built on Vercel)
 web-landing/dist/
+# Copied from repo-root *.html during web-landing build/dev
+web-landing/public/sevapreview.html
+web-landing/public/sevascreens.html
 
 # Admin web build output
 admin/dist/
